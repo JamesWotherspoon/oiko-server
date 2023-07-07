@@ -7,7 +7,8 @@ app.use(express.json())
 
 // Middleware for setting headers
 app.use((req, res, next) => {
-  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' example.com");
+  // Set the Content-Security-Policy header to only allow content recieved from this server
+  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'");
   next();
 });
 
@@ -15,7 +16,7 @@ app.use((req, res, next) => {
 // Limit by IP address
 const limiter = rateLimit({
   windowMs: 60 * 1000, // Time span 
-  max: 100, // Max amount per time span 
+  max: 1000, // Max amount per time span 
 });
 app.use(limiter);
 
