@@ -1,0 +1,10 @@
+{"level":"error"}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":500,"response_time":"15ms","url":"/avub","version":"114.0.0.0"}}
+{"level":"error"}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":500,"response_time":"13ms","url":"/avub","version":"114.0.0.0"}}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":304,"response_time":"6ms","url":"/","version":"114.0.0.0"}}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":304,"response_time":"1ms","url":"/","version":"114.0.0.0"}}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":304,"response_time":"1ms","url":"/","version":"114.0.0.0"}}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":304,"response_time":"9ms","url":"/","version":"114.0.0.0"}}
+{"level":"error"}
+{"level":"info","message":{"browser":"Chrome","ip":"::1","method":"GET","os":"Windows 10.0","response_status":500,"response_time":"6ms","url":"/a","version":"114.0.0.0"}}
