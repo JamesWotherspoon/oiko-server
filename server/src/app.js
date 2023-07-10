@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
 const middleware = require("./middleware/middleware.js");
-const logMiddleware = require("./middleware/log.middleware.js");
-const example = require("./routes/example.js");
-const notFoundRoutes = require("./routes/notFoundRoutes.js");
-const logger = require("./config/log.config.js");
+const logInfo = require("./middleware/logging.middleware.js");
+const logError = require("./middleware/error-logging.middleware.js");
+const fallbackErrorHandler = require("./middleware/fallback-error-handler.middleware.js");
+const example = require("./routes/example.routes.js");
+const notFoundRoutes = require("./routes/not-found.routes.js");
 
 // Middleware to capture request received time
 app.use((req, res, next) => {
@@ -15,33 +16,19 @@ app.use((req, res, next) => {
 
 // Middleware
 app.use(middleware);
-app.use(logMiddleware);
+app.use(logInfo);
 
 // Routes
 app.use("/api", example);
-//app.use("/", notFoundRoutes);
-app.use("/", (res, req, next) => {
-  throw new Error("Something went wrong");
+app.use("/", notFoundRoutes);
 
-});
+// throw error for testing error handling
+//app.use("/", (res, req, next) => { throw new Error("Error: Test error handling") });
 
-// Fail-safe error handler - Catch all
-app.use((err, req, res, next) => {
-  logger.error(err);
+// Log Errors - Middleware
+app.use(logError);
 
-  res.status(err.status || 500);
-
-  const errorResponse = {
-    message: err.message || "Internal Server Error",
-  };
-
-  // Include stack trace in development mode
-  if (process.env.NODE_ENV === "development") {
-    errorResponse.stack = err.stack;
-  }
-
-  // Send error response
-  res.json({ error: errorResponse });
-});
+// Fallback error handler - Middleware
+app.use(fallbackErrorHandler);
 
 module.exports = app;

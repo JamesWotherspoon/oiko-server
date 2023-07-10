@@ -9,9 +9,12 @@ const logger = winston.createLogger({
   ),
   transports: [
     // Log to console
-    new winston.transports.Console(),
+    new winston.transports.Console({
+      level: "error",
+      format: winston.format.simple(),
+    }),
     // Log to file logs.log
-    // Note: Path is relative to app.js where logger is registered
+    // Note: Path is relative to current working directory (At the directory level the server is running)
     new winston.transports.File({ filename: "./logs/logs.log" }),
   ],
 });
