@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../app");
+const app = require("../src/app");
 
 // Create an instance of the Express application
 // Passing app bypasses starting the server in server.js
