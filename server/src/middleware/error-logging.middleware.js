@@ -1,6 +1,4 @@
-
-const logger = require("../config/logging.config");
-
+const logger = require('../config/logging.config')
 
 // Error handling middleware
 const errorLoggingMiddleware = (err, req, res, next) => {
@@ -11,12 +9,12 @@ const errorLoggingMiddleware = (err, req, res, next) => {
     method: req.method,
     url: req.url,
     ip: req.ip
-  };
+  }
 
   // Log error
-  logger.seriousLogger.error("Error:", logErrorInfo);
+  logger.seriousLogger.error('Error:', logErrorInfo)
 
-  next(err); // Pass the error to the next error-handling middleware
+  next(err) // Pass the error to the next error-handling middleware
 }
 
-module.exports = errorLoggingMiddleware;
+module.exports = errorLoggingMiddleware

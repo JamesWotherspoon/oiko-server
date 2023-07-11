@@ -1,17 +1,17 @@
-const express = require("express");
-const app = express();
-const logger = require("../config/logging.config");
-const useragent = require("express-useragent");
+const express = require('express')
+const app = express()
+const logger = require('../config/logging.config')
+const useragent = require('express-useragent')
 
 // Register express-useragent middleware
 // This adds a useragent property to request objects
-app.use(useragent.express());
+app.use(useragent.express())
 
 // Logging info
 app.use((req, res, next) => {
   // Listen for 'finish' event on response
   // Generate an object of useful information
-  res.on("finish", () => {
+  res.on('finish', () => {
     const logInfo = {
       method: req.method,
       url: req.url,
@@ -21,12 +21,12 @@ app.use((req, res, next) => {
       os: req.useragent.os,
       response_status: res.statusCode,
       response_time: `${Date.now() - req.startTime}ms`
-    };
+    }
 
     // Log info
-    logger.lowLogger.info("Request Response Cycle:", logInfo);
-  });
-  next();
-});
+    logger.lowLogger.info('Request Response Cycle:', logInfo)
+  })
+  next()
+})
 
-module.exports = app;
+module.exports = app
