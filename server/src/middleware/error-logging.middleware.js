@@ -14,7 +14,7 @@ const errorLoggingMiddleware = (err, req, res, next) => {
   };
 
   // Log error
-  logger.error("Error:", logErrorInfo);
+  logger.seriousLogger.error("Error:", logErrorInfo);
 
   next(err); // Pass the error to the next error-handling middleware
 }

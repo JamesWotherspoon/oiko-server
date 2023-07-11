@@ -7,17 +7,15 @@ const app = require("../src/app");
 const api = request(app);
 
 // Test the API root path "/api"
-describe('API root path "/api"', () => {
-  test("should respond with a 200 status code", async () => {
-    const response = await api.get("/api");
-    expect(response.statusCode).toBe(200);
-  });
-});
-
-// Test not found API routes
-describe("Not found API routes", () => {
-  test("should respond with a 404 status code", async () => {
+describe('Test API routes', () => {
+  // Test route that does not exist is handled
+  test("Not found API route - should respond with a 404 status code", async () => {
     const response = await api.get("/thispathdoesnotexist");
     expect(response.statusCode).toBe(404);
+  });
+  // Test base API route '/api'
+  test("Base API route '/api' - should respond with a 200 status code", async () => {
+    const response = await api.get("/api");
+    expect(response.statusCode).toBe(200);
   });
 });

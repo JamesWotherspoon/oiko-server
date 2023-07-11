@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     };
 
     // Log info
-    logger.info("Request Response Cycle:", logInfo);
+    logger.lowLogger.info("Request Response Cycle:", logInfo);
   });
   next();
 });

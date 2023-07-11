@@ -1,22 +1,34 @@
 const winston = require("winston");
 
-const logger = winston.createLogger({
-  // Log all messages serveity level debug and above
-  level: "debug",
+const seriousLogger = winston.createLogger({
+  level: "warn",
   format: winston.format.combine(
-    winston.format.timestamp(), // Add a timestamp to each log entry
-    winston.format.json() // Use JSON format for log entries
+    winston.format.timestamp(),
+    winston.format.json()
   ),
   transports: [
-    // Log to console
+    // Log errors and warnings to console
     new winston.transports.Console({
-      level: "error",
       format: winston.format.simple(),
     }),
-    // Log to file logs.log
-    // Note: Path is relative to current working directory (At the directory level the server is running)
-    new winston.transports.File({ filename: "./logs/logs.log" }),
+    // Log errors and warnings to file serious.log
+    new winston.transports.File({ filename: "./logs/serious.log" }),
   ],
 });
 
-module.exports = logger;
+const lowLogger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    // Log info messages to file low.log
+    new winston.transports.File({ filename: "./logs/low.log" }),
+  ],
+});
+
+module.exports = {
+  seriousLogger,
+  lowLogger,
+};

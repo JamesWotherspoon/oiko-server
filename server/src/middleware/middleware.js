@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const rateLimit = require('express-rate-limit');
+const logger = require("../config/logging.config");
 
 // Middleware to parse body to json format 
 app.use(express.json()) 
@@ -16,8 +17,15 @@ app.use((req, res, next) => {
 // Limit by IP address
 const limiter = rateLimit({
   windowMs: 60 * 1000, // Time span 
-  max: 1000, // Max amount per time span 
+  max: 100, // Max amount per time span 
+  handler: (req, res, next) => {
+    // If rate is exceeded respond with status code 429 an error message
+    res.status(429).json({ error: "Too many requests, please try again later." });
+    // Log when the rate limit is reached
+    logger.seriousLogger.warn(`Rate limit exceeded for IP ${req.ip}`);
+  },
 });
+// Register limiter to app
 app.use(limiter);
 
 // Error handling 
