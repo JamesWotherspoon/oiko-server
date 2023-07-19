@@ -22,6 +22,7 @@ app.use((req, res, next) => {
   }
   next()
 })
+
 app.use((req, res, next) => {
   // Set the Content-Security-Policy header to only allow content recieved from this server
   res.setHeader(
@@ -50,8 +51,8 @@ app.use(limiter)
 
 // Error handling
 app.use((err, req, res, next) => {
-  logger.seriousLogger.error('Error:', err.message) // Log the error message
   res.status(500).json({ error: 'Internal Server Error' }) //  500 - "The server encountered an unexpected condition that prevented it from fulfilling the request"
+  logger.seriousLogger.error('Error:', err.message) // Log the error message
 })
 
 module.exports = app

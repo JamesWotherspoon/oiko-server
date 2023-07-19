@@ -1,6 +1,15 @@
 /* eslint-disable no-undef */
 const request = require('supertest')
 const app = require('../src/app')
+require('dotenv').config()
+
+// Enviormental variable for client origin
+const allowedClientOrigin = process.env.CLIENT_ORIGIN
+
+// Set the origin header to .env variable
+const setOriginHeader = (agent) => {
+  return agent.set('Origin', allowedClientOrigin)
+}
 
 // Create an instance of the Express application
 // Passing app bypasses starting the server in server.js
@@ -11,12 +20,12 @@ const api = request(app)
 describe('Test API routes', () => {
   // Test route that does not exist is handled
   test('Not found API route - should respond with a 404 status code', async () => {
-    const response = await api.get('/thispathdoesnotexist')
+    const response = await setOriginHeader(api.get('/thispathdoesnotexist'))
     expect(response.statusCode).toBe(404)
   })
   // Test base API route '/api'
   test("Base API route '/api' - should respond with a 200 status code", async () => {
-    const response = await api.get('/api')
+    const response = await setOriginHeader(api.get('/api'))
     expect(response.statusCode).toBe(200)
   })
 })
