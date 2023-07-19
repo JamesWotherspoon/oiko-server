@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const request = require('supertest')
 const app = require('../src/app')
+require('dotenv').config()
 
 // Create an instance of the Express application
 // Passing app bypasses starting the server in server.js
@@ -8,6 +9,17 @@ const app = require('../src/app')
 const api = request(app)
 
 describe('Middleware Tests', () => {
+  test('should set the correct CORS headers', async () => {
+    // Enviormental variable for client origin
+    const allowedClientOrigin = process.env.CLIENT_ORIGIN
+    // Get response
+    const response = await api.get('/api')
+    // Assert the response headers
+    expect(response.headers['access-control-allow-origin']).toBe(allowedClientOrigin)
+    expect(response.headers['access-control-allow-methods']).toBe('GET, POST, PUT, DELETE')
+    expect(response.headers['access-control-allow-headers']).toBe('Content-Type')
+  })
+
   // Test Content-Security-Policy
   test('Content-Security-Policy Middleware', async () => {
     // Send a request and check the response headers

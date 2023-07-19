@@ -50,7 +50,7 @@ app.use(limiter)
 
 // Error handling
 app.use((err, req, res, next) => {
-  console.error('Error:', err.message) // Log the error message
+  logger.seriousLogger.error('Error:', err.message) // Log the error message
   res.status(500).json({ error: 'Internal Server Error' }) //  500 - "The server encountered an unexpected condition that prevented it from fulfilling the request"
 })
 
