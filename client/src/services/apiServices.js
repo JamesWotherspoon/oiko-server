@@ -1,16 +1,26 @@
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+const api = axios.create({
+  baseURL: BASE_URL,
+  timeout: 2000,
+});
+
 const sendRequest = async (method, endpoint, payload = null) => {
   try {
-    const response = await axios({
+    const response = await api({
       method,
-      url: `${process.env.REACT_APP_API_BASE_URL}${endpoint}`,
+      url: endpoint,
       data: payload,
     });
     // Return response data
     return response.data;
   } catch (error) {
-    if (error.response) {
+    if (error.code === "ECONNABORTED") {
+      // Timeout error occurred
+      console.error("Request timed out");
+    } else if (error.response) {
       // Request was sent and the server responded
       console.error(`Server responded with status ${error.response.status}`);
       console.error(error.response.data);

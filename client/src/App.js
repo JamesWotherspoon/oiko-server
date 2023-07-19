@@ -5,7 +5,7 @@ import HomePage from './components/HomePage';
 
 const App = () => {
   // Check if the user is logged in
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   return (
     <Router>
@@ -13,7 +13,7 @@ const App = () => {
       <Route 
         exact 
         path="/"
-        element={isLoggedIn ? <Navigate to="/HomePage" /> : <Navigate to="/auth"/>}
+        element={ isLoggedIn ? <Navigate to="/home" /> : <Navigate to="/auth"/>}
       />
       <Route 
         exact 
@@ -22,7 +22,7 @@ const App = () => {
       <Route
         exact
         path="/home"
-        render={() => (isLoggedIn ? <HomePage /> : <Navigate to="/auth" />)}
+        element={ isLoggedIn ? <HomePage /> : <Navigate to="/auth" /> }
       />
     </Routes>
     </Router>
