@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getApiRequest } from "../services/apiServices";
+import { useErrorBoundary } from "react-error-boundary";
 
 export default function HomePage() {
     const [apiResponse, setApiResponse] = useState({});
     const [awaitingApiResponse, setAwaitingApiResponse] = useState(true)
+    const { showBoundary } = useErrorBoundary();
+
 
     useEffect(() => {
       const getApiResponse = async () => {
@@ -11,13 +14,13 @@ export default function HomePage() {
           const response = await getApiRequest(`/`);
           setApiResponse(response);
         } catch (error) {
-          //handleError(error, setErrorInfo);
+          showBoundary(error);
         } finally {
           setAwaitingApiResponse(false);
         }
       };
       getApiResponse();
-    }, []);
+    }, []); // showBoundary dependency is delibratly excluded 
 
   return (
     <div>
