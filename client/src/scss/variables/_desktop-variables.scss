@@ -1,0 +1,16 @@
+// Desktop Spacing and Layout
+$desktop-margin-small: $spacing-unit;       // Small margin between elements
+$desktop-margin-medium: $spacing-unit * 2;  // Medium margin between elements
+$desktop-margin-large: $spacing-unit * 3;   // Large margin between elements
+$desktop-padding-small: $spacing-unit;      // Small padding within elements
+$desktop-padding-medium: $spacing-unit * 2; // Medium padding within elements
+$desktop-padding-large: $spacing-unit * 3;  // Large padding within elements
+
+// Desktop Font Sizes
+$desktop-heading1-font-size: 2.5rem;  // 40px - Main heading size
+$desktop-heading2-font-size: 2rem;    // 32px - Secondary heading size
+$desktop-heading3-font-size: 1.75rem; // 28px - Tertiary heading size
+$desktop-heading4-font-size: 1.5rem;  // 24px - Quaternary heading size
+
+$desktop-large-font-size: 1.5rem;     // 24px - Larger font size for prominent UI elements
+$desktop-extra-large-font-size: 3rem; // 48px - Extra large font size for specific design elements

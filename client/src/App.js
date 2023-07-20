@@ -8,7 +8,7 @@ import {
 import AuthPage from "./components/AuthPage";
 import HomePage from "./components/HomePage";
 import NotFoundPage from "./components/NotFoundPage";
-import StandardErrorBoundary from "./ErrorBoundary/StandardErrorBoundary";
+import StandardErrorBoundary from "./components/ErrorBoundary/StandardErrorBoundary";
 
 const App = () => {
   // Check if the user is logged in
