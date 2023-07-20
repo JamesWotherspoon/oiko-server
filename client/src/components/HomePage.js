@@ -20,6 +20,7 @@ export default function HomePage() {
         }
       };
       getApiResponse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // showBoundary dependency is delibratly excluded 
 
   return (

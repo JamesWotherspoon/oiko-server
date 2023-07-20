@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import AuthPage from "./components/AuthPage";
 import HomePage from "./components/HomePage";
+import NotFoundPage from "./components/NotFoundPage";
 import StandardErrorBoundary from "./ErrorBoundary/StandardErrorBoundary";
 
 const App = () => {
