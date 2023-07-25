@@ -1,0 +1,32 @@
+
+body {
+    background-color: $background-color;
+}
+
+* {
+    color: $text-color;
+}
+
+.primary-color {
+    color: $primary-color;
+}
+
+.secondary-color {
+    color: $secondary-color;
+}
+
+.accent-color {
+    color: $accent-color;
+}
+
+.primary-bg {
+    background-color: $primary-color;
+}
+
+.secondary-bg {
+    background-color: $secondary-color;
+}
+
+.accent-bg {
+    background-color: $accent-color;
+}

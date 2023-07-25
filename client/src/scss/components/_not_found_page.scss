@@ -1,0 +1,14 @@
+.not-found-cont,
+.error-page-cont {
+    margin: auto;
+    width: fit-content;
+    padding-top: 20%;
+}
+
+.not-found-title-cont,
+.error-page-title-cont {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: $spacing-unit * 4;
+}

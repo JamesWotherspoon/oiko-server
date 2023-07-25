@@ -1,8 +1,9 @@
 // Shared Colors
-$primary-color: #007bff;      // Main brand color, often used for buttons and links
+$primary-color: #034078;      // Main brand color, often used for buttons and links
 $secondary-color: #6c757d;    // Secondary color for UI elements to provide contrast
-$accent-color: #ff5722;       // Accent color for call-to-action elements, stands out
-$text-color: #333333;         // Main text color, provides good readability
+$accent-color: #1282a2;       // Accent color for call-to-action elements, stands out
+$text-color: #080a13;         // Main text color, provides good readability
+$info-color: grey;
 $background-color: #f0f0f0;   // Neutral background color, complements content
 
 // Shared Typography
@@ -20,7 +21,7 @@ $container-max-width: 1200px; // Maximum width of the main content container, op
 $border-radius: 4px;          // Border radius for elements, adds a subtle touch
 $border-width: 1px;           // Border width for elements, defines separation
 $border-color: #cccccc;       // Default border color, maintains consistency
-$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Default box shadow, adds depth
+$box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 
 // Shared Breakpoints for Responsive Design
 $breakpoint-small: 576px;     // Small screen size, optimize layout for mobile

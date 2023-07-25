@@ -9,6 +9,7 @@ import AuthPage from "./components/AuthPage";
 import HomePage from "./components/HomePage";
 import NotFoundPage from "./components/NotFoundPage";
 import StandardErrorBoundary from "./components/ErrorBoundary/StandardErrorBoundary";
+import './scss/main.scss';
 
 const App = () => {
   // Check if the user is logged in
