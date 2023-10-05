@@ -1,6 +1,7 @@
+# Log files not tracked by git
 logs/
 *.log
-
+# Node modules not tracked by git
 node_modules/
-
+# .env enviorment variables not tracked by git 
 .env
