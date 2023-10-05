@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const rateLimit = require('express-rate-limit')
-const logger = require('../config/logging.config')
+const logger = require('../logging.config')
 
 // Middleware to parse body to json format
 app.use(express.json())
