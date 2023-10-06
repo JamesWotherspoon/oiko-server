@@ -6,7 +6,6 @@ const logError = require('./middleware/error-logging.middleware.js');
 const fallbackErrorHandler = require('./middleware/fallback-error-handler.middleware.js');
 const example = require('./routes/example.routes.js');
 const notFoundRoutes = require('./routes/not-found.routes.js');
-require('./database/db.js');
 
 // Middleware to capture request received time
 app.use((req, res, next) => {

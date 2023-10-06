@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const logger = require('../logging.config');
+const logger = require('../config/logging.config');
 const useragent = require('express-useragent');
 
 // Register express-useragent middleware
