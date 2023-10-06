@@ -1,5 +1,7 @@
 // Import required libraries
-const mysql = require('mysql2')
+const mysql = require('mysql2');
+
+console.log('user: ' + process.env.DB_HOST);
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
@@ -10,8 +12,8 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT,
   waitForConnections: true, // Whether the pool should wait for available connections or return an error immediately
   connectionLimit: 10, // Maximum number of connections in the pool
-  queueLimit: 0 // Maximum number of connection requests the pool will queue before returning an error
-})
+  queueLimit: 0, // Maximum number of connection requests the pool will queue before returning an error
+});
 
 // Export the pool for use in other modules
-module.exports = pool
+module.exports = pool;
