@@ -1,7 +1,7 @@
-const User = require("./models/User"); // Import your Sequelize models
-const sequelize = require("./config/db.config"); // Import your Sequelize instance
+const User = require('./models/User'); // Import your Sequelize models
+const sequelize = require('./config/db.config'); // Import your Sequelize instance
 
-console.log("init db executed");
+console.log('init db executed');
 
 /**
  * Initializes the database by testing the connection and synchronizing Sequelize models.
@@ -15,14 +15,14 @@ console.log("init db executed");
 const initializeDatabase = async () => {
   try {
     await sequelize.authenticate(); // Test the database connection
-    console.log("Connected to the database.");
+    console.log('Connected to the database.');
 
     // Synchronize the models with the database
     await User.sync();
 
-    console.log("Database synchronization completed.");
+    console.log('Database synchronization completed.');
   } catch (error) {
-    console.error("Error initializing the database:", error);
+    console.error('Error initializing the database:', error);
     throw error;
   }
 };
