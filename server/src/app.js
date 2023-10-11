@@ -1,61 +1,32 @@
 const express = require('express');
 const app = express();
 const middleware = require('./middleware/middleware.js');
-const logInfo = require('./middleware/logging.middleware.js');
-const logError = require('./middleware/error-logging.middleware.js');
-const fallbackErrorHandler = require('./middleware/fallback-error-handler.middleware.js');
+const logMiddleware = require('./middleware/logging.middleware.js');
 const example = require('./routes/example.routes.js');
 const notFoundRoutes = require('./routes/not-found.routes.js');
 const authRoutes = require('./routes/auth.routes.js');
-const cookieParser = require('cookie-parser');
-const verifyToken = require('./auth/verifyToken.js');
-const cors = require('cors');
+const authenticateUser = require('./middleware/authMiddleware.js');
+const testRoutes = require('./routes/test.routes.js');
 
-// Middleware to capture request received time
-app.use((req, res, next) => {
-  const startTime = Date.now();
-  req.startTime = startTime;
-  next();
-});
-
-const corsOptions = {
-  origin: process.env.CLIENT_ORIGIN,
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
-
-app.use(cookieParser());
+// Logging Middleware
+app.use(logMiddleware.useragent);
+app.use(logMiddleware.log);
 
 // Middleware
-app.use(middleware);
-app.use(logInfo);
-
-
-// app.use(authenticateToken);
+app.use(middleware.cors);
+app.use(middleware.limiter());
+app.use(middleware.parseJson());
+app.use(middleware.cookieParser());
 
 // Routes
-app.use('/api', authRoutes);
-
-// Protected Routes
-app.use('/api', verifyToken, example);
-
-/*
-router.use('/api/auth', authRoutes);
-router.use('/api/users', userRoutes);
-router.use('/api/income', incomeRoutes);
-router.use('/api/expenses', expensesRoutes);
-router.use('/api/recurring-bills', recurringBillsRoutes);
-*/
+// Test Route
+app.use('/api/test', testRoutes);
+app.use('/api/auth', authRoutes.router);
+app.use('/api/auth', authenticateUser, authRoutes.protectedRouter);
+app.use('/api', example);
 app.use('/', notFoundRoutes);
 
-// throw error for testing error handling
-// app.use("/", (res, req, next) => { throw new Error("Error: Test error handling") })
-
-// Log Errors - Middleware
-app.use(logError);
-
 // Fallback error handler - Middleware
-app.use(fallbackErrorHandler);
+app.use(middleware.errorHandler);
 
 module.exports = app;

@@ -1,32 +1,66 @@
-const express = require('express');
-const app = express();
-const logger = require('../config/logging.config');
 const useragent = require('express-useragent');
+const winston = require('winston');
 
-// Register express-useragent middleware
-// This adds a useragent property to request objects
-app.use(useragent.express());
+// Create loggers for regular logs and error logs
+const logFilePath = './logs/server.log';
+const errorFilePath = './logs/error.log';
 
-// Logging info
-app.use((req, res, next) => {
+// Create Winston transports for logging to files
+const logFileTransport = new winston.transports.File({ filename: logFilePath });
+const errorFileTransport = new winston.transports.File({
+  filename: errorFilePath,
+});
+
+// Create a Winston logger
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+  ),
+  transports: [logFileTransport], // Use logFileTransport for regular logs
+  exceptionHandlers: [errorFileTransport], // Use errorFileTransport for exception handling
+});
+
+const logMiddleware = {};
+
+logMiddleware.useragent = useragent.express();
+
+logMiddleware.log = (req, res, next) => {
+  // Store the start time for calculating response time
+  req.startTime = Date.now();
+
   // Listen for 'finish' event on response
-  // Generate an object of useful information
   res.on('finish', () => {
     const logInfo = {
       method: req.method,
       url: req.url,
       ip: req.ip,
       browser: req.useragent.browser,
-      version: req.useragent.version,
       os: req.useragent.os,
       response_status: res.statusCode,
       response_time: `${Date.now() - req.startTime}ms`,
     };
 
-    // Log info
-    logger.lowLogger.info('Request Response Cycle:', logInfo);
+    // Log the information to the logger
+    logger.info(logInfo);
   });
-  next();
-});
 
-module.exports = app;
+  // Listen for 'error' event on response
+  res.on('error', (err) => {
+    const errorLog = {
+      method: req.method,
+      url: req.url,
+      ip: req.ip,
+      error_message: err.message,
+      error_stack: err.stack,
+    };
+
+    // Log the error information to the logger
+    logger.error(errorLog);
+  });
+
+  next();
+};
+
+module.exports = logMiddleware;

@@ -10,6 +10,8 @@
   },
   "rules": {
     "max-len": ["error", { "code": 120 }],
-    "new-cap": "off"
+    "new-cap": "off",
+    "object-curly-spacing": ["error", "always"],
+    "require-jsdoc": "off"
   }
 }
