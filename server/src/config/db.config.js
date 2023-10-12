@@ -14,6 +14,7 @@ const sequelize = new Sequelize(
         idle: 10000, // Maximum time (in milliseconds) that a connection can be idle before being released
       },
       queueLimit: 5, // Maximum number of connection requests to queue
+      logging: false,
     });
 
 module.exports = sequelize;

@@ -1,23 +1,23 @@
-const authServices = require('../../src/services/authServices');
+const authUtils = require('../../src/utils/authUtils');
 const jwt = require('jsonwebtoken');
 
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(),
 }));
 
-describe('authServices', () => {
+describe('authUtils', () => {
   describe('comparePasswords', () => {
     test('should return true if passwords match', async () => {
-      const passwordHash = await authServices.hashPassword('password123');
+      const passwordHash = await authUtils.hashPassword('password123');
 
-      const result = await authServices.comparePasswords('password123', passwordHash);
+      const result = await authUtils.comparePasswords('password123', passwordHash);
       expect(result).toBe(true);
     });
 
     test('should return false if passwords do not match', async () => {
-      const incorrectPasswordHash = await authServices.hashPassword('incorrectPassword123');
+      const incorrectPasswordHash = await authUtils.hashPassword('incorrectPassword123');
 
-      const result = await authServices.comparePasswords('password123', incorrectPasswordHash);
+      const result = await authUtils.comparePasswords('password123', incorrectPasswordHash);
       expect(result).toBe(false);
     });
   });
@@ -25,7 +25,7 @@ describe('authServices', () => {
   describe('hashPassword', () => {
     test('should return hashed password', async () => {
       const password = 'password123';
-      const passwordHash = await authServices.hashPassword(password);
+      const passwordHash = await authUtils.hashPassword(password);
       expect(passwordHash).not.toEqual(password);
     });
   });
@@ -39,8 +39,8 @@ describe('authServices', () => {
 
       jwt.sign.mockReturnValueOnce(mockToken);
 
-      authServices.setAuthToken(res, 1, 'test@example.com');
-      console.log(res.cookie);
+      authUtils.setAuthToken(res, 1, 'test@example.com');
+
       expect(res.cookie).toHaveBeenCalledWith(
           'authToken',
           mockToken,

@@ -1,7 +1,7 @@
 const request = require('supertest');
-const User = require('../../src/models/User');
 const app = require('../../src/app');
-const authServices = require('../../src/services/authServices');
+const User = require('../../src/models/User');
+const authUtils = require('../../src/utils/authUtils');
 
 const api = request(app);
 
@@ -43,7 +43,7 @@ describe('User Authentication Tests', () => {
 
   test('should create and login user', async () => {
     // Hash Password
-    const passwordHash = await authServices.hashPassword(testUser.password);
+    const passwordHash = await authUtils.hashPassword(testUser.password);
     // Create User
     await User.create({ email: testUser.email, passwordHash: passwordHash });
 

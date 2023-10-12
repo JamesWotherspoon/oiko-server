@@ -3,6 +3,7 @@ const User = require('./models/User'); // Import your Sequelize models
 const Transaction = require('./models/Transaction');
 const ScheduleTransaction = require('./models/ScheduleTransaction');
 const Category = require('./models/Category');
+require('dotenv').config();
 
 
 console.log('init db executed');
@@ -13,10 +14,10 @@ const initializeDatabase = async () => {
     console.log('Connected to the database.');
 
     // Synchronize the models with the database
-    await User.sync();
-    await Category.sync();
-    await ScheduleTransaction.sync();
-    await Transaction.sync();
+    await User.sync({ alter: true });
+    await Category.sync({ force: true });
+    await ScheduleTransaction.sync({ force: true });
+    await Transaction.sync({ force: true });
 
     console.log('Database synchronization completed.');
   } catch (error) {

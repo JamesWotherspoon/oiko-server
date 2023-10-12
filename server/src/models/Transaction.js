@@ -10,7 +10,7 @@ const Transaction = sequelize.define('Transaction', {
     primaryKey: true,
     autoIncrement: true,
   },
-  UserId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -18,7 +18,7 @@ const Transaction = sequelize.define('Transaction', {
       key: 'id',
     },
   },
-  CategoryId: {
+  categoryId: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
@@ -26,7 +26,7 @@ const Transaction = sequelize.define('Transaction', {
       key: 'id',
     },
   },
-  ScheduledTransactionId: {
+  scheduledTransactionId: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
@@ -38,12 +38,17 @@ const Transaction = sequelize.define('Transaction', {
     type: DataTypes.ENUM('income', 'expense'),
     allowNull: false,
   },
+  name: {
+    type: DataTypes.STRING(200),
+    allowNull: true,
+  },
   amount: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
   description: {
     type: DataTypes.TEXT,
+    allowNull: true,
   },
 });
 

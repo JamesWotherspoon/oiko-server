@@ -1,5 +1,5 @@
 const User = require('../../models/User');
-const authServices = require('../../services/authServices');
+const authUtils = require('../../utils/authUtils');
 const sanitize = require('../../utils/sanitize');
 
 async function loginUser(req, res) {
@@ -17,7 +17,7 @@ async function loginUser(req, res) {
     }
 
     // Compare the provided password with the stored hash
-    const isPasswordValid = authServices.comparePasswords(
+    const isPasswordValid = authUtils.comparePasswords(
         password,
         user.passwordHash,
     );
@@ -27,7 +27,7 @@ async function loginUser(req, res) {
       return;
     }
     // If the password is valid, set the authentication token cookie
-    authServices.setAuthToken(res, user.id, user.email);
+    authUtils.setAuthToken(res, user.id, user.email);
 
     res.status(200).json({ message: 'Login successful' });
   } catch (error) {

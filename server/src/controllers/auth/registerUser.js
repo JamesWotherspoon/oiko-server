@@ -1,5 +1,5 @@
 const User = require('../../models/User');
-const authServices = require('../../services/authServices');
+const authUtils = require('../../utils/authUtils');
 const sanitize = require('../../utils/sanitize');
 
 async function registerUser(req, res) {
@@ -17,13 +17,13 @@ async function registerUser(req, res) {
     }
 
     // Hash password
-    const passwordHash = await authServices.hashPassword(password);
+    const passwordHash = await authUtils.hashPassword(password);
 
     // Create user
     const user = await User.create({ email: normalizedEmail, passwordHash });
 
     // Create user token and attach to res
-    authServices.setAuthToken(res, user.id, user.email);
+    authUtils.setAuthToken(res, user.id, user.email);
 
     res.status(201).json({ userId: user.id });
   } catch (error) {

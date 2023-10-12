@@ -9,14 +9,9 @@ router.post('/jsonParser', (req, res, next) => {
   next();
 });
 
-router.get('/cookieParser', (req, res, next) => {
+router.get('/cookieParser', (req, res) => {
   const cookieValue = req.cookies.testCookie;
   res.status(200).send(cookieValue);
-  next();
 });
-
-router.put('/', (req, res) => {});
-
-router.delete('/', (req, res) => {});
 
 module.exports = router;
