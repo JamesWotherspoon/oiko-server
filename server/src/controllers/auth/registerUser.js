@@ -1,12 +1,15 @@
 const User = require('../../models/User');
 const authServices = require('../../services/authServices');
+const sanitize = require('../../utils/sanitize');
 
 async function registerUser(req, res) {
   try {
     const { email, password } = req.body;
 
+    const normalizedEmail = sanitize.normalizeText(email);
+
     // Check if the user with the same email already exists
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({ where: { email: normalizedEmail } });
 
     if (existingUser) {
       // If a user with the same email exists, return an error response
@@ -17,7 +20,7 @@ async function registerUser(req, res) {
     const passwordHash = await authServices.hashPassword(password);
 
     // Create user
-    const user = await User.create({ email, passwordHash });
+    const user = await User.create({ email: normalizedEmail, passwordHash });
 
     // Create user token and attach to res
     authServices.setAuthToken(res, user.id, user.email);

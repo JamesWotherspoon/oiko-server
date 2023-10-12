@@ -1,12 +1,15 @@
 const User = require('../../models/User');
 const authServices = require('../../services/authServices');
+const sanitize = require('../../utils/sanitize');
 
 async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
 
+    const normalizedEmail = sanitize.normalizeText(email);
+
     // Find the user by email
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email: normalizedEmail } });
 
     if (!user) {
       res.status(404).json({ error: 'User not found' });
