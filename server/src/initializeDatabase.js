@@ -1,17 +1,12 @@
-const User = require('./models/User'); // Import your Sequelize models
 const sequelize = require('./config/db.config'); // Import your Sequelize instance
+const User = require('./models/User'); // Import your Sequelize models
+const Transaction = require('./models/Transaction');
+const ScheduleTransaction = require('./models/ScheduleTransaction');
+const Category = require('./models/Category');
+
 
 console.log('init db executed');
 
-/**
- * Initializes the database by testing the connection and synchronizing Sequelize models.
- *
- * @async
- * @function
- * @throws {Error} If an error occurs during database initialization.
- *
- * @return {Promise<void>} A promise that resolves when the initialization is complete.
- */
 const initializeDatabase = async () => {
   try {
     await sequelize.authenticate(); // Test the database connection
@@ -19,6 +14,9 @@ const initializeDatabase = async () => {
 
     // Synchronize the models with the database
     await User.sync();
+    await Category.sync();
+    await ScheduleTransaction.sync();
+    await Transaction.sync();
 
     console.log('Database synchronization completed.');
   } catch (error) {
