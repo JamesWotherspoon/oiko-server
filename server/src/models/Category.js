@@ -8,7 +8,7 @@ const Category = sequelize.define('Category', {
     primaryKey: true,
     autoIncrement: true,
   },
-  UserId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -31,7 +31,7 @@ const Category = sequelize.define('Category', {
 
 // Define foreign key relationship
 Category.belongsTo(User, {
-  foreignKey: 'UserId',
+  foreignKey: 'userId',
   onDelete: 'CASCADE', // delete category if user is deleted
 });
 

@@ -24,8 +24,8 @@ app.use(middleware.cookieParser());
 app.use('/api/test', testRoutes);
 app.use('/api/auth', authRoutes.router);
 app.use('/api/auth', authenticateUser, authRoutes.protectedRouter);
-app.use('/api', authenticateUser, transactionRoutes);
-app.use('/api', authenticateUser, categoryRoutes);
+app.use('/api/transactions', authenticateUser, transactionRoutes);
+app.use('/api/categories', authenticateUser, categoryRoutes);
 // Not Found Route
 app.use('/', notFoundRoutes);
 

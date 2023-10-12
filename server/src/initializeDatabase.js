@@ -15,9 +15,9 @@ const initializeDatabase = async () => {
 
     // Synchronize the models with the database
     await User.sync({ alter: true });
-    await Category.sync({ force: true });
-    await ScheduleTransaction.sync({ force: true });
-    await Transaction.sync({ force: true });
+    await Category.sync({ alter: true });
+    await ScheduleTransaction.sync({ alter: true });
+    await Transaction.sync({ alter: true });
 
     console.log('Database synchronization completed.');
   } catch (error) {

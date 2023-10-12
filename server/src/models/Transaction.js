@@ -46,6 +46,10 @@ const Transaction = sequelize.define('Transaction', {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
+  transactionDate: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
   description: {
     type: DataTypes.TEXT,
     allowNull: true,
@@ -53,17 +57,17 @@ const Transaction = sequelize.define('Transaction', {
 });
 
 Transaction.belongsTo(User, {
-  foreignKey: 'UserId',
+  foreignKey: 'userId',
   onDelete: 'CASCADE',
 });
 
 Transaction.belongsTo(Category, {
-  foreignKey: 'CategoryId',
+  foreignKey: 'categoryId',
   onDelete: 'SET NULL', // Set CategoryId to NULL if category is deleted
 });
 
 Transaction.belongsTo(ScheduledTransaction, {
-  foreignKey: 'ScheduledTransactionId',
+  foreignKey: 'scheduledTransactionId',
   onDelete: 'SET NULL', // If the scheduled transaction is deleted, set the reference to NULL
 });
 

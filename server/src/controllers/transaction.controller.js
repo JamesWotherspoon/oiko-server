@@ -1,18 +1,19 @@
 const Transaction = require('../models/Transaction');
+const transactionService = require('../services/transaction.service');
 
-// Fetch all transactions for a user
-const getTransactions = async (req, res) => {
+const getTransactions = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const transactions = await Transaction.findAll({ where: { userId: userId } });
+    const { categoryId, range } = req.query;
+    const transactions = await transactionService.getTransactions(userId, categoryId, range);
+
     if (transactions.length === 0) {
-      res.status(204);
+      res.status(204).send();
     } else {
       res.status(200).json(transactions);
     }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' }); // Use a generic error message
+    next(error);
   }
 };
 
@@ -28,28 +29,27 @@ const getTransactionById = async (req, res) => {
       res.status(404).send();
     }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(error);
   }
 };
 
 const createTransaction = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { categoryId, transactionType, name, amount, description } = req.body;
+    const { categoryId, transactionType, name, amount, description, transactionDate } = req.body;
 
     const newTransaction = await Transaction.create({
       userId,
       categoryId,
       transactionType,
+      transactionDate,
       name,
       amount,
       description,
     });
     res.status(201).json(newTransaction);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(error);
   }
 };
 
@@ -69,8 +69,7 @@ const updateTransaction = async (req, res) => {
       res.status(404).send();
     }
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(error);
   }
 };
 
@@ -83,8 +82,7 @@ const deleteTransaction = async (req, res) => {
 
     res.status(deleted ? 200 : 404).json({ deleted: Boolean(deleted) });
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(error);
   }
 };
 

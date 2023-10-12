@@ -11,9 +11,9 @@ describe('Middleware Tests', () => {
   test('should process JSON data correctly', async () => {
     const data = { key: 'testValue' };
     const response = await request(app)
-      .post('/api/test/jsonParser')
-      .send(data)
-      .set('Accept', 'application/json');
+        .post('/api/test/jsonParser')
+        .send(data)
+        .set('Accept', 'application/json');
 
     expect(response.status).toBe(200);
     expect(response.text).toBe(data.key);
@@ -22,8 +22,8 @@ describe('Middleware Tests', () => {
   test('should set cookie and receive cookie value in response text', async () => {
     const cookieValue = 'testCookieValue';
     const response = await api
-      .get('/api/test/cookieParser')
-      .set('cookie', `testCookie=${cookieValue}`);
+        .get('/api/test/cookieParser')
+        .set('cookie', `testCookie=${cookieValue}`);
 
     expect(response.status).toBe(200);
     expect(response.text).toBe(cookieValue);
@@ -44,8 +44,8 @@ describe('Middleware Tests', () => {
     // Send multiple requests with the same IP
     for (let i = 0; i < 90; i++) {
       const response = await request(app)
-        .get('/api/test')
-        .set('x-forwarded-for', ipForTestingRateLimiter);
+          .get('/api/test')
+          .set('x-forwarded-for', ipForTestingRateLimiter);
 
       if (i < 78) {
         expect(response.status).toBe(200); // Expect a success response

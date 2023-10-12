@@ -9,7 +9,7 @@ const ScheduleTransaction = sequelize.define('ScheduleTransaction', {
     primaryKey: true,
     autoIncrement: true,
   },
-  UserId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -17,7 +17,7 @@ const ScheduleTransaction = sequelize.define('ScheduleTransaction', {
       key: 'id',
     },
   },
-  CategoryId: {
+  categoryId: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
@@ -72,12 +72,12 @@ const ScheduleTransaction = sequelize.define('ScheduleTransaction', {
 });
 
 ScheduleTransaction.belongsTo(User, {
-  foreignKey: 'UserId',
+  foreignKey: 'userId',
   onDelete: 'CASCADE',
 });
 
 ScheduleTransaction.belongsTo(Category, {
-  foreignKey: 'CategoryId',
+  foreignKey: 'categoryId',
   onDelete: 'SET NULL',
 });
 

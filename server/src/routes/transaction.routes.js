@@ -9,18 +9,18 @@ const {
 } = require('../controllers/transaction.controller');
 
 // Get all transactions
-router.get('/transactions', getTransactions);
+router.get('/', getTransactions);
 
 // Get transaction by ID
-router.get('/transactions/:id', getTransactionById);
+router.get('/:id', getTransactionById);
 
 // Set transaction
-router.post('/transactions', createTransaction);
+router.post('/', createTransaction);
 
 // Update transaction
-router.put('/transactions/:id', updateTransaction);
+router.put('/:id', updateTransaction);
 
 // Delete transaction
-router.delete('/transactions/:id', deleteTransaction);
+router.delete('/:id', deleteTransaction);
 
 module.exports = router;

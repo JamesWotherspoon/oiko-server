@@ -12,6 +12,7 @@ describe('Transaction route tests', () => {
     password: 'password123',
     id: undefined,
   };
+  const date = new Date().toISOString().slice(0, 10);
 
   beforeAll(async () => {
     // Hash Password
@@ -21,9 +22,9 @@ describe('Transaction route tests', () => {
     userCredentials.id = user.id;
 
     await agent
-      .post('/api/auth/login')
-      .send(JSON.stringify({ email: userCredentials.email, password: userCredentials.password }))
-      .set('Content-Type', 'application/json');
+        .post('/api/auth/login')
+        .send(JSON.stringify({ email: userCredentials.email, password: userCredentials.password }))
+        .set('Content-Type', 'application/json');
   });
 
   afterEach(async () => {
@@ -44,7 +45,9 @@ describe('Transaction route tests', () => {
       userId: userCredentials.id,
       transactionType: 'income',
       amount: 100,
+      transactionDate: date,
     });
+
     const response = await agent.get('/api/transactions');
     expect(response.status).toBe(200);
     expect(response.body[0].userId).toBe(userCredentials.id);
@@ -59,6 +62,7 @@ describe('Transaction route tests', () => {
       transactionType: 'income',
       amount: 100,
       description: 'Test Description',
+      transactionDate: date,
     });
     // Create a second transaction to ensure that the correct transaction is returned
     await Transaction.create({
@@ -66,6 +70,7 @@ describe('Transaction route tests', () => {
       transactionType: 'expense',
       amount: 69,
       description: 'Nice',
+      transactionDate: date,
     });
     const response = await agent.get(`/api/transactions/${transaction.id}`);
 
@@ -79,18 +84,19 @@ describe('Transaction route tests', () => {
   test('Should add a new transaction to database', async () => {
     const transactionAmount = 147.87;
     const response = await agent
-      .post('/api/transactions')
-      .send(
-        JSON.stringify({
-          userId: userCredentials.id,
-          categoryId: null,
-          transactionType: 'expense',
-          name: 'Test Expense',
-          amount: transactionAmount,
-          description: 'Test Description',
-        }),
-      )
-      .set('Content-Type', 'application/json');
+        .post('/api/transactions')
+        .send(
+            JSON.stringify({
+              userId: userCredentials.id,
+              categoryId: null,
+              transactionType: 'expense',
+              name: 'Test Expense',
+              amount: transactionAmount,
+              description: 'Test Description',
+              transactionDate: date,
+            }),
+        )
+        .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(201);
 
@@ -109,20 +115,22 @@ describe('Transaction route tests', () => {
       transactionType: 'income',
       amount: 100,
       description: 'Test Description',
+      transactionDate: date,
     });
 
     const updatedTransactionAmount = 147.87;
     const response = await agent
-      .put(`/api/transactions/${transaction.id}`)
-      .send(
-        JSON.stringify({
-          userId: userCredentials.id,
-          name: 'Test Expense',
-          amount: updatedTransactionAmount,
-          description: 'Test Description',
-        }),
-      )
-      .set('Content-Type', 'application/json');
+        .put(`/api/transactions/${transaction.id}`)
+        .send(
+            JSON.stringify({
+              userId: userCredentials.id,
+              name: 'Test Expense',
+              amount: updatedTransactionAmount,
+              description: 'Test Description',
+              transactionDate: date,
+            }),
+        )
+        .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
     console.log(response.body);
