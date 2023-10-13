@@ -1,57 +1,70 @@
 const request = require('supertest');
-const app = require('../../src/app');
 require('dotenv').config();
+const express = require('express');
+const middleware = require('../../src/middleware/middleware');
 
 // Enviormental variable for client origin
 const allowedClientOrigin = process.env.CLIENT_ORIGIN;
 
-const api = request(app);
+describe('Middleware Unit Tests', () => {
+  describe('CORS, cookie parsing and JSON parsing', () => {
+    const app = express();
+    app.use(middleware.cors);
+    app.use(middleware.cookieParser);
+    app.use(middleware.parseJson);
 
-describe('Middleware Tests', () => {
-  test('should process JSON data correctly', async () => {
-    const data = { key: 'testValue' };
-    const response = await request(app)
-        .post('/api/test/jsonParser')
-        .send(data)
-        .set('Accept', 'application/json');
+    app.post('/parseJson', (req, res) => {
+      res.status(200).send(req.body.key);
+    });
+    app.get('/cookieParser', (req, res) => {
+      res.status(200).send(req.cookies.testCookie);
+    });
 
-    expect(response.status).toBe(200);
-    expect(response.text).toBe(data.key);
+    const server = app.listen(6000);
+
+    test('should process CORS correctly', async () => {
+      const response = await request(app).options('/cors').set('Origin', allowedClientOrigin);
+
+      expect(response.headers['access-control-allow-origin']).toBe(allowedClientOrigin);
+      expect(response.headers['access-control-allow-credentials']).toBe('true');
+      expect(response.headers['access-control-allow-headers']).toBe('Content-Type');
+      expect(response.headers['access-control-allow-methods']).toBe('GET, POST, PUT, DELETE');
+    });
+
+    test('should process JSON data correctly', async () => {
+      const data = { key: 'testValue' };
+
+      const response = await request(app).post('/parseJson').send(data).set('Accept', 'application/json');
+
+      expect(response.status).toBe(200);
+      expect(response.text).toBe(data.key);
+    });
+    test('should process cookies correctly', async () => {
+      const data = { key: 'testValue' };
+      const response = await request(app).get('/cookieParser').set('Cookie', `testCookie=${data.key}`);
+      expect(response.status).toBe(200);
+      expect(response.text).toBe(data.key);
+    });
+
+    server.close();
   });
 
-  test('should set cookie and receive cookie value in response text', async () => {
-    const cookieValue = 'testCookieValue';
-    const response = await api
-        .get('/api/test/cookieParser')
-        .set('cookie', `testCookie=${cookieValue}`);
+  describe('Rate limiter test', () => {
+    const app = express();
+    app.use(middleware.limiter);
+    app.get('/limiter', (req, res) => {
+      res.status(200).send('success');
+    });
+    const server = app.listen(8000);
 
-    expect(response.status).toBe(200);
-    expect(response.text).toBe(cookieValue);
-  });
-
-  test('should set the correct CORS headers', async () => {
-    const response = await api.options('/api/test').send();
-
-    // Assert the CORS headers
-    expect(response.headers['access-control-allow-origin']).toBe(allowedClientOrigin);
-    expect(response.headers['access-control-allow-credentials']).toBe('true');
-    expect(response.headers['access-control-allow-headers']).toBe('Content-Type');
-    expect(response.headers['access-control-allow-methods']).toBe('GET, POST, PUT, DELETE');
-  });
-  test('should allow a limited number of requests within a minute', async () => {
-    const ipForTestingRateLimiter = '10.10.10.10';
-
-    // Send multiple requests with the same IP
-    for (let i = 0; i < 90; i++) {
-      const response = await request(app)
-          .get('/api/test')
-          .set('x-forwarded-for', ipForTestingRateLimiter);
-
-      if (i < 78) {
-        expect(response.status).toBe(200); // Expect a success response
-      } else if (i > 80) {
-        expect(response.status).toBe(429); // Expect a rate-limit exceeded response
-      }
-    }
+    test('should limit requests', async () => {
+      Array.from({ length: 80 }).forEach(async () => {
+        const response = await request(app).get('/limiter');
+        expect(response.status).toBe(200);
+      });
+      const response = await request(app).get('/limiter');
+      expect(response.status).toBe(429);
+    });
+    server.close();
   });
 });
