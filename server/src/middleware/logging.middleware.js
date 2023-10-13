@@ -14,53 +14,49 @@ const errorFileTransport = new winston.transports.File({
 // Create a Winston logger
 const logger = winston.createLogger({
   level: 'info',
-  format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json(),
-  ),
+  format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
   transports: [logFileTransport], // Use logFileTransport for regular logs
   exceptionHandlers: [errorFileTransport], // Use errorFileTransport for exception handling
 });
 
-const logMiddleware = {};
+const logMiddleware = [
+  useragent.express(),
+  (req, res, next) => {
+    // Store the start time for calculating response time
+    req.startTime = Date.now();
 
-logMiddleware.useragent = useragent.express();
+    // Listen for 'finish' event on response
+    res.on('finish', () => {
+      const logInfo = {
+        method: req.method,
+        url: req.url,
+        ip: req.ip,
+        browser: req.useragent.browser,
+        os: req.useragent.os,
+        response_status: res.statusCode,
+        response_time: `${Date.now() - req.startTime}ms`,
+      };
 
-logMiddleware.log = (req, res, next) => {
-  // Store the start time for calculating response time
-  req.startTime = Date.now();
+      // Log the information to the logger
+      logger.info(logInfo);
+    });
 
-  // Listen for 'finish' event on response
-  res.on('finish', () => {
-    const logInfo = {
-      method: req.method,
-      url: req.url,
-      ip: req.ip,
-      browser: req.useragent.browser,
-      os: req.useragent.os,
-      response_status: res.statusCode,
-      response_time: `${Date.now() - req.startTime}ms`,
-    };
+    // Listen for 'error' event on response
+    res.on('error', (err) => {
+      const errorLog = {
+        method: req.method,
+        url: req.url,
+        ip: req.ip,
+        error_message: err.message,
+        error_stack: err.stack,
+      };
 
-    // Log the information to the logger
-    logger.info(logInfo);
-  });
+      // Log the error information to the logger
+      logger.error(errorLog);
+    });
 
-  // Listen for 'error' event on response
-  res.on('error', (err) => {
-    const errorLog = {
-      method: req.method,
-      url: req.url,
-      ip: req.ip,
-      error_message: err.message,
-      error_stack: err.stack,
-    };
-
-    // Log the error information to the logger
-    logger.error(errorLog);
-  });
-
-  next();
-};
+    next();
+  },
+];
 
 module.exports = logMiddleware;

@@ -22,7 +22,7 @@ describe('Transaction route tests', () => {
     userCredentials.id = user.id;
 
     await agent
-        .post('/api/auth/login')
+        .post('/api/sessions')
         .send(JSON.stringify({ email: userCredentials.email, password: userCredentials.password }))
         .set('Content-Type', 'application/json');
   });
@@ -133,7 +133,6 @@ describe('Transaction route tests', () => {
         .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
-    console.log(response.body);
     const updatedTransaction = await Transaction.findOne({
       where: { id: response.body.id },
     });
@@ -141,5 +140,22 @@ describe('Transaction route tests', () => {
     expect(updatedTransaction.userId).toBe(userCredentials.id);
     expect(Number(updatedTransaction.amount)).toBe(updatedTransactionAmount);
     expect(updatedTransaction.name).toBe('Test Expense');
+  });
+  test('Should delete a transaction from the database', async () => {
+    const transaction = await Transaction.create({
+      userId: userCredentials.id,
+      transactionType: 'income',
+      amount: 100,
+      description: 'Test Description',
+      transactionDate: date,
+    });
+
+    const response = await agent.delete(`/api/transactions/${transaction.id}`);
+
+    expect(response.status).toBe(200);
+    const deletedTransaction = await Transaction.findOne({
+      where: { id: transaction.id, userId: userCredentials.id },
+    });
+    expect(deletedTransaction).toBe(null);
   });
 });

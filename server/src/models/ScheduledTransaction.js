@@ -3,7 +3,7 @@ const sequelize = require('../config/db.config');
 const User = require('./User');
 const Category = require('./Category');
 
-const ScheduleTransaction = sequelize.define('ScheduleTransaction', {
+const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -71,14 +71,14 @@ const ScheduleTransaction = sequelize.define('ScheduleTransaction', {
   },
 });
 
-ScheduleTransaction.belongsTo(User, {
+ScheduledTransaction.belongsTo(User, {
   foreignKey: 'userId',
   onDelete: 'CASCADE',
 });
 
-ScheduleTransaction.belongsTo(Category, {
+ScheduledTransaction.belongsTo(Category, {
   foreignKey: 'categoryId',
   onDelete: 'SET NULL',
 });
 
-module.exports = ScheduleTransaction;
+module.exports = ScheduledTransaction;

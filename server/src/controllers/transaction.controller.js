@@ -80,7 +80,7 @@ const deleteTransaction = async (req, res) => {
     const userId = req.user.id;
     const deleted = await Transaction.destroy({ where: { id, userId: userId } });
 
-    res.status(deleted ? 200 : 404).json({ deleted: Boolean(deleted) });
+    res.status(deleted ? 200 : 404).json({ id: deleted.id, deleted: Boolean(deleted) });
   } catch (error) {
     next(error);
   }

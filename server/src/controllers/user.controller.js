@@ -25,13 +25,22 @@ async function createUser(req, res) {
     // Create user token and attach to res
     authUtils.setAuthToken(res, user.id, user.email);
 
-    res.status(201).json({ userId: user.id });
+    res.status(201).json({ id: user.id });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Failed to create user' });
   }
 }
 
+const getUserById = async (req, res) => { };
+
+const updateUserById = async (req, res) => { };
+
+const deleteUserById = async (req, res) => { };
+
 module.exports = {
   createUser,
+  getUserById,
+  updateUserById,
+  deleteUserById,
 };

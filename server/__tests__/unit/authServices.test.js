@@ -5,7 +5,7 @@ jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(),
 }));
 
-describe('authUtils', () => {
+describe('Authentication Utils Unit Test', () => {
   describe('comparePasswords', () => {
     test('should return true if passwords match', async () => {
       const passwordHash = await authUtils.hashPassword('password123');
