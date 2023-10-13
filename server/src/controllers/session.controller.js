@@ -1,8 +1,8 @@
-const User = require('../../models/User');
-const authUtils = require('../../utils/authUtils');
-const sanitize = require('../../utils/sanitize');
+const User = require('../models/User');
+const authUtils = require('../utils/authUtils');
+const sanitize = require('../utils/sanitize');
 
-async function loginUser(req, res) {
+const createSession = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -34,8 +34,19 @@ async function loginUser(req, res) {
     console.error('Error logging in user:', error);
     res.status(500).json({ error: 'Failed to log in user' });
   }
-}
+};
+
+const getSession = (req, res) => {
+  res.status(200).send('Valid Token!');
+};
+
+const deleteSession = (req, res) => {
+  res.clearCookie('authToken', { domain: process.env.DOMAIN, path: '/' });
+  return res.status(200).json({ message: 'User logged out successfully' });
+};
 
 module.exports = {
-  loginUser,
+  createSession,
+  deleteSession,
+  getSession,
 };

@@ -2,9 +2,8 @@ const express = require('express');
 const app = express();
 const middleware = require('./middleware/middleware.js');
 const logMiddleware = require('./middleware/logging.middleware.js');
-const notFoundRoutes = require('./routes/not-found.routes.js');
-const authRoutes = require('./routes/auth.routes.js');
 const authenticateUser = require('./middleware/authMiddleware.js');
+const sessionRoutes = require('./routes/session.routes.js');
 const transactionRoutes = require('./routes/transaction.routes.js');
 const categoryRoutes = require('./routes/category.routes.js');
 
@@ -19,12 +18,15 @@ app.use(middleware.parseJson);
 app.use(middleware.cookieParser);
 
 // Routes
-app.use('/api/auth', authRoutes.router);
-app.use('/api/auth', authenticateUser, authRoutes.protectedRouter);
+app.use('/api/sessions', sessionRoutes.router);
+app.use('/api/sessions', authenticateUser, sessionRoutes.protectedRouter);
+app.use('/api/users', userRoutes.router);
+app.use('/api/users', authenticateUser, userRoutes.protectedRouter);
 app.use('/api/transactions', authenticateUser, transactionRoutes);
 app.use('/api/categories', authenticateUser, categoryRoutes);
+
 // Not Found Route
-app.use('/', notFoundRoutes);
+app.use('/', res.status(404).send('Sorry, resource not found!'));
 
 // Fallback error handler - Middleware
 app.use(middleware.errorHandler);

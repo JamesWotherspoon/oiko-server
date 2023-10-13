@@ -1,8 +1,8 @@
-const User = require('../../models/User');
-const authUtils = require('../../utils/authUtils');
-const sanitize = require('../../utils/sanitize');
+const User = require('../models/User');
+const authUtils = require('../utils/authUtils');
+const sanitize = require('../utils/sanitize');
 
-async function registerUser(req, res) {
+async function createUser(req, res) {
   try {
     const { email, password } = req.body;
 
@@ -13,7 +13,7 @@ async function registerUser(req, res) {
 
     if (existingUser) {
       // If a user with the same email exists, return an error response
-      return res.status(400).json({ error: 'Email is already registered' });
+      return res.status(400).json({ error: 'Email already exists' });
     }
 
     // Hash password
@@ -33,5 +33,5 @@ async function registerUser(req, res) {
 }
 
 module.exports = {
-  registerUser,
+  createUser,
 };

@@ -1,7 +1,7 @@
-const { Category } = require('../models/Category');
+const Category = require('../models/Category');
 
 // GET all categories
-exports.getAllCategories = async (req, res) => {
+const getCategories = async (req, res) => {
   try {
     const categories = await Category.findAll({ where: { UserId: req.user.id } });
     res.status(200).json(categories);
@@ -11,7 +11,7 @@ exports.getAllCategories = async (req, res) => {
 };
 
 // GET a single category by ID
-exports.getCategoryById = async (req, res) => {
+const getCategoryById = async (req, res) => {
   try {
     const category = await Category.findOne({ where: { id: req.params.id, UserId: req.user.id } });
     if (category) {
@@ -25,7 +25,7 @@ exports.getCategoryById = async (req, res) => {
 };
 
 // CREATE a new category
-exports.createCategory = async (req, res) => {
+const createCategory = async (req, res) => {
   const { type, name, description } = req.body;
   try {
     const newCategory = await Category.create({
@@ -41,7 +41,7 @@ exports.createCategory = async (req, res) => {
 };
 
 // UPDATE a category by ID
-exports.updateCategoryById = async (req, res) => {
+const updateCategoryById = async (req, res) => {
   try {
     const category = await Category.update(req.body, {
       where: { id: req.params.id, UserId: req.user.id },
@@ -57,7 +57,7 @@ exports.updateCategoryById = async (req, res) => {
 };
 
 // DELETE a category by ID
-exports.deleteCategoryById = async (req, res) => {
+const deleteCategoryById = async (req, res) => {
   try {
     const category = await Category.findOne({ where: { id: req.params.id, userId: req.user.id } });
     if (category) {
@@ -68,4 +68,12 @@ exports.deleteCategoryById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
+};
+
+module.exports = {
+  getCategories,
+  getCategoryById,
+  createCategory,
+  updateCategoryById,
+  deleteCategoryById,
 };
