@@ -42,14 +42,14 @@ describe('Authentication Utils Unit Test', () => {
       authUtils.setAuthToken(res, 1, 'test@example.com');
 
       expect(res.cookie).toHaveBeenCalledWith(
-          'authToken',
-          mockToken,
-          expect.objectContaining({
-            httpOnly: true,
-            sameSite: 'Lax',
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
-            path: '/',
-          }),
+        'authToken',
+        mockToken,
+        expect.objectContaining({
+          httpOnly: true,
+          sameSite: 'Lax',
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
+          path: '/',
+        }),
       );
     });
   });

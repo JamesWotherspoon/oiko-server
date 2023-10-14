@@ -18,8 +18,8 @@ const createSession = async (req, res) => {
 
     // Compare the provided password with the stored hash
     const isPasswordValid = authUtils.comparePasswords(
-        password,
-        user.passwordHash,
+      password,
+      user.passwordHash,
     );
 
     if (!isPasswordValid) {

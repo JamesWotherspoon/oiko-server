@@ -86,15 +86,15 @@ describe('Transaction route tests', () => {
     const response = await agent
       .post('/api/transactions')
       .send(
-          JSON.stringify({
-            userId: userCredentials.id,
-            categoryId: null,
-            transactionType: 'expense',
-            name: 'Test Expense',
-            amount: transactionAmount,
-            description: 'Test Description',
-            transactionDate: date,
-          }),
+        JSON.stringify({
+          userId: userCredentials.id,
+          categoryId: null,
+          transactionType: 'expense',
+          name: 'Test Expense',
+          amount: transactionAmount,
+          description: 'Test Description',
+          transactionDate: date,
+        }),
       )
       .set('Content-Type', 'application/json');
 
@@ -122,13 +122,13 @@ describe('Transaction route tests', () => {
     const response = await agent
       .put(`/api/transactions/${transaction.id}`)
       .send(
-          JSON.stringify({
-            userId: userCredentials.id,
-            name: 'Test Expense',
-            amount: updatedTransactionAmount,
-            description: 'Test Description',
-            transactionDate: date,
-          }),
+        JSON.stringify({
+          userId: userCredentials.id,
+          name: 'Test Expense',
+          amount: updatedTransactionAmount,
+          description: 'Test Description',
+          transactionDate: date,
+        }),
       )
       .set('Content-Type', 'application/json');
 

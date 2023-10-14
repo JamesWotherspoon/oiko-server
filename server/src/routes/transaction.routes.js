@@ -17,17 +17,17 @@ router.get('/:id', getTransactionById);
 
 // Set transaction
 router.post(
-    '/',
-    validateBody({
-      userId: ['required', 'integer'],
-      categoryId: ['optional', 'integer'],
-      transactionType: ['required', 'string', ['income', 'expense']],
-      name: ['required', 'string'],
-      amount: ['required', 'number'],
-      transactionDate: ['required', 'date'],
-      description: ['optional', 'string'],
-    }),
-    createTransaction,
+  '/',
+  validateBody({
+    userId: ['required', 'integer'],
+    categoryId: ['optional', 'integer'],
+    transactionType: ['required', 'string', ['income', 'expense']],
+    name: ['required', 'string'],
+    amount: ['required', 'number'],
+    transactionDate: ['required', 'date'],
+    description: ['optional', 'string'],
+  }),
+  createTransaction,
 );
 
 // Update transaction
