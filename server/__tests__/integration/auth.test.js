@@ -26,9 +26,9 @@ describe('User Authentication Tests', () => {
   test('should create a new user', async () => {
     // Make a POST request to register a user
     const response = await api
-        .post('/api/users')
-        .send(JSON.stringify(testUser))
-        .set('Content-Type', 'application/json');
+      .post('/api/users')
+      .send(JSON.stringify(testUser))
+      .set('Content-Type', 'application/json');
 
     testUser.id = response.body.id;
     // Query the database to check if the user exists
@@ -49,9 +49,9 @@ describe('User Authentication Tests', () => {
 
     // Make a POST request to login user
     const response = await api
-        .post('/api/sessions')
-        .send(JSON.stringify({ email: testUser.email, password: testUser.password }))
-        .set('Content-Type', 'application/json');
+      .post('/api/sessions')
+      .send(JSON.stringify({ email: testUser.email, password: testUser.password }))
+      .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Login successful');

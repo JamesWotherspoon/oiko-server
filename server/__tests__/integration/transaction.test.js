@@ -22,9 +22,9 @@ describe('Transaction route tests', () => {
     userCredentials.id = user.id;
 
     await agent
-        .post('/api/sessions')
-        .send(JSON.stringify({ email: userCredentials.email, password: userCredentials.password }))
-        .set('Content-Type', 'application/json');
+      .post('/api/sessions')
+      .send(JSON.stringify({ email: userCredentials.email, password: userCredentials.password }))
+      .set('Content-Type', 'application/json');
   });
 
   afterEach(async () => {
@@ -84,19 +84,19 @@ describe('Transaction route tests', () => {
   test('Should add a new transaction to database', async () => {
     const transactionAmount = 147.87;
     const response = await agent
-        .post('/api/transactions')
-        .send(
-            JSON.stringify({
-              userId: userCredentials.id,
-              categoryId: null,
-              transactionType: 'expense',
-              name: 'Test Expense',
-              amount: transactionAmount,
-              description: 'Test Description',
-              transactionDate: date,
-            }),
-        )
-        .set('Content-Type', 'application/json');
+      .post('/api/transactions')
+      .send(
+          JSON.stringify({
+            userId: userCredentials.id,
+            categoryId: null,
+            transactionType: 'expense',
+            name: 'Test Expense',
+            amount: transactionAmount,
+            description: 'Test Description',
+            transactionDate: date,
+          }),
+      )
+      .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(201);
 
@@ -120,17 +120,17 @@ describe('Transaction route tests', () => {
 
     const updatedTransactionAmount = 147.87;
     const response = await agent
-        .put(`/api/transactions/${transaction.id}`)
-        .send(
-            JSON.stringify({
-              userId: userCredentials.id,
-              name: 'Test Expense',
-              amount: updatedTransactionAmount,
-              description: 'Test Description',
-              transactionDate: date,
-            }),
-        )
-        .set('Content-Type', 'application/json');
+      .put(`/api/transactions/${transaction.id}`)
+      .send(
+          JSON.stringify({
+            userId: userCredentials.id,
+            name: 'Test Expense',
+            amount: updatedTransactionAmount,
+            description: 'Test Description',
+            transactionDate: date,
+          }),
+      )
+      .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
     const updatedTransaction = await Transaction.findOne({

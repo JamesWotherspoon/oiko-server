@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const middleware = require('./middleware/middleware.js');
-const logMiddleware = require('./middleware/logging.middleware.js');
+const { logMiddleware } = require('./middleware/logging.middleware.js');
 const authenticateUser = require('./middleware/authMiddleware.js');
 const sessionRoutes = require('./routes/session.routes.js');
 const userRoutes = require('./routes/user.routes.js');

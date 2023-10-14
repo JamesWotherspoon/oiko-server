@@ -3,13 +3,13 @@ const winston = require('winston');
 
 // Create loggers for regular logs and error logs
 const logFilePath = './logs/server.log';
-const errorFilePath = './logs/error.log';
+const errorFilePath = './logs/serverError.log';
+const apiErrorFilePath = './logs/apiError.log';
 
 // Create Winston transports for logging to files
 const logFileTransport = new winston.transports.File({ filename: logFilePath });
-const errorFileTransport = new winston.transports.File({
-  filename: errorFilePath,
-});
+const errorFileTransport = new winston.transports.File({ filename: errorFilePath });
+const apiErrorFileTransport = new winston.transports.File({ filename: apiErrorFilePath });
 
 // Create a Winston logger
 const logger = winston.createLogger({
@@ -18,9 +18,17 @@ const logger = winston.createLogger({
   transports: [logFileTransport], // Use logFileTransport for regular logs
   exceptionHandlers: [errorFileTransport], // Use errorFileTransport for exception handling
 });
+// Create a Winston logger for invalid api requests
+const apiRequestErrorLogger = winston.createLogger({
+  level: 'error',
+  format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+  transports: [apiErrorFileTransport], // Use apiErrorFileTransport for invalid api requests
+});
 
 const logMiddleware = [
+  // Add useragent information to the request
   useragent.express(),
+  // Log the request information
   (req, res, next) => {
     // Store the start time for calculating response time
     req.startTime = Date.now();
@@ -59,4 +67,4 @@ const logMiddleware = [
   },
 ];
 
-module.exports = logMiddleware;
+module.exports = { logMiddleware, apiRequestErrorLogger };

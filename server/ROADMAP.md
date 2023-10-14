@@ -29,11 +29,11 @@
 ## Milestone 4: Transaction Handling
 - [x] Define CRUD routes for transaction adhering to RESTful design prinicples
 - [x] Create controllers to sucessfully handle basic CRUD operations
+- [ ] Define transaction validation middleware
 - [ ] Define accepted query paramaters for getting transactions
-- [ ] Define transaction payload validation middleware
 - [ ] Implement transaction service for database queries with paramaters
 - [ ] Run Integration tests for CRUD operations with/without queries and user transaction isolation
-
+# 
 ## Milestone 5: Category Handling
 - [ ] Define CRUD routes for category adhering to RESTful design prinicples
 - [ ] Create controllers to sucessfully handle basic CRUD operations
@@ -82,3 +82,5 @@
 - [ ] Setup and configure Docker
 - [ ] Deploy server to production environment
 - [ ] Set up continuous integration and deployment with GitHub Actions`;
+
+
