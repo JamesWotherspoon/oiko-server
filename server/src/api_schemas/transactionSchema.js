@@ -13,7 +13,7 @@ const transactionApiSchema = {
         transactionDate: { type: 'string', format: 'date' },
         description: { type: 'string' },
       },
-      required: ['transactionType', 'name', 'amount', 'transactionDate'],
+      required: ['transactionType', 'amount', 'transactionDate'],
       additionalProperties: false,
     },
   },
