@@ -7,16 +7,14 @@ const errorFilePath = './logs/serverError.log';
 const apiErrorFilePath = './logs/apiError.log';
 
 // Create Winston transports for logging to files
-const logFileTransport = new winston.transports.File({ filename: logFilePath });
-const errorFileTransport = new winston.transports.File({ filename: errorFilePath });
 const apiErrorFileTransport = new winston.transports.File({ filename: apiErrorFilePath });
 
 // Create a Winston logger
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
-  transports: [logFileTransport], // Use logFileTransport for regular logs
-  exceptionHandlers: [errorFileTransport], // Use errorFileTransport for exception handling
+  transports: [new winston.transports.File({ filename: logFilePath })],
+  exceptionHandlers: [new winston.transports.File({ filename: errorFilePath })],
 });
 // Create a Winston logger for invalid api requests
 const apiRequestErrorLogger = winston.createLogger({

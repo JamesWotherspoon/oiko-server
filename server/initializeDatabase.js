@@ -1,8 +1,8 @@
-const sequelize = require('./config/db.config'); // Import your Sequelize instance
-const User = require('./models/User'); // Import your Sequelize models
-const Transaction = require('./models/Transaction');
+const sequelize = require('./src/config/db.config'); // Import your Sequelize instance
+const User = require('./src/models/User'); // Import your Sequelize models
+const Transaction = require('./src/models/Transaction');
 const ScheduleTransaction = require('./models/ScheduleTransaction');
-const Category = require('./models/Category');
+const Category = require('./src/models/Category');
 require('dotenv').config();
 
 

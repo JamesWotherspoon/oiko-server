@@ -33,20 +33,10 @@ const getTransactionById = async (req, res) => {
   }
 };
 
-const createTransaction = async (req, res) => {
+const createTransaction = async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    const { categoryId, transactionType, name, amount, description, transactionDate } = req.body;
-
-    const newTransaction = await Transaction.create({
-      userId,
-      categoryId,
-      transactionType,
-      transactionDate,
-      name,
-      amount,
-      description,
-    });
+    const createObj = { ...req.body, userId: req.user.id };
+    const newTransaction = await Transaction.create(createObj);
     res.status(201).json(newTransaction);
   } catch (error) {
     next(error);

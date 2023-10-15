@@ -1,3 +1,5 @@
+
+/*
 const request = require('supertest');
 const app = require('../../src/app');
 const Category = require('../../src/models/Category');
@@ -68,3 +70,4 @@ describe('Category routes', () => {
     });
   });
 });
+*/

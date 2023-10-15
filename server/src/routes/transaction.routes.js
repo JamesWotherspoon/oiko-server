@@ -7,7 +7,8 @@ const {
   updateTransaction,
   deleteTransaction,
 } = require('../controllers/transaction.controller');
-const { validateBody } = require('../middleware/validation.middleware');
+const { validateBody } = require('../middleware/validateBody');
+const transactionApiSchema = require('../api_schemas/transactionSchema');
 
 // Get all transactions
 router.get('/', getTransactions);
@@ -18,15 +19,7 @@ router.get('/:id', getTransactionById);
 // Set transaction
 router.post(
   '/',
-  validateBody({
-    userId: ['required', 'integer'],
-    categoryId: ['optional', 'integer'],
-    transactionType: ['required', 'string', ['income', 'expense']],
-    name: ['required', 'string'],
-    amount: ['required', 'number'],
-    transactionDate: ['required', 'date'],
-    description: ['optional', 'string'],
-  }),
+  validateBody(transactionApiSchema.post.body),
   createTransaction,
 );
 

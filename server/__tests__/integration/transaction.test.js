@@ -87,8 +87,6 @@ describe('Transaction route tests', () => {
       .post('/api/transactions')
       .send(
         JSON.stringify({
-          userId: userCredentials.id,
-          categoryId: null,
           transactionType: 'expense',
           name: 'Test Expense',
           amount: transactionAmount,
