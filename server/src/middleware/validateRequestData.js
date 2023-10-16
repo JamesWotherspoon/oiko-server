@@ -3,9 +3,9 @@ const { badRequest } = require('../utils/responseHandler');
 
 const validateQuery = (schema) => {
   const ajv = new Ajv({ coerceTypes: true });
+  const validate = ajv.compile(schema);
 
   return (req, res, next) => {
-    const validate = ajv.compile(schema);
     const valid = validate(req.query);
     if (!valid) {
       return badRequest(req, res, validate.errors);
@@ -17,9 +17,9 @@ const validateQuery = (schema) => {
 
 const validateBody = (schema) => {
   const ajv = new Ajv();
+  const validate = ajv.compile(schema);
 
   return (req, res, next) => {
-    const validate = ajv.compile(schema);
     const valid = validate(req.body);
     if (!valid) {
       return badRequest(req, res, validate.errors);
