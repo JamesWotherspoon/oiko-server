@@ -114,11 +114,12 @@ describe('Transaction route tests', () => {
       .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
+    expect(response.body.updated).toBe(true);
+
     const updatedTransaction = await Transaction.findOne({
-      where: { id: response.body.id },
+      where: { userId: user.id },
     });
 
-    expect(updatedTransaction.userId).toBe(user.id);
     expect(Number(updatedTransaction.amount)).toBe(updatedTransactionAmount);
     expect(updatedTransaction.name).toBe('Test Expense');
   });

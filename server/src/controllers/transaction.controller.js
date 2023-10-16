@@ -3,13 +3,12 @@ const transactionService = require('../services/transaction.service');
 
 const getTransactions = async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    const transactions = await transactionService.retrieveTransactions(userId, req.query);
+    const transactions = await transactionService.retrieveTransactions(req.user.id, req.query);
 
-    if (transactions.length === 0) {
-      res.status(204).send();
-    } else {
+    if (transactions.length !== 0) {
       res.status(200).json(transactions);
+    } else {
+      res.status(204).send();
     }
   } catch (error) {
     next(error);
@@ -17,11 +16,10 @@ const getTransactions = async (req, res, next) => {
 };
 
 // Fetch a specific transaction by ID
-const getTransactionById = async (req, res) => {
+const getTransactionById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const userId = req.user.id;
-    const transaction = await Transaction.findOne({ where: { id, userId } });
+    const whereClause = { id: req.params.id, userId: req.user.id };
+    const transaction = await Transaction.findOne({ where: whereClause });
     if (transaction) {
       res.status(200).json(transaction);
     } else {
@@ -35,27 +33,26 @@ const getTransactionById = async (req, res) => {
 const createTransaction = async (req, res, next) => {
   try {
     const createObj = { ...req.body, userId: req.user.id };
-    const newTransaction = await Transaction.create(createObj);
-    res.status(201).json(newTransaction);
+    const transaction = await Transaction.create(createObj);
+    res.status(201).json(transaction);
   } catch (error) {
     next(error);
   }
 };
 
 // Update a transaction by ID
-const updateTransactionById = async (req, res) => {
+const updateTransactionById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const userId = req.user.id;
+    const whereClause = { id: req.params.id, userId: req.user.id };
 
     const updated = await Transaction.update(req.body, {
-      where: { id, userId },
+      where: whereClause,
     });
 
-    if (updated) {
-      res.status(200).json({ id });
+    if (updated.length) {
+      res.status(200).json({ updated: true });
     } else {
-      res.status(404).send();
+      res.status(404).json({ updated: false });
     }
   } catch (error) {
     next(error);
@@ -63,13 +60,16 @@ const updateTransactionById = async (req, res) => {
 };
 
 // Delete a transaction by ID
-const deleteTransactionById = async (req, res) => {
+const deleteTransactionById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const userId = req.user.id;
-    const deleted = await Transaction.destroy({ where: { id, userId: userId } });
+    const whereClause = { id: req.params.id, userId: req.user.id };
+    const deleted = await Transaction.destroy({ where: whereClause });
 
-    res.status(deleted ? 200 : 404).json({ id: deleted.id, deleted: Boolean(deleted) });
+    if (deleted) {
+      res.status(200).json({ deleted: true });
+    } else {
+      res.status(404).json({ deleted: false });
+    }
   } catch (error) {
     next(error);
   }
