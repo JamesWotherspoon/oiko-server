@@ -4,57 +4,67 @@ const User = require('./User');
 const Category = require('./Category');
 const ScheduledTransaction = require('./ScheduledTransaction');
 
-const Transaction = sequelize.define('Transaction', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'id',
+const Transaction = sequelize.define(
+  'Transaction',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: Category,
+        key: 'id',
+      },
+    },
+    scheduledTransactionId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: ScheduledTransaction,
+        key: 'id',
+      },
+    },
+    transactionType: {
+      type: DataTypes.ENUM('income', 'expense'),
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING(200),
+      allowNull: true,
+    },
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    transactionDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
   },
-  categoryId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: Category,
-      key: 'id',
-    },
+  {
+    indexes: [
+      {
+        fields: ['transactionDate'],
+      },
+    ],
   },
-  scheduledTransactionId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: ScheduledTransaction,
-      key: 'id',
-    },
-  },
-  transactionType: {
-    type: DataTypes.ENUM('income', 'expense'),
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING(200),
-    allowNull: true,
-  },
-  amount: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
-  },
-  transactionDate: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-});
+);
 
 Transaction.belongsTo(User, {
   foreignKey: 'userId',

@@ -4,8 +4,7 @@ const transactionService = require('../services/transaction.service');
 const getTransactions = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { categoryId, range } = req.query;
-    const transactions = await transactionService.getTransactions(userId, categoryId, range);
+    const transactions = await transactionService.retrieveTransactions(userId, req.query);
 
     if (transactions.length === 0) {
       res.status(204).send();
@@ -22,7 +21,7 @@ const getTransactionById = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    const transaction = await Transaction.findOne({ where: { id, userId: userId } });
+    const transaction = await Transaction.findOne({ where: { id, userId } });
     if (transaction) {
       res.status(200).json(transaction);
     } else {
@@ -50,7 +49,7 @@ const updateTransactionById = async (req, res) => {
     const userId = req.user.id;
 
     const updated = await Transaction.update(req.body, {
-      where: { id, userId: userId },
+      where: { id, userId },
     });
 
     if (updated) {
