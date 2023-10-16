@@ -29,7 +29,7 @@
 ## Milestone 4: Transaction Handling
 - [x] Define CRUD routes for transaction adhering to RESTful design prinicples
 - [x] Create controllers to sucessfully handle basic CRUD operations
-- [ ] Define transaction validation middleware
+- [x] Define transaction validation middleware
 - [ ] Define accepted query paramaters for getting transactions
 - [ ] Implpement pagination
 - [ ] Implement transaction service for database queries with paramaters

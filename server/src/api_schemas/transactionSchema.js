@@ -34,6 +34,7 @@ const querySchema = {
     description: { type: 'string' },
     sortField: { type: 'string', enum: ['transactionDate', 'amount'] },
     sortOrder: { type: 'string', enum: ['asc', 'desc'] },
+    page: { type: 'integer', minimum: 1 },
   },
   additionalProperties: false,
 };
