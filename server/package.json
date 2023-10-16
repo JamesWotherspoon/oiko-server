@@ -8,7 +8,7 @@
     "start": "nodemon ./src/server.js",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "init-db": "node ./src/initializeDatabase.js"
+    "init-db": "node ./initializeDatabase.js"
   },
   "author": "James Wotherspoon",
   "license": "ISC",

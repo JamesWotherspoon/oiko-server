@@ -1,5 +1,5 @@
-const Transaction = require('../../src/models/Transaction');
-const { createUserAndLogin, deleteUser } = require('../testHelpers');
+const Transaction = require('../../../src/models/Transaction');
+const { createUserAndLogin, deleteUser } = require('../../testHelpers');
 
 describe('Transaction route tests', () => {
   let agent;

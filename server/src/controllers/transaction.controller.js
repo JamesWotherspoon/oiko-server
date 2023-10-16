@@ -44,7 +44,7 @@ const createTransaction = async (req, res, next) => {
 };
 
 // Update a transaction by ID
-const updateTransaction = async (req, res) => {
+const updateTransactionById = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -64,7 +64,7 @@ const updateTransaction = async (req, res) => {
 };
 
 // Delete a transaction by ID
-const deleteTransaction = async (req, res) => {
+const deleteTransactionById = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
@@ -80,6 +80,6 @@ module.exports = {
   getTransactions,
   getTransactionById,
   createTransaction,
-  updateTransaction,
-  deleteTransaction,
+  updateTransactionById,
+  deleteTransactionById,
 };

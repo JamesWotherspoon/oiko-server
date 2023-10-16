@@ -1,3 +1,5 @@
+const { apiRequestErrorLogger } = require('../middleware/logging.middleware');
+
 function successResponse(res, data, message = 'Request was successful') {
   return res.status(200).json({
     status: 'success',
@@ -15,7 +17,7 @@ function createdResponse(res, data, message = 'Resource successfully created') {
 }
 
 function badRequest(req, res, message = 'Bad request', error) {
-  //apiRequestErrorLogger.error({ path: req.path, message, error });
+  apiRequestErrorLogger.error({ path: req.path, message, error });
   return res.status(400).json({
     error: 'Bad Request',
     message,

@@ -1,7 +1,7 @@
 
-const { createUserAndLogin, deleteUser } = require('../testHelpers');
+const { createUserAndLogin, deleteUser } = require('../../testHelpers');
 
-describe('Transaction Validation', () => {
+describe('Transaction body Validation', () => {
   let agent;
   let user;
 

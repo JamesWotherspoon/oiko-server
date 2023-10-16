@@ -4,29 +4,25 @@ const {
   getTransactions,
   getTransactionById,
   createTransaction,
-  updateTransaction,
-  deleteTransaction,
+  updateTransactionById,
+  deleteTransactionById,
 } = require('../controllers/transaction.controller');
-const { validateBody } = require('../middleware/validateBody');
-const transactionApiSchema = require('../api_schemas/transactionSchema');
+const { validateBody, validateQuery } = require('../middleware/validateRequestData');
+const { querySchema, bodySchema } = require('../api_schemas/transactionSchema');
 
 // Get all transactions
-router.get('/', getTransactions);
+router.get('/', validateQuery(querySchema), getTransactions);
 
 // Get transaction by ID
 router.get('/:id', getTransactionById);
 
 // Set transaction
-router.post(
-  '/',
-  validateBody(transactionApiSchema.post.body),
-  createTransaction,
-);
+router.post('/', validateBody(bodySchema.post), createTransaction);
 
 // Update transaction
-router.put('/:id', updateTransaction);
+router.put('/:id', updateTransactionById);
 
 // Delete transaction
-router.delete('/:id', deleteTransaction);
+router.delete('/:id', deleteTransactionById);
 
 module.exports = router;
