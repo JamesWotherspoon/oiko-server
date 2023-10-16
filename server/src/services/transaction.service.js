@@ -14,6 +14,7 @@ const retrieveTransactions = async (userId, query) => {
     description,
     sortField,
     sortOrder,
+    page,
   } = query;
 
   const whereClause = { userId };
@@ -27,10 +28,30 @@ const retrieveTransactions = async (userId, query) => {
   if (description) whereClause.description = { [Op.like]: '%' + description + '%' };
   if (minAmount) whereClause.amount = { ...whereClause.amount, [Op.gte]: minAmount };
   if (maxAmount) whereClause.amount = { ...whereClause.amount, [Op.lte]: maxAmount };
-  if (sortField) orderClause.push([sortField, sortOrder === 'asc' ? 'ASC' : 'DESC']);
-  if (sortField !== 'transactionDate') orderClause.push(['transactionDate', 'DESC']);
 
-  return await Transaction.findAll({ where: whereClause, order: orderClause });
+  if (!sortField) {
+    orderClause = [
+      ['transactionDate', 'DESC'],
+      ['id', 'DESC'],
+    ];
+  } else if (sortField === 'amount') {
+    orderClause = [
+      [sortField, sortOrder === 'asc' ? 'ASC' : 'DESC'],
+      ['transactionDate', 'DESC'],
+      ['id', 'DESC'],
+    ];
+  } else if (sortField === 'transactionDate') {
+    orderClause = [
+      ['transactionDate', sortOrder === 'asc' ? 'ASC' : 'DESC'],
+      ['id', 'DESC'],
+    ];
+  }
+
+  page = page || 1;
+  const pageSize = 100;
+  const offset = (page - 1) * pageSize;
+
+  return await Transaction.findAll({ where: whereClause, order: orderClause, offset: offset, limit: pageSize });
 };
 
 module.exports = {
