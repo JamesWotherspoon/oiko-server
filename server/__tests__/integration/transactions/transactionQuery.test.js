@@ -67,6 +67,19 @@ describe('transactionQuery', () => {
     });
     expect(sortedByDescDate).toBeTruthy();
   });
+  it('should return all transactions in ascending date order', async () => {
+    const response = await agent.get('/api/transactions?sortField=transactionDate&sortOrder=asc');
+    const transactions = response.body;
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(4);
+    let sortedByDescDate = false;
+    transactions.forEach((transaction, index) => {
+      if (index > 0) {
+        sortedByDescDate = new Date(transaction.transactionDate) >= new Date(transactions[index - 1].transactionDate);
+      }
+    });
+    expect(sortedByDescDate).toBeTruthy();
+  });
   it('should return transactions sorted by amount in ascending order', async () => {
     const response = await agent.get('/api/transactions?sortField=amount&sortOrder=asc');
     const transactions = response.body;
