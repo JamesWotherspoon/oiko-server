@@ -27,8 +27,8 @@ const retrieveTransactions = async (userId, query) => {
   if (description) whereClause.description = { [Op.like]: '%' + description + '%' };
   if (minAmount) whereClause.amount = { ...whereClause.amount, [Op.gte]: minAmount };
   if (maxAmount) whereClause.amount = { ...whereClause.amount, [Op.lte]: maxAmount };
-  if (sortField) orderClause.push([sortField, sortOrder === 'desc' ? 'DESC' : 'ASC']);
-  if (sortField !== 'transactionDate') orderClause.push(['transactionDate', 'ASC']);
+  if (sortField) orderClause.push([sortField, sortOrder === 'asc' ? 'ASC' : 'DESC']);
+  if (sortField !== 'transactionDate') orderClause.push(['transactionDate', 'DESC']);
 
   return await Transaction.findAll({ where: whereClause, order: orderClause });
 };
