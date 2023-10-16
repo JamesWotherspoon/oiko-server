@@ -67,6 +67,19 @@ describe('transactionQuery', () => {
     });
     expect(sortedByDescDate).toBeTruthy();
   });
+  it('should return transactions sorted by amount in ascending order', async () => {
+    const response = await agent.get('/api/transactions?sortField=amount&sortOrder=asc');
+    const transactions = response.body;
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(4);
+    let sortedByAmountAsc = false;
+    transactions.forEach((transaction, index) => {
+      if (index > 0) {
+        sortedByAmountAsc = Number(transaction.amount) >= Number(transactions[index - 1].amount);
+      }
+    });
+    expect(sortedByAmountAsc).toBeTruthy();
+  });
 
   it('should return transactions filtered by categoryId', async () => {
     const response = await agent.get(`/api/transactions?categoryId=${availableCategory.id}`);

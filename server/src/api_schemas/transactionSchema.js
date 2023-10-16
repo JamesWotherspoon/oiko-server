@@ -33,7 +33,7 @@ const querySchema = {
     maxAmount: { type: 'number', minimum: 0 },
     description: { type: 'string' },
     sortField: { type: 'string', enum: ['transactionDate', 'amount'] },
-    sortOrder: { type: 'string', enum: ['asc', 'desc']}
+    sortOrder: { type: 'string', enum: ['asc', 'desc'] },
   },
   additionalProperties: false,
 };
