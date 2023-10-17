@@ -23,6 +23,8 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // showBoundary dependency is delibratly excluded 
 
+    console.log(apiResponse.headers)
+
   return (
     <div>
       <h1>HomePage</h1>

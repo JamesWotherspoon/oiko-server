@@ -5,6 +5,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const api = axios.create({
   baseURL: BASE_URL,
   timeout: 2000,
+  withCredentials: true,
 });
 
 const sendRequest = async (method, endpoint, payload = null) => {
@@ -15,7 +16,7 @@ const sendRequest = async (method, endpoint, payload = null) => {
       data: payload,
     });
     // Return response data
-    return response.data;
+    return response;
   } catch (error) {
     if (error.code === "ECONNABORTED") {
       // Timeout error occurred
@@ -39,7 +40,7 @@ const sendRequest = async (method, endpoint, payload = null) => {
 export const getApiRequest = (endpoint) =>
   sendRequest('get', endpoint);
 
-export const postApiRequestt = (endpoint, payload) =>
+export const postApiRequest = (endpoint, payload) =>
   sendRequest('post', endpoint, payload);
 
 export const putApiRequest = (endpoint, payload) =>
