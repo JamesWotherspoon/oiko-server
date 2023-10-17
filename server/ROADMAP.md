@@ -30,10 +30,10 @@
 - [x] Define CRUD routes for transaction adhering to RESTful design prinicples
 - [x] Create controllers to sucessfully handle basic CRUD operations
 - [x] Define transaction validation middleware
-- [ ] Define accepted query paramaters for getting transactions
-- [ ] Implpement pagination
-- [ ] Implement transaction service for database queries with paramaters
-- [ ] Run Integration tests for CRUD operations with/without queries and user transaction isolation
+- [x] Define accepted query paramaters for getting transactions
+- [x] Implpement pagination
+- [x] Implement transaction service for database queries with paramaters
+- [x] Run Integration tests for CRUD operations with/without queries and user transaction isolation
 # 
 ## Milestone 5: Category Handling
 - [ ] Define CRUD routes for category adhering to RESTful design prinicples
@@ -85,3 +85,13 @@
 - [ ] Set up continuous integration and deployment with GitHub Actions`;
 
 
+## Additional 
+- [x] Git commit messages
+- [x] Git branching - when to branch 
+- [ ] git lf to crlf line endings 
+- [ ] Husky test on main branch
+
+- [ ] Error handling with messages
+- [ ] Logging all messages and where to place log
+- [ ] Dirrectory and file naming
+- [ ] Export & imports standdard
