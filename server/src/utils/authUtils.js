@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const authSecretKey = process.env.AUTH_SECRET_KEY;
-const domain = process.env.DOMAIN;
+// const domain = process.env.DOMAIN;
 const tokensExpiry = '7d';
 
 // Auth Token for client to sever authentication
