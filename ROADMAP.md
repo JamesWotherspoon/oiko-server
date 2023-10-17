@@ -88,7 +88,7 @@
 ## Additional 
 - [x] Git commit messages
 - [x] Git branching - when to branch 
-- [ ] git lf to crlf line endings 
+- [x] git lf to crlf line endings 
 - [ ] Husky test on main branch
 
 - [ ] Error handling with messages

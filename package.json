@@ -10,6 +10,11 @@
     "fix": "eslint . --fix",
     "init-db": "node ./initializeDatabase.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "BRANCH=$(git symbolic-ref --short HEAD); if [[ \"$BRANCH\" == \"main\" || \"$BRANCH\" == \"dev\" ]]; then npm test; fi"
+    }
+  },
   "author": "James Wotherspoon",
   "license": "ISC",
   "dependencies": {
@@ -31,6 +36,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.3",
     "jest": "^29.6.1",
     "supertest": "^6.3.3"
   }
