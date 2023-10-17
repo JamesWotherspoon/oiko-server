@@ -8,7 +8,8 @@
     "start": "nodemon ./src/server.js",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "init-db": "node ./initializeDatabase.js"
+    "init-db": "node ./initializeDatabase.js",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
