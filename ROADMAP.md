@@ -91,7 +91,7 @@
 - [x] git lf to crlf line endings 
 - [x] Husky test on main branch
 
-- [ ] Error handling with messages
-- [ ] Logging all messages and where to place log
+- [x] Error handling with messages
+- [x] Logging all messages and where to place log
 - [x] Dirrectory and file naming
 - [ ] Export & imports standdard

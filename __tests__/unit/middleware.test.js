@@ -1,7 +1,7 @@
 const request = require('supertest');
 require('dotenv').config();
 const express = require('express');
-const middleware = require('../../src/middleware/middleware');
+const middleware = require('../../src/middleware/appMiddleware');
 
 // Enviormental variable for client origin
 const allowedClientOrigin = process.env.CLIENT_ORIGIN;

@@ -1,4 +1,4 @@
-const { apiRequestErrorLogger } = require('../middleware/loggingMiddleware');
+const { apiRequestErrorLogger } = require('./loggerUtils');
 
 function successResponse(res, data, message = 'Request was successful') {
   return res.status(200).json({
