@@ -11,7 +11,10 @@ const getTransactions = async (req, res, next) => {
       res.status(204).send();
     }
   } catch (error) {
-    next(error);
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(`Failed fetching transactions. Original error: ${error.message}`);
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 
@@ -26,7 +29,12 @@ const getTransactionById = async (req, res, next) => {
       res.status(404).send();
     }
   } catch (error) {
-    next(error);
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed fetching transaction with ID: ${req.params.id}. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack;
+    next(enhancedError);
   }
 };
 
@@ -36,7 +44,12 @@ const createTransaction = async (req, res, next) => {
     const transaction = await Transaction.create(createObj);
     res.status(201).json(transaction);
   } catch (error) {
-    next(error);
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed creating transaction. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 
@@ -55,7 +68,12 @@ const updateTransactionById = async (req, res, next) => {
       res.status(404).json({ updated: false });
     }
   } catch (error) {
-    next(error);
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed updating transaction with ID: ${req.params.id}. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 
@@ -71,7 +89,12 @@ const deleteTransactionById = async (req, res, next) => {
       res.status(404).json({ deleted: false });
     }
   } catch (error) {
-    next(error);
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed deleting transaction with ID: ${req.params.id}. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 

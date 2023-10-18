@@ -93,5 +93,5 @@
 
 - [ ] Error handling with messages
 - [ ] Logging all messages and where to place log
-- [ ] Dirrectory and file naming
+- [x] Dirrectory and file naming
 - [ ] Export & imports standdard

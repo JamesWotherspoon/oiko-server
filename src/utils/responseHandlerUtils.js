@@ -19,8 +19,7 @@ function createdResponse(res, data, message = 'Resource successfully created') {
 function badRequest(req, res, message = 'Bad request', error) {
   apiRequestErrorLogger.error({ path: req.path, message, error });
   return res.status(400).json({
-    error: 'Bad Request',
-    message,
+    errors: error,
   });
 }
 
