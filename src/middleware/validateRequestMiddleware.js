@@ -1,5 +1,5 @@
 const Ajv = require('ajv');
-const { badRequest } = require('../utils/responseHandler');
+const { badRequest } = require('../utils/responseHandlerUtils');
 
 const validateQuery = (schema) => {
   const ajv = new Ajv({ coerceTypes: true });

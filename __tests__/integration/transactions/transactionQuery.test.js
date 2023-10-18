@@ -1,5 +1,5 @@
-const Category = require('../../../src/models/Category');
-const Transaction = require('../../../src/models/Transaction');
+const Category = require('../../../src/models/CategoryModel');
+const Transaction = require('../../../src/models/TransactionModel');
 const { createUserAndLogin, deleteUser } = require('../../testHelpers');
 
 describe('transactionQuery', () => {

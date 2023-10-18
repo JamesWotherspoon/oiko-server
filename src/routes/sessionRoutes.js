@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const protectedRouter = express.Router();
-const { createSession, deleteSession, getSession } = require('../controllers/session.controller');
+const { createSession, deleteSession, getSession } = require('../controllers/sessionController');
 
 // Create session
 router.post('/', createSession);

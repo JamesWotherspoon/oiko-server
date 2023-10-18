@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db.config');
-const User = require('./User');
-const Category = require('./Category');
-const ScheduledTransaction = require('./ScheduledTransaction');
+const sequelize = require('../config/dbConfig');
+const User = require('./UserModel');
+const Category = require('./CategoryModel');
+const ScheduledTransaction = require('./ScheduledTransactionModel');
 
 const Transaction = sequelize.define(
   'Transaction',

@@ -1,4 +1,4 @@
-const Transaction = require('../../../src/models/Transaction');
+const Transaction = require('../../../src/models/TransactionModel');
 const { createUserAndLogin, deleteUser } = require('../../testHelpers');
 
 describe('Transaction route tests', () => {

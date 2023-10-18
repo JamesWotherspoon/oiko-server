@@ -1,4 +1,4 @@
-const { validateBody } = require('../../src/middleware/validateRequestData');
+const { validateBody } = require('../../src/middleware/validateRequestMiddleware');
 
 describe('validateBody middleware', () => {
   it('should return a middleware function', () => {

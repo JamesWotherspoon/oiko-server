@@ -1,4 +1,4 @@
-const Transaction = require('../models/Transaction');
+const Transaction = require('../models/TransactionModel');
 const { Op } = require('sequelize');
 
 const retrieveTransactions = async (userId, query) => {

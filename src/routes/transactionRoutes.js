@@ -6,9 +6,9 @@ const {
   createTransaction,
   updateTransactionById,
   deleteTransactionById,
-} = require('../controllers/transaction.controller');
-const { validateBody, validateQuery } = require('../middleware/validateRequestData');
-const { querySchema, bodySchema } = require('../api_schemas/transactionSchema');
+} = require('../controllers/transactionController');
+const { validateBody, validateQuery } = require('../middleware/validateRequestMiddleware');
+const { querySchema, bodySchema } = require('../api-schemas/transactionApiSchema');
 
 // Get all transactions
 router.get('/', validateQuery(querySchema), getTransactions);

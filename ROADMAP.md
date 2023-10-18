@@ -89,7 +89,7 @@
 - [x] Git commit messages
 - [x] Git branching - when to branch 
 - [x] git lf to crlf line endings 
-- [ ] Husky test on main branch
+- [x] Husky test on main branch
 
 - [ ] Error handling with messages
 - [ ] Logging all messages and where to place log

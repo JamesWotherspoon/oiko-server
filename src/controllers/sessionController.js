@@ -1,6 +1,6 @@
-const User = require('../models/User');
+const User = require('../models/UserModel');
 const authUtils = require('../utils/authUtils');
-const sanitize = require('../utils/sanitize');
+const sanitize = require('../utils/sanitizeUtils');
 
 const createSession = async (req, res) => {
   try {

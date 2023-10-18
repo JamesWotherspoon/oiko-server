@@ -1,5 +1,5 @@
-const Transaction = require('../models/Transaction');
-const transactionService = require('../services/transaction.service');
+const Transaction = require('../models/TransactionModel');
+const transactionService = require('../services/transactionService');
 
 const getTransactions = async (req, res, next) => {
   try {

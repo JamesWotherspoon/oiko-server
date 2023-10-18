@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
 const middleware = require('./middleware/middleware.js');
-const { logMiddleware } = require('./middleware/logging.middleware.js');
+const { logMiddleware } = require('./middleware/loggingMiddleware.js');
 const authenticateUser = require('./middleware/authMiddleware.js');
-const sessionRoutes = require('./routes/session.routes.js');
-const userRoutes = require('./routes/user.routes.js');
-const transactionRoutes = require('./routes/transaction.routes.js');
-const categoryRoutes = require('./routes/category.routes.js');
+const sessionRoutes = require('./routes/sessionRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
+const transactionRoutes = require('./routes/transactionRoutes.js');
+const categoryRoutes = require('./routes/categoryRoutes.js');
 
 // Logging Middleware
 app.use(logMiddleware);
