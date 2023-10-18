@@ -6,6 +6,7 @@ const sessionRoutes = require('./routes/sessionRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const transactionRoutes = require('./routes/transactionRoutes.js');
 const categoryRoutes = require('./routes/categoryRoutes.js');
+const scheduledTransactionRoutes = require('./routes/scheduledTransactionRoutes.js');
 
 // Logging Middleware
 app.use(middleware.log);
@@ -24,6 +25,7 @@ app.use('/api/users', userRoutes.router);
 app.use('/api/users', authenticateUser, userRoutes.protectedRouter);
 app.use('/api/transactions', authenticateUser, transactionRoutes);
 app.use('/api/categories', authenticateUser, categoryRoutes);
+app.use('/api/scheduled-transactions', authenticateUser, scheduledTransactionRoutes);
 
 // Not Found Route
 app.use('/', (req, res) => res.status(404).send('Sorry, resource not found!'));

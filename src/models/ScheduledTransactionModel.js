@@ -29,6 +29,10 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
     type: DataTypes.ENUM('income', 'expense'),
     allowNull: false,
   },
+  name: {
+    type: DataTypes.STRING(200),
+    allowNull: false,
+  },
   amount: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
@@ -41,7 +45,7 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
     type: DataTypes.ENUM('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
     allowNull: true,
   },
-  dayOfMonth: {
+  dateOfMonth: {
     type: DataTypes.INTEGER,
     allowNull: true,
     validate: {

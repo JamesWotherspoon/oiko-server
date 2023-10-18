@@ -1,5 +1,7 @@
 # Roadmap for Smart Saver Server
 
+# Version 1.0.0
+
 ## Milestone 1: Basic Server Setup
 - [x] Initialize project with Node.js
 - [x] Create git repo and push to remote origin
@@ -9,7 +11,7 @@
 - [x] Implement middleware to handle and process req-res object for sharing cross origin api data with client
 - [ ] Implement middleware for basic api security
 - [x] Implement middleware for info and error logging
-- [ ] Implement fallback error handler
+- [x] Implement fallback error handler
 - [x] Run integration tests for server and unit tests for middleware
 
 ## Milestone 2: Database Setup
@@ -22,8 +24,6 @@
 - [x] Authentication middleware to validate cookie and parse user id
 - [x] Create user creation route for registration - with password hashing and email normilaztion
 - [x] Generate authentication session for login
-- [ ] Implement destroy session functionality for logout
-- [ ] Implement Google OAuth login Api
 - [x] Run unit and integration tests for token generation, cookie issuing and user authentication
 
 ## Milestone 4: Transaction Handling
@@ -38,17 +38,14 @@
 ## Milestone 5: Category Handling
 - [x] Define CRUD routes for category adhering to RESTful design prinicples
 - [x] Create controllers to sucessfully handle basic CRUD operations
-- [ ] Define user access to shared categories 
 - [x] Define accepted query paramaters for getting categories
-- [ ] Implement handling transaction queries with paramaters
-- [ ] Implement category icon images
-- [ ] Manage user category preference for improved UX
-- [ ] Run Integration tests for CRUD Category operations, user category isolation, shared categories and user preference
+- [x] Implement handling transaction queries with paramaters
+- [x] Run Integration tests for CRUD Category operations
 
 ## Milestone 6: ScheduledTransaction Handling
-- [ ] Define CRUD routes for scheduledTransaction adhering to RESTful design prinicples
-- [ ] Create controllers to sucessfully handle basic CRUD operations
-- [ ] Define accepted query paramaters for getting scheduledTransaction
+- [x] Define CRUD routes for scheduledTransaction adhering to RESTful design prinicples
+- [x] Create controllers to sucessfully handle basic CRUD operations
+- [x] Define accepted query paramaters for getting scheduledTransaction
 - [ ] Implement handling scheduledTransaction queries with paramaters
 - [ ] Implement automated scheduledTransaction trigger of transaction considering schedule frequency
 - [ ] Run Integration tests for CRUD scheduledTransaction operations, and user scheduledTransaction isolation
@@ -82,16 +79,14 @@
 ## Full-stack Milestone x: Deployment
 - [ ] Setup and configure Docker
 - [ ] Deploy server to production environment
-- [ ] Set up continuous integration and deployment with GitHub Actions`;
+- [ ] Set up continuous integration and deployment with GitHub Actions
 
+# Version 1.1.0
 
-## Additional 
-- [x] Git commit messages
-- [x] Git branching - when to branch 
-- [x] git lf to crlf line endings 
-- [x] Husky test on main branch
+## Authentication
+- [ ] Implement Google OAuth login Api
 
-- [x] Error handling with messages
-- [x] Logging all messages and where to place log
-- [x] Dirrectory and file naming
-- [ ] Export & imports standdard
+## Categories
+- [ ] Apply default caetgories on user creation
+- [ ] Implement category icon images
+- [ ] Manage user category preference for improved UX
