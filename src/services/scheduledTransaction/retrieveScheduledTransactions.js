@@ -1,4 +1,4 @@
-const ScheduledTransaction = require('../models/ScheduledTransactionModel');
+const ScheduledTransaction = require('../../models/ScheduledTransactionModel');
 const { Op, literal } = require('sequelize');
 
 const retrieveScheduledTransactions = async (userId, query) => {

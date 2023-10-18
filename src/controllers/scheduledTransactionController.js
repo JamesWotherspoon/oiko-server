@@ -1,5 +1,5 @@
 const ScheduledTransaction = require('../models/ScheduledTransactionModel');
-const scheduledTransactionService = require('../services/scheduledTransactionService');
+const scheduledTransactionService = require('../services/scheduledTransaction/retrieveScheduledTransactions');
 
 const getScheduledTransactions = async (req, res, next) => {
   try {

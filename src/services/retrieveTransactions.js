@@ -62,6 +62,4 @@ const retrieveTransactions = async (userId, query) => {
   }
 };
 
-module.exports = {
-  retrieveTransactions,
-};
+module.exports = retrieveTransactions;

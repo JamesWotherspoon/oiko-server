@@ -1,9 +1,9 @@
 const Transaction = require('../models/TransactionModel');
-const transactionService = require('../services/transactionService');
+const retrieveTransactions = require('../services/retrieveTransactions');
 
 const getTransactions = async (req, res, next) => {
   try {
-    const transactions = await transactionService.retrieveTransactions(req.user.id, req.query);
+    const transactions = await retrieveTransactions(req.user.id, req.query);
 
     if (transactions.length !== 0) {
       res.status(200).json(transactions);
