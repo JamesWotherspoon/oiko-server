@@ -54,6 +54,10 @@ const retrieveTransactions = async (userId, query) => {
 
     return await Transaction.findAll({ where: whereClause, order: orderClause, offset: offset, limit: pageSize });
   } catch (error) {
+    const enhancedError = new Error(
+      `Failed to retrieve transactions in transactionServices. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack;
     next(error);
   }
 };
