@@ -1,8 +1,8 @@
-const { validateBody } = require('../../src/middleware/validateRequestMiddleware');
+const validate = require('../../src/middleware/validateMiddleware');
 
-describe('validateBody middleware', () => {
+describe('validate middleware', () => {
   it('should return a middleware function', () => {
-    const middleware = validateBody({});
+    const middleware = validate('body', {});
     expect(typeof middleware).toBe('function');
   });
 
@@ -15,7 +15,7 @@ describe('validateBody middleware', () => {
       },
       required: ['name', 'age'],
     };
-    const middleware = validateBody(schema);
+    const middleware = validate('body', schema);
     const req = { body: { name: 'John', age: 30 } };
     const res = {};
     const next = jest.fn();
@@ -32,7 +32,7 @@ describe('validateBody middleware', () => {
       },
       required: ['name', 'age'],
     };
-    const middleware = validateBody(schema);
+    const middleware = validate('body', schema);
     const req = { body: { name: 'John' } };
     const res = {
       status: jest.fn(() => res),
