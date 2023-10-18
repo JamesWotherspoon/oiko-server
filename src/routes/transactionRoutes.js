@@ -17,10 +17,10 @@ router.get('/', validate('query', querySchema), getTransactions);
 router.get('/:id', getTransactionById);
 
 // Set transaction
-router.post('/', validate('body', bodySchema.post), createTransaction);
+router.post('/', validate('body', bodySchema), createTransaction);
 
 // Update transaction
-router.put('/:id', updateTransactionById);
+router.put('/:id', validate('body', bodySchema), updateTransactionById);
 
 // Delete transaction
 router.delete('/:id', deleteTransactionById);

@@ -104,8 +104,8 @@ describe('Transaction route tests', () => {
       .put(`/api/transactions/${transaction.id}`)
       .send(
         JSON.stringify({
-          userId: user.id,
           name: 'Test Expense',
+          transactionType: 'income',
           amount: updatedTransactionAmount,
           description: 'Test Description',
           transactionDate: date,
