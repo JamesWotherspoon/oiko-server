@@ -37,9 +37,9 @@
 # 
 ## Milestone 5: Category Handling
 - [x] Define CRUD routes for category adhering to RESTful design prinicples
-- [ ] Create controllers to sucessfully handle basic CRUD operations
+- [x] Create controllers to sucessfully handle basic CRUD operations
 - [ ] Define user access to shared categories 
-- [ ] Define accepted query paramaters for getting categories
+- [x] Define accepted query paramaters for getting categories
 - [ ] Implement handling transaction queries with paramaters
 - [ ] Implement category icon images
 - [ ] Manage user category preference for improved UX

@@ -147,4 +147,26 @@ describe('Category route tests', () => {
     });
     expect(deletedCategory).toBe(null);
   });
+
+  it('should return categories filtered by type', async () => {
+    await Category.bulkCreate([
+      {
+        userId: user.id,
+        name: 'Other Category',
+        type: 'expense',
+        description: 'Other Category Description',
+      },
+      {
+        userId: user.id,
+        name: 'income Category',
+        type: 'income',
+        description: 'income Category Description',
+      },
+    ]);
+    const response = await agent.get(`/api/categories?type=income`);
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].name).toBe('income Category');
+    expect(response.body[0].type).toBe('income');
+  });
 });
