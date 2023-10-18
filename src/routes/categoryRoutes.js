@@ -7,20 +7,22 @@ const {
   updateCategoryById,
   deleteCategoryById,
 } = require('../controllers/categoryController');
+const validate = require('../middleware/validateMiddleware');
+const { querySchema, bodySchema } = require('../api-schemas/categoryApiSchema');
 
 // Get all categories
-router.get('/', getCategories);
+router.get('/', validate('query', querySchema), getCategories);
 
-// Get a single category by id
+// Get category by ID
 router.get('/:id', getCategoryById);
 
-// Create a new category
-router.post('/', createCategory);
+// Set category
+router.post('/', validate('body', bodySchema), createCategory);
 
-// Update a category by id
-router.put('/:id', updateCategoryById);
+// Update category
+router.put('/:id', validate('body', bodySchema), updateCategoryById);
 
-// Delete a category by id
+// Delete category
 router.delete('/:id', deleteCategoryById);
 
 module.exports = router;

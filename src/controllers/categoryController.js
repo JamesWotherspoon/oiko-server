@@ -1,72 +1,100 @@
 const Category = require('../models/CategoryModel');
 
-// GET all categories
-const getCategories = async (req, res) => {
+const getCategories = async (req, res, next) => {
   try {
-    const categories = await Category.findAll({ where: { UserId: req.user.id } });
-    res.status(200).json(categories);
+    const whereClause = { userId: req.user.id };
+    const type = req.query.type;
+    if (type) whereClause.type = type;
+    const categories = await Category.findAll({ where: whereClause });
+
+    if (categories.length !== 0) {
+      res.status(200).json(categories);
+    } else {
+      res.status(204).send();
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(`Failed fetching categories. Original error: ${error.message}`);
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 
-// GET a single category by ID
-const getCategoryById = async (req, res) => {
+// Fetch a specific category by ID
+const getCategoryById = async (req, res, next) => {
   try {
-    const category = await Category.findOne({ where: { id: req.params.id, UserId: req.user.id } });
+    const whereClause = { id: req.params.id, userId: req.user.id };
+    const category = await Category.findOne({ where: whereClause });
     if (category) {
       res.status(200).json(category);
     } else {
-      res.status(404).json({ message: 'Category not found' });
+      res.status(404).send();
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed fetching category with ID: ${req.params.id}. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack;
+    next(enhancedError);
   }
 };
 
-// CREATE a new category
-const createCategory = async (req, res) => {
-  const { type, name, description } = req.body;
+const createCategory = async (req, res, next) => {
   try {
-    const newCategory = await Category.create({
-      UserId: req.user.id,
-      type,
-      name,
-      description,
+    const createObj = { ...req.body, userId: req.user.id };
+    const category = await Category.create(createObj);
+    res.status(201).json(category);
+  } catch (error) {
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(`Failed creating category. Original error: ${error.message}`);
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
+  }
+};
+
+// Update a category by ID
+const updateCategoryById = async (req, res, next) => {
+  try {
+    const whereClause = { id: req.params.id, userId: req.user.id };
+
+    const updated = await Category.update(req.body, {
+      where: whereClause,
     });
-    res.status(201).json(newCategory);
+
+    if (updated.length) {
+      res.status(200).json({ updated: true });
+    } else {
+      res.status(404).json({ updated: false });
+    }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed updating category with ID: ${req.params.id}. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 
-// UPDATE a category by ID
-const updateCategoryById = async (req, res) => {
+// Delete a category by ID
+const deleteCategoryById = async (req, res, next) => {
   try {
-    const category = await Category.update(req.body, {
-      where: { id: req.params.id, UserId: req.user.id },
-    });
-    if (category) {
-      res.status(200).json(updatedCategory);
-    } else {
-      res.status(404).json({ message: 'Category not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-};
+    const whereClause = { id: req.params.id, userId: req.user.id };
+    const deleted = await Category.destroy({ where: whereClause });
 
-// DELETE a category by ID
-const deleteCategoryById = async (req, res) => {
-  try {
-    const category = await Category.findOne({ where: { id: req.params.id, userId: req.user.id } });
-    if (category) {
-      res.status(404).json({ message: 'Category not found' });
+    if (deleted) {
+      res.status(200).json({ deleted: true });
     } else {
-      res.status(200).json({ message: 'Category deleted successfully' });
+      res.status(404).json({ deleted: false });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
+    // Adding a custom error message for internal logging
+    const enhancedError = new Error(
+      `Failed deleting category with ID: ${req.params.id}. Original error: ${error.message}`,
+    );
+    enhancedError.stack = error.stack; // Preserving the original stack trace
+    next(enhancedError);
   }
 };
 

@@ -36,7 +36,7 @@
 - [x] Run Integration tests for CRUD operations with/without queries and user transaction isolation
 # 
 ## Milestone 5: Category Handling
-- [ ] Define CRUD routes for category adhering to RESTful design prinicples
+- [x] Define CRUD routes for category adhering to RESTful design prinicples
 - [ ] Create controllers to sucessfully handle basic CRUD operations
 - [ ] Define user access to shared categories 
 - [ ] Define accepted query paramaters for getting categories
