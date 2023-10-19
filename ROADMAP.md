@@ -46,15 +46,24 @@
 - [x] Define CRUD routes for scheduledTransaction adhering to RESTful design prinicples
 - [x] Create controllers to sucessfully handle basic CRUD operations
 - [x] Define accepted query paramaters for getting scheduledTransaction
-- [ ] Implement handling scheduledTransaction queries with paramaters
-- [ ] Implement automated scheduledTransaction trigger of transaction considering schedule frequency
-- [ ] Run Integration tests for CRUD scheduledTransaction operations, and user scheduledTransaction isolation
-- [ ] Run unit and integration tests for running triggering transactions and schedule frequnecy 
+- [x] Implement handling scheduledTransaction queries with paramaters
+- [x] Implement automated scheduledTransaction trigger of transaction considering schedule frequency
+- [x] Run Integration tests for CRUD scheduledTransaction operations
+- [x] Run unit and integration tests for running triggering transactions and schedule frequnecy 
 
-## Milestone 7: Determine Operation for FinancialAccounts and SavingGoals
+## Milestone 7: MoneyPots
+- [ ] Create model for user MoneyPot
+- [ ] Create MoneyPot routes and controller
+- [ ] Creat ApiSchema 
+- [ ] Create MoneyPot services 
+- [ ] Create MoneyPot transaction service to ensure income/expense both executed successfully
+- [ ] Calculate transactions for frontend visualization
+
+## Milestone 8: SavingGoals
 - [ ] Create model for user MoneyPot/financialAccount and SavingsGoals
 - [ ] Define technique of handling MoneyPot/financialAccount and SavingsGoal value change
 - [ ] Define technique for tracking history of transactions to financialAccounts
+
 
 ## Milestone 8: Request data validation and sanitization
 - [ ] Normalize data before inserting to database

@@ -3,6 +3,7 @@ const User = require('./src/models/UserModel'); // Import your Sequelize models
 const Transaction = require('./src/models/TransactionModel');
 const ScheduledTransaction = require('./src/models/ScheduledTransactionModel');
 const Category = require('./src/models/CategoryModel');
+const MoneyPot = require('./src/models/MoneyPotModel');
 require('dotenv').config();
 
 
@@ -15,12 +16,14 @@ const initializeDatabase = async () => {
     // Drop all tables if they exist
     await Transaction.drop();
     await ScheduledTransaction.drop();
+    await MoneyPot.drop();
     await Category.drop();
     await User.drop();
 
     // Synchronize the models with the database
     await User.sync();
     await Category.sync();
+    await MoneyPot.sync();
     await ScheduledTransaction.sync();
     await Transaction.sync();
 
