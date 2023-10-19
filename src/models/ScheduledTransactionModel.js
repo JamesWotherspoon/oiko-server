@@ -71,7 +71,7 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
     allowNull: true,
   },
   nextTransactionDate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
   active: {
@@ -81,6 +81,7 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
   },
   description: {
     type: DataTypes.TEXT,
+    allowNull: true,
   },
 });
 

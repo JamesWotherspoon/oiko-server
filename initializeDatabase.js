@@ -12,12 +12,17 @@ const initializeDatabase = async () => {
   try {
     await sequelize.authenticate(); // Test the database connection
     console.log('Connected to the database.');
+    // Drop all tables if they exist
+    await Transaction.drop();
+    await ScheduledTransaction.drop();
+    await Category.drop();
+    await User.drop();
 
     // Synchronize the models with the database
-    await User.sync({ alter: true });
-    await Category.sync({ alter: true });
-    await ScheduledTransaction.sync({ alter: true });
-    await Transaction.sync({ alter: true });
+    await User.sync();
+    await Category.sync();
+    await ScheduledTransaction.sync();
+    await Transaction.sync();
 
     console.log('Database synchronization completed.');
   } catch (error) {

@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/models/UserModel');
+const Category = require('../src/models/CategoryModel');
 const authUtils = require('../src/utils/authUtils');
 
 const createUserAndLogin = async () => {
@@ -30,7 +31,12 @@ const deleteUser = async (userId) => {
   });
 };
 
+const createUserCategory = async (userId) => {
+  return await Category.create({ userId: userId, type: 'income', name: 'Salary' });
+};
+
 module.exports = {
   createUserAndLogin,
   deleteUser,
+  createUserCategory,
 };

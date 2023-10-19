@@ -25,7 +25,7 @@ const bodySchema = {
         'December',
       ],
     },
-    selectedTransactionDate: { type: 'string', format: 'date-time' },
+    selectedTransactionDate: { type: 'string', format: 'date' },
     active: { type: 'boolean' },
     description: { type: 'string' },
   },

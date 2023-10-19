@@ -4,6 +4,7 @@ const winston = require('winston');
 const logFilePath = './logs/server.log';
 const errorFilePath = './logs/serverError.log';
 const apiErrorFilePath = './logs/apiError.log';
+const scheduledTransactionFilePath = './logs/scheduledTransaction.log';
 
 // Create Winston transports for logging to files
 const apiErrorFileTransport = new winston.transports.File({ filename: apiErrorFilePath });
@@ -23,5 +24,11 @@ const apiRequestErrorLogger = winston.createLogger({
   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
   transports: [apiErrorFileTransport], // Use apiErrorFileTransport for invalid api requests
 });
-
-module.exports = { apiRequestErrorLogger, logger };
+const scheduledTransactionLogger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+  transports: [
+    new winston.transports.File({ filename: scheduledTransactionFilePath }),
+  ],
+});
+module.exports = { apiRequestErrorLogger, logger, scheduledTransactionLogger };

@@ -1,16 +1,15 @@
-const Category = require('../../../src/models/CategoryModel');
 const Transaction = require('../../../src/models/TransactionModel');
-const { createUserAndLogin, deleteUser } = require('../../testHelpers');
+const { createUserAndLogin, deleteUser, createUserCategory } = require('../../testHelpers');
 
 describe('transactionQuery', () => {
   let agent;
   let user;
-  let availableCategory;
+  let category;
 
   beforeAll(async () => {
     // Use helper to create user and login
     ({ agent, user } = await createUserAndLogin());
-    availableCategory = await Category.create({ userId: user.id, type: 'income', name: 'Salary' });
+    category = await createUserCategory(user.id);
   });
 
   afterAll(async () => {
@@ -45,7 +44,7 @@ describe('transactionQuery', () => {
         transactionType: 'income',
         transactionDate: '2030-01-01',
         amount: 110,
-        categoryId: availableCategory.id,
+        categoryId: category.id,
       },
     ]);
   });
@@ -95,10 +94,10 @@ describe('transactionQuery', () => {
   });
 
   it('should return transactions filtered by categoryId', async () => {
-    const response = await agent.get(`/api/transactions?categoryId=${availableCategory.id}`);
+    const response = await agent.get(`/api/transactions?categoryId=${category.id}`);
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(1);
-    expect(response.body[0].categoryId).toBe(availableCategory.id);
+    expect(response.body[0].categoryId).toBe(category.id);
     expect(response.body[0].amount).toBe('110.00');
   });
 

@@ -30,7 +30,7 @@ describe('ScheduledTransaction route tests', () => {
       name: 'test',
       recurrenceType: 'daily',
       active: true,
-      nextTransactionDate: '2021-08-01T04:00:00.000Z',
+      nextTransactionDate: '2021-08-01',
     });
 
     const response = await agent.get('/api/scheduled-transactions');
@@ -50,7 +50,7 @@ describe('ScheduledTransaction route tests', () => {
       name: 'test',
       recurrenceType: 'daily',
       active: true,
-      nextTransactionDate: '2021-08-01T04:00:00.000Z',
+      nextTransactionDate: '2021-08-01',
     });
     // Create a second scheduled transaction to ensure that the correct scheduled transaction is returned
     await ScheduledTransaction.create({
@@ -61,7 +61,7 @@ describe('ScheduledTransaction route tests', () => {
       name: 'test',
       recurrenceType: 'daily',
       active: true,
-      nextTransactionDate: '2021-08-01T04:00:00.000Z',
+      nextTransactionDate: '2021-08-01',
     });
     const response = await agent.get(`/api/scheduled-transactions/${scheduledTransaction.id}`);
 
@@ -108,7 +108,7 @@ describe('ScheduledTransaction route tests', () => {
       name: 'test',
       recurrenceType: 'daily',
       active: true,
-      nextTransactionDate: '2021-08-01T04:00:00.000Z',
+      nextTransactionDate: '2021-08-01',
     });
 
     const updatedScheduledTransactionAmount = 147.87;
@@ -168,13 +168,13 @@ describe('ScheduledTransaction route tests', () => {
           name: 'test',
           recurrenceType: 'annually',
           active: true,
-          selectedTransactionDate: '2023-10-01T04:00:00.000Z',
+          selectedTransactionDate: '2023-10-01',
         }),
       )
       .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(201);
-    expect(response.body.nextTransactionDate).toBe('2024-10-01T04:00:00.000Z');
+    expect(response.body.nextTransactionDate).toBe('2024-10-01');
     expect(response.body.active).toBe(true);
   });
 });

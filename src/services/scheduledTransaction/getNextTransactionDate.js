@@ -4,7 +4,6 @@ function getNextTransactionDate(recurrenceType, dayOfWeek, dateOfMonth, monthOfY
   const nextDate = new Date(selectedDate);
   // If transaction date is in the future return future date
   if (selectedDate > currentDate) {
-    nextDate.setUTCHours(4, 0, 0, 0);
     return nextDate.toISOString();
   }
 
@@ -38,8 +37,6 @@ function getNextTransactionDate(recurrenceType, dayOfWeek, dateOfMonth, monthOfY
   default:
     throw new Error('Invalid recurrence type');
   }
-  nextDate.setUTCHours(4, 0, 0, 0);
-  console.log(nextDate);
   return nextDate.toISOString();
 }
 
