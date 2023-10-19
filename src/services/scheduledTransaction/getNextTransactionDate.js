@@ -1,39 +1,45 @@
-function getNextTransactionDate(recurrenceType, dayOfWeek, dateOfMonth, monthOfYear, lastTransactionDate) {
-  const lastDate = lastTransactionDate ? new Date(lastTransactionDate) : new Date();
-  const nextDate = lastDate;
+function getNextTransactionDate(recurrenceType, dayOfWeek, dateOfMonth, monthOfYear, selectedTransactionDate) {
+  const currentDate = new Date();
+  const selectedDate = selectedTransactionDate ? new Date(selectedTransactionDate) : new Date(currentDate);
+  const nextDate = new Date(selectedDate);
+  // If transaction date is in the future return future date
+  if (selectedDate > currentDate) {
+    nextDate.setUTCHours(4, 0, 0, 0);
+    return nextDate.toISOString();
+  }
 
   switch (recurrenceType) {
   case 'daily':
-    nextDate.setDate(lastDate.getDate() + 1);
+    nextDate.setDate(selectedDate.getDate() + 1);
     break;
   case 'weekly':
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dayIndex = daysOfWeek.indexOf(dayOfWeek);
-    const daysUntilNext = (dayIndex - lastDate.getDay() + 7) % 7;
-    nextDate.setDate(lastDate.getDate() + daysUntilNext);
+    const daysUntilNext = (dayIndex - selectedDate.getDay() + 7) % 7;
+    nextDate.setDate(selectedDate.getDate() + daysUntilNext);
     break;
   case 'monthly':
-    nextDate.setMonth(lastDate.getMonth() + 1);
-    nextDate.setDate(dateOfMonth);
+    nextDate.setMonth(selectedDate.getMonth() + 1);
+    nextDate.setDate(dateOfMonth || selectedDate.getDate());
     break;
   case 'quarterly':
-    nextDate.setMonth(lastDate.getMonth() + 3);
-    nextDate.setDate(dateOfMonth);
+    nextDate.setMonth(selectedDate.getMonth() + 3);
+    nextDate.setDate(dateOfMonth || selectedDate.getDate());
     break;
   case 'biannually':
-    nextDate.setMonth(lastDate.getMonth() + 6);
-    nextDate.setDate(dateOfMonth);
+    nextDate.setMonth(selectedDate.getMonth() + 6);
+    nextDate.setDate(dateOfMonth || selectedDate.getDate());
     break;
   case 'annually':
-    nextDate.setFullYear(lastDate.getFullYear() + 1);
-    nextDate.setMonth(monthOfYear);
-    nextDate.setDate(15);
+    nextDate.setFullYear(selectedDate.getFullYear() + 1);
+    nextDate.setMonth(monthOfYear || selectedDate.getMonth());
+    nextDate.setDate(dateOfMonth || selectedDate.getDate());
     break;
   default:
     throw new Error('Invalid recurrence type');
   }
-  nextDate.setUTCHours(4);
-
+  nextDate.setUTCHours(4, 0, 0, 0);
+  console.log(nextDate);
   return nextDate.toISOString();
 }
 

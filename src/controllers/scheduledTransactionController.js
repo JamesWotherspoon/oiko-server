@@ -1,11 +1,22 @@
 const ScheduledTransaction = require('../models/ScheduledTransactionModel');
-const scheduledTransactionService = require('../services/scheduledTransaction/retrieveScheduledTransactions');
+const {
+  retrieveScheduledTransactions,
+  executeCreateScheduledTransaction,
+} = require('../services/scheduledTransaction/scheduledTransactionService');
 
 const getScheduledTransactions = async (req, res, next) => {
   try {
-    const scheduledTransactions = await scheduledTransactionService.retrieveScheduledTransactions(
-      req.user.id,
-      req.query,
+    const userId = req.user.id;
+    const { categoryId, transactionType, name, minAmount, maxAmount, recurrenceType } = req.query;
+
+    const scheduledTransactions = await retrieveScheduledTransactions(
+      userId,
+      categoryId,
+      transactionType,
+      name,
+      minAmount,
+      maxAmount,
+      recurrenceType,
     );
 
     if (scheduledTransactions.length !== 0) {
@@ -41,11 +52,17 @@ const getScheduledTransactionById = async (req, res, next) => {
   }
 };
 
-const createScheduledTransaction = async (req, res, next) => {
+const handleCreateScheduledTransaction = async (req, res, next) => {
   try {
     const createObj = { ...req.body, userId: req.user.id };
-    const scheduledTransaction = await ScheduledTransaction.create(createObj);
-    res.status(201).json(scheduledTransaction);
+    const scheduledTransaction = await executeCreateScheduledTransaction(createObj);
+    const responseBody = {
+      id: scheduledTransaction.id,
+      name: scheduledTransaction.name,
+      active: scheduledTransaction.active,
+      nextTransactionDate: scheduledTransaction.nextTransactionDate,
+    };
+    res.status(201).json(responseBody);
   } catch (error) {
     // Adding a custom error message for internal logging
     const enhancedError = new Error(`Failed creating scheduled transaction. Original error: ${error.message}`);
@@ -102,7 +119,7 @@ const deleteScheduledTransactionById = async (req, res, next) => {
 module.exports = {
   getScheduledTransactions,
   getScheduledTransactionById,
-  createScheduledTransaction,
+  handleCreateScheduledTransaction,
   updateScheduledTransactionById,
   deleteScheduledTransactionById,
 };

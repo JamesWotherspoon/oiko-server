@@ -26,6 +26,8 @@ describe('scheduledTransactionQuery', () => {
         name: 'test',
         recurrenceType: 'daily',
         amount: 1,
+        active: true,
+        nextTransactionDate: '2021-08-01T04:00:00.000Z',
       },
       {
         userId: user.id,
@@ -33,6 +35,8 @@ describe('scheduledTransactionQuery', () => {
         name: 'test',
         recurrenceType: 'daily',
         amount: 1010,
+        active: true,
+        nextTransactionDate: '2021-08-01T04:00:00.000Z',
       },
       {
         userId: user.id,
@@ -40,6 +44,8 @@ describe('scheduledTransactionQuery', () => {
         amount: 110,
         recurrenceType: 'annually',
         name: 'test',
+        active: true,
+        nextTransactionDate: '2021-08-01T04:00:00.000Z',
       },
       {
         userId: user.id,
@@ -48,6 +54,8 @@ describe('scheduledTransactionQuery', () => {
         recurrenceType: 'monthly',
         amount: 1010,
         categoryId: availableCategory.id,
+        active: true,
+        nextTransactionDate: '2021-08-01T04:00:00.000Z',
       },
     ]);
   });

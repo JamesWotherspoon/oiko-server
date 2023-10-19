@@ -29,6 +29,8 @@ describe('ScheduledTransaction route tests', () => {
       amount: 100,
       name: 'test',
       recurrenceType: 'daily',
+      active: true,
+      nextTransactionDate: '2021-08-01T04:00:00.000Z',
     });
 
     const response = await agent.get('/api/scheduled-transactions');
@@ -47,6 +49,8 @@ describe('ScheduledTransaction route tests', () => {
       description: 'Test Description',
       name: 'test',
       recurrenceType: 'daily',
+      active: true,
+      nextTransactionDate: '2021-08-01T04:00:00.000Z',
     });
     // Create a second scheduled transaction to ensure that the correct scheduled transaction is returned
     await ScheduledTransaction.create({
@@ -56,6 +60,8 @@ describe('ScheduledTransaction route tests', () => {
       description: 'Nice',
       name: 'test',
       recurrenceType: 'daily',
+      active: true,
+      nextTransactionDate: '2021-08-01T04:00:00.000Z',
     });
     const response = await agent.get(`/api/scheduled-transactions/${scheduledTransaction.id}`);
 
@@ -101,6 +107,8 @@ describe('ScheduledTransaction route tests', () => {
       description: 'Test Description',
       name: 'test',
       recurrenceType: 'daily',
+      active: true,
+      nextTransactionDate: '2021-08-01T04:00:00.000Z',
     });
 
     const updatedScheduledTransactionAmount = 147.87;
@@ -136,6 +144,8 @@ describe('ScheduledTransaction route tests', () => {
       description: 'Test Description',
       name: 'test',
       recurrenceType: 'daily',
+      active: true,
+      nextTransactionDate: '2021-08-01T04:00:00.000Z',
     });
 
     const response = await agent.delete(`/api/scheduled-transactions/${scheduledTransaction.id}`);
@@ -145,5 +155,26 @@ describe('ScheduledTransaction route tests', () => {
       where: { id: scheduledTransaction.id, userId: user.id },
     });
     expect(deletedScheduledTransaction).toBe(null);
+  });
+  test('Should return nextTransactionDate and active', async () => {
+    const response = await agent
+      .post('/api/scheduled-transactions')
+      .send(
+        JSON.stringify({
+          transactionType: 'expense',
+          name: 'Test Expense',
+          amount: 100,
+          description: 'Test Description',
+          name: 'test',
+          recurrenceType: 'annually',
+          active: true,
+          selectedTransactionDate: '2023-10-01T04:00:00.000Z',
+        }),
+      )
+      .set('Content-Type', 'application/json');
+
+    expect(response.status).toBe(201);
+    expect(response.body.nextTransactionDate).toBe('2024-10-01T04:00:00.000Z');
+    expect(response.body.active).toBe(true);
   });
 });

@@ -70,6 +70,15 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
     ),
     allowNull: true,
   },
+  nextTransactionDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  active: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
   description: {
     type: DataTypes.TEXT,
   },

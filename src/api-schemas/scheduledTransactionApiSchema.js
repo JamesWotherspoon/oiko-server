@@ -25,6 +25,8 @@ const bodySchema = {
         'December',
       ],
     },
+    selectedTransactionDate: { type: 'string', format: 'date-time' },
+    active: { type: 'boolean' },
     description: { type: 'string' },
   },
   required: ['transactionType', 'name', 'amount', 'recurrenceType'],
