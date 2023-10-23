@@ -1,10 +1,10 @@
 function getNextTransactionDate(recurrenceType, dayOfWeek, dateOfMonth, monthOfYear, selectedTransactionDate) {
   const currentDate = new Date();
-  const selectedDate = selectedTransactionDate ? new Date(selectedTransactionDate) : new Date(currentDate);
+  const selectedDate = selectedTransactionDate ? new Date(selectedTransactionDate) : currentDate;
   const nextDate = new Date(selectedDate);
   // If transaction date is in the future return future date
   if (selectedDate > currentDate) {
-    return nextDate.toISOString();
+    return nextDate;
   }
 
   switch (recurrenceType) {

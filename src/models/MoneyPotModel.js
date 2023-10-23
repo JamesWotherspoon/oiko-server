@@ -3,7 +3,7 @@ const sequelize = require('../config/dbConfig');
 const User = require('./UserModel');
 
 const MoneyPot = sequelize.define('MoneyPot', {
-  moneyPotId: {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
