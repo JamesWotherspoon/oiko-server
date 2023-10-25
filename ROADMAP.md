@@ -68,6 +68,7 @@
 - [ ] Produce API documentation with example request and response objects
 - [ ] Audit dependencies
 - [ ] Review all tests
+- [ ] Find a tool to assess test coverage
 ### Concerns Identified
 - [ ] Session and user
 

@@ -7,7 +7,7 @@ const {
   updateTransactionById,
   deleteTransactionById,
 } = require('../controllers/transactionController');
-const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
+const { sanitizeAndValidate } = require('../middleware/sanitizeAndValidateMiddleware');
 const { querySchema, bodySchema } = require('../api-schemas/transactionApiSchema');
 
 // Get all transactions

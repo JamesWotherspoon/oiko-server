@@ -1,26 +1,26 @@
 const express = require('express');
-const rateLimit = require('express-rate-limit');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const useragent = require('express-useragent');
 const { logger } = require('../utils/loggerUtils');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
-exports.parseJson = express.json();
+const parseJson = express.json();
 
-exports.cookieParser = cookieParser();
+const cookieParse = cookieParser();
 
-exports.helmet = helmet();
+const helmetMiddleware = helmet();
 
-exports.cors = cors({
+const corsMiddleware = cors({
   origin: process.env.CLIENT_ORIGIN,
   credentials: true,
   allowedHeaders: 'Content-Type',
   methods: ['GET, POST, PUT, DELETE'],
 });
 
-exports.limiter = rateLimit({
+const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 80,
   handler: (req, res, next) => {
@@ -31,7 +31,7 @@ exports.limiter = rateLimit({
   },
 });
 
-exports.log = [
+const log = [
   useragent.express(),
   (req, res, next) => {
     // Store the start time for calculating response time
@@ -54,7 +54,7 @@ exports.log = [
   },
 ];
 
-exports.errorHandler = (error, req, res, next) => {
+const errorHandler = (error, req, res, next) => {
   logger.error({ msg: error.message, stack: error.stack });
   res.status(error.status || 500);
   const errorResponse = {
@@ -66,4 +66,14 @@ exports.errorHandler = (error, req, res, next) => {
   }
   // Send error response
   res.json({ error: errorResponse });
+};
+
+module.exports = {
+  parseJson,
+  cookieParse,
+  helmetMiddleware,
+  corsMiddleware,
+  limiter,
+  log,
+  errorHandler,
 };

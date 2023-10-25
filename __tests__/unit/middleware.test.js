@@ -9,8 +9,8 @@ const allowedClientOrigin = process.env.CLIENT_ORIGIN;
 describe('Middleware Unit Tests', () => {
   describe('CORS, cookie parsing and JSON parsing', () => {
     const app = express();
-    app.use(middleware.cors);
-    app.use(middleware.cookieParser);
+    app.use(middleware.corsMiddleware);
+    app.use(middleware.cookieParse);
     app.use(middleware.parseJson);
 
     app.post('/parseJson', (req, res) => {

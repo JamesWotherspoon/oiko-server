@@ -1,4 +1,4 @@
-const sanitizeAndValidate = require('../../src/middleware/sanitizeAndValidateMiddleware');
+const { sanitizeAndValidate } = require('../../src/middleware/sanitizeAndValidateMiddleware');
 
 describe('sanitizeAndValidate middleware', () => {
   it('should return a middleware function', () => {

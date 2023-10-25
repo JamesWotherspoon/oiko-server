@@ -8,7 +8,7 @@ const {
   deleteMoneyPotById,
   transferMoneyPots,
 } = require('../controllers/moneyPotController');
-const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
+const { sanitizeAndValidate } = require('../middleware/sanitizeAndValidateMiddleware');
 const { bodySchema } = require('../api-schemas/moneyPotApiSchema');
 
 // Get all money pots

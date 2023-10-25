@@ -7,7 +7,7 @@ const {
   updateCategoryById,
   deleteCategoryById,
 } = require('../controllers/categoryController');
-const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
+const { sanitizeAndValidate } = require('../middleware/sanitizeAndValidateMiddleware');
 const { querySchema, bodySchema } = require('../api-schemas/categoryApiSchema');
 
 // Get all categories

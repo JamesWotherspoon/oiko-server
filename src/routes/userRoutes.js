@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const protectedRouter = express.Router();
 const UserController = require('../controllers/userController');
-const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
+const { sanitizeAndValidate } = require('../middleware/sanitizeAndValidateMiddleware');
 const { bodySchema } = require('../api-schemas/userApiSchema');
 
 // GET a single user by ID

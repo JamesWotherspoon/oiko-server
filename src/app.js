@@ -1,7 +1,6 @@
 const express = require('express');
-const app = express();
 const middleware = require('./middleware/appMiddleware.js');
-const authenticateUser = require('./middleware/authMiddleware.js');
+const { authenticateUser } = require('./middleware/authMiddleware.js');
 const sessionRoutes = require('./routes/sessionRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const transactionRoutes = require('./routes/transactionRoutes.js');
@@ -9,15 +8,17 @@ const categoryRoutes = require('./routes/categoryRoutes.js');
 const scheduledTransactionRoutes = require('./routes/scheduledTransactionRoutes.js');
 const moneyPotRoutes = require('./routes/moneyPotRoutes.js');
 
+const app = express();
+
 // Logging Middleware
 app.use(middleware.log);
 
 // Middleware
-app.use(middleware.cors);
+app.use(middleware.corsMiddleware);
 app.use(middleware.limiter);
 app.use(middleware.parseJson);
-app.use(middleware.cookieParser);
-app.use(middleware.helmet);
+app.use(middleware.cookieParse);
+app.use(middleware.helmetMiddleware);
 
 // Routes
 app.use('/api/sessions', sessionRoutes.router);

@@ -7,7 +7,7 @@ const {
   updateScheduledTransactionById,
   deleteScheduledTransactionById,
 } = require('../controllers/scheduledTransactionController');
-const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
+const { sanitizeAndValidate } = require('../middleware/sanitizeAndValidateMiddleware');
 const { querySchema, bodySchema } = require('../api-schemas/scheduledTransactionApiSchema');
 
 // Get all scheduled transactions

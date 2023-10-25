@@ -23,4 +23,4 @@ const sanitizeAndValidate = (requestDataSource, schema) => {
   };
 };
 
-module.exports = sanitizeAndValidate;
+module.exports = { sanitizeAndValidate };

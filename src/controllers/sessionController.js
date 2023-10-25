@@ -1,12 +1,12 @@
 const User = require('../models/UserModel');
 const authUtils = require('../utils/authUtils');
-const sanitize = require('../utils/sanitizeUtils');
+const { normalizeText } = require('../utils/sanitizeUtils');
 
 const createSession = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const normalizedEmail = sanitize.normalizeText(email);
+    const normalizedEmail = normalizeText(email);
 
     // Find the user by email
     const user = await User.findOne({ where: { email: normalizedEmail } });
