@@ -3,9 +3,9 @@ const sequelize = require('../config/dbConfig');
 const User = require('./UserModel');
 const Category = require('./CategoryModel');
 const ScheduledTransaction = require('./ScheduledTransactionModel');
+const MoneyPot = require('./MoneyPotModel');
 
-const Transaction = sequelize.define(
-  'Transaction',
+const Transaction = sequelize.define('Transaction',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -17,6 +17,14 @@ const Transaction = sequelize.define(
       allowNull: false,
       references: {
         model: User,
+        key: 'id',
+      },
+    },
+    moneyPotId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: MoneyPot,
         key: 'id',
       },
     },
@@ -79,6 +87,11 @@ Transaction.belongsTo(Category, {
 Transaction.belongsTo(ScheduledTransaction, {
   foreignKey: 'scheduledTransactionId',
   onDelete: 'SET NULL', // If the scheduled transaction is deleted, set the reference to NULL
+});
+
+Transaction.belongsTo(MoneyPot, {
+  foreignKey: 'moneyPotId',
+  onDelete: 'SET NULL', // If the money pot is deleted, set the reference to NULL
 });
 
 module.exports = Transaction;

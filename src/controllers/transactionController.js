@@ -1,9 +1,8 @@
-const Transaction = require('../models/TransactionModel');
-const retrieveTransactions = require('../services/retrieveTransactions');
+const transactionServices = require('../services/transactionServices');
 
 const getTransactions = async (req, res, next) => {
   try {
-    const transactions = await retrieveTransactions(req.user.id, req.query);
+    const transactions = await transactionServices.retrieve(req.user.id, req.query);
 
     if (transactions.length !== 0) {
       res.status(200).json(transactions);
@@ -21,8 +20,7 @@ const getTransactions = async (req, res, next) => {
 // Fetch a specific transaction by ID
 const getTransactionById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const transaction = await Transaction.findOne({ where: whereClause });
+    const transaction = await transactionServices.retrieveById(req.user.id, req.params.id);
     if (transaction) {
       res.status(200).json(transaction);
     } else {
@@ -40,15 +38,13 @@ const getTransactionById = async (req, res, next) => {
 
 const createTransaction = async (req, res, next) => {
   try {
-    const createObj = { ...req.body, userId: req.user.id };
-    const transaction = await Transaction.create(createObj);
+    const transaction = await transactionServices.create(req.user.id, req.body);
     res.status(201).json(transaction);
   } catch (error) {
-    // Adding a custom error message for internal logging
     const enhancedError = new Error(
       `Failed creating transaction. Original error: ${error.message}`,
     );
-    enhancedError.stack = error.stack; // Preserving the original stack trace
+    enhancedError.stack = error.stack;
     next(enhancedError);
   }
 };
@@ -56,13 +52,9 @@ const createTransaction = async (req, res, next) => {
 // Update a transaction by ID
 const updateTransactionById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
+    const transaction = await transactionServices.update(req.user.id, req.params.id, req.body);
 
-    const updated = await Transaction.update(req.body, {
-      where: whereClause,
-    });
-
-    if (updated.length) {
+    if (transaction.length) {
       res.status(200).json({ updated: true });
     } else {
       res.status(404).json({ updated: false });
@@ -80,8 +72,7 @@ const updateTransactionById = async (req, res, next) => {
 // Delete a transaction by ID
 const deleteTransactionById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const deleted = await Transaction.destroy({ where: whereClause });
+    const deleted = await transactionServices.destroy(req.user.id, req.params.id);
 
     if (deleted) {
       res.status(200).json({ deleted: true });

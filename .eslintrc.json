@@ -9,7 +9,16 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "max-len": ["error", { "code": 120 }],
+    "max-len": [
+      "error",
+      120,
+      2,
+      {
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreUrls": true
+      }
+    ],
     "new-cap": "off",
     "object-curly-spacing": ["error", "always"],
     "require-jsdoc": "off",

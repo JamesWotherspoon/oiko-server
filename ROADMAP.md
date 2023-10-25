@@ -52,15 +52,15 @@
 - [x] Run unit and integration tests for running triggering transactions and schedule frequnecy 
 
 ## Milestone 7: MoneyPots
-- [ ] Create model for user MoneyPot
-- [ ] Create MoneyPot routes and controller
-- [ ] Creat ApiSchema 
-- [ ] Create MoneyPot services 
-- [ ] Create MoneyPot transaction service to ensure income/expense both executed successfully
-- [ ] Calculate transactions for frontend visualization
+- [x] Create model for user MoneyPot
+- [x] Create MoneyPot routes and controller
+- [x] Creat ApiSchema 
+- [x] Create MoneyPot services 
+- [x] Create MoneyPot transaction service to ensure income/expense both executed successfully
+- [x] Integration tests for moneyPot CRUD operations, test for moneyPot transfers, test transaction CRUD operations update moneyPot balance
 
 ## Milestone 8: SavingGoals
-- [ ] Create model for user MoneyPot/financialAccount and SavingsGoals
+- [ ] Create model for user SavingsGoals
 - [ ] Define technique of handling MoneyPot/financialAccount and SavingsGoal value change
 - [ ] Define technique for tracking history of transactions to financialAccounts
 
@@ -94,6 +94,9 @@
 
 ## Authentication
 - [ ] Implement Google OAuth login Api
+
+## Data Display
+- [ ] Calculate transactions for frontend visualization
 
 ## Categories
 - [ ] Apply default caetgories on user creation

@@ -27,6 +27,10 @@ router.put('/:id', validate('body', bodySchema.moneyPot), updateMoneyPotById);
 router.delete('/:id', deleteMoneyPotById);
 
 // A RPC endpoint to transfer money between money pots
-router.post('/transfer', validate('body', bodySchema.transfer), transferMoneyPots);
+router.post(
+  '/transfer',
+  validate('body', bodySchema.transfer),
+  transferMoneyPots,
+);
 
 module.exports = router;

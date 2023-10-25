@@ -7,6 +7,7 @@ const bodySchema = {
     amount: { type: 'number' },
     transactionDate: { type: 'string', format: 'date' },
     description: { type: 'string' },
+    moneyPotId: { type: 'integer' },
   },
   required: ['transactionType', 'amount', 'transactionDate'],
   additionalProperties: false,

@@ -1,9 +1,8 @@
-const MoneyPot = require('../models/MoneyPotModel');
-const { retrieveMoneyPots, executeTransferMoneyPots } = require('../services/moneyPotService');
+const moneyPotServices = require('../services/moneyPotServices');
 
 const getMoneyPots = async (req, res, next) => {
   try {
-    const moneyPots = await retrieveMoneyPots(req.user.id);
+    const moneyPots = await moneyPotServices.retrieve(req.user.id);
 
     if (moneyPots.length !== 0) {
       res.status(200).json(moneyPots);
@@ -21,8 +20,7 @@ const getMoneyPots = async (req, res, next) => {
 // Fetch a specific money pot by ID
 const getMoneyPotById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const moneyPot = await MoneyPot.findOne({ where: whereClause });
+    const moneyPot = await moneyPotServices.retrieveById(req.user.id, req.params.id);
     if (moneyPot) {
       res.status(200).json(moneyPot);
     } else {
@@ -40,8 +38,7 @@ const getMoneyPotById = async (req, res, next) => {
 
 const createMoneyPot = async (req, res, next) => {
   try {
-    const createObj = { ...req.body, userId: req.user.id };
-    const moneyPot = await MoneyPot.create(createObj);
+    const moneyPot = await moneyPotServices.create(req.user.id, req.body);
     res.status(201).json(moneyPot);
   } catch (error) {
     // Adding a custom error message for internal logging
@@ -54,13 +51,9 @@ const createMoneyPot = async (req, res, next) => {
 // Update a money pot by ID
 const updateMoneyPotById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
+    const moneyPot = await moneyPotServices.update(req.user.id, req.params.id, req.body);
 
-    const updated = await MoneyPot.update(req.body, {
-      where: whereClause,
-    });
-
-    if (updated.length) {
+    if (moneyPot.length) {
       res.status(200).json({ updated: true });
     } else {
       res.status(404).json({ updated: false });
@@ -78,8 +71,7 @@ const updateMoneyPotById = async (req, res, next) => {
 // Delete a money pot by ID
 const deleteMoneyPotById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const deleted = await MoneyPot.destroy({ where: whereClause });
+    const deleted = await moneyPotServices.destroy(req.user.id, req.params.id);
 
     if (deleted) {
       res.status(200).json({ deleted: true });
@@ -96,21 +88,18 @@ const deleteMoneyPotById = async (req, res, next) => {
   }
 };
 
-const transferMoneyPots = async (res, req, next) => {
+const transferMoneyPots = async (req, res, next) => {
   try {
-    const { amount, fromPotId, toPotId } = req.body;
-    const userId = req.user.id;
+    const transfer = await moneyPotServices.transfer(req.user.id, req.body);
 
-    const transfer = await executeTransferMoneyPots(userId, { amount, fromPotId, toPotId });
-
-    if (transfer.success) {
+    if (transfer) {
       res.status(200).json(transfer);
     } else {
       res.status(500).send();
     }
   } catch (error) {
     const enhancedError = new Error(
-      `Failed money pot transfer with user ID ${userId} from pot ${fromPotId} to  pot ${toPotId}.` +
+      `Failed money pot transfer with user ID ${req.user.id} from pot ${req.body.fromPotId} to  pot ${req.body.toPotId}.` +
         `Original error: ${error.message}`,
     );
     enhancedError.stack = error.stack; // Preserving the original stack trace
