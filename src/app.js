@@ -17,7 +17,7 @@ app.use(middleware.cors);
 app.use(middleware.limiter);
 app.use(middleware.parseJson);
 app.use(middleware.cookieParser);
-// app.use(middleware.helmet);
+app.use(middleware.helmet);
 
 // Routes
 app.use('/api/sessions', sessionRoutes.router);

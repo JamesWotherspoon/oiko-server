@@ -5,10 +5,13 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const useragent = require('express-useragent');
 const { logger } = require('../utils/loggerUtils');
+const helmet = require('helmet');
 
 exports.parseJson = express.json();
 
 exports.cookieParser = cookieParser();
+
+exports.helmet = helmet();
 
 exports.cors = cors({
   origin: process.env.CLIENT_ORIGIN,
