@@ -59,16 +59,19 @@
 - [x] Create MoneyPot transaction service to ensure income/expense both executed successfully
 - [x] Integration tests for moneyPot CRUD operations, test for moneyPot transfers, test transaction CRUD operations update moneyPot balance
 
-## Milestone 9: Code review, and testing
-- [ ] Review all code for cosistancy 
-- [ ] Produce API documentation with example request and response objects
+## Milestone 8: Code review, and testing
+- [ ] Review all code for points of concern -> list concern in ROADMAP -> Refactor for clairty and effciency
+- [ ] Evaluate layers for consistant appraoches
 - [ ] Ensure consistant import and export usage across server
 - [ ] Ensure consistant naming conventions across server
-- [ ] Ensure robust and complete error handling
+- [ ] Ensure robust and complete error handling and effective error messages
+- [ ] Produce API documentation with example request and response objects
 - [ ] Audit dependencies
 - [ ] Review all tests
+### Concerns Identified
+- [ ] Session and user
 
-## Milestone 10: Analytics and Monitoring
+## Milestone 9: Analytics and Monitoring
 - [ ] Develop preformance tests and identify bottlenecks - timings
 - [ ] Use packages to visualize system health, usage and preformance
 - [ ] Setup alerts for system health and security issues
@@ -79,6 +82,8 @@
 - [ ] Setup and configure Docker
 - [ ] Deploy server to production environment
 - [ ] Set up continuous integration and deployment with GitHub Actions
+- [ ] Get SLS certificate and ensure https is used
+- [ ] Ensure robust firewall for virtual machine
 
 # Version 1.1.0
 
