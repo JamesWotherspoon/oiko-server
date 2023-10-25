@@ -6,7 +6,7 @@ const bodySchema = {
     name: { type: 'string' },
     amount: { type: 'number' },
     transactionDate: { type: 'string', format: 'date' },
-    description: { type: 'string' },
+    description: { type: 'string', maxLength: 250 },
     moneyPotId: { type: 'integer' },
   },
   required: ['transactionType', 'amount', 'transactionDate'],

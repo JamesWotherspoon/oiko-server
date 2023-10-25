@@ -7,20 +7,20 @@ const {
   updateScheduledTransactionById,
   deleteScheduledTransactionById,
 } = require('../controllers/scheduledTransactionController');
-const validate = require('../middleware/validateMiddleware');
+const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
 const { querySchema, bodySchema } = require('../api-schemas/scheduledTransactionApiSchema');
 
 // Get all scheduled transactions
-router.get('/', validate('query', querySchema), getScheduledTransactions);
+router.get('/', sanitizeAndValidate('query', querySchema), getScheduledTransactions);
 
 // Get scheduled transaction by ID
 router.get('/:id', getScheduledTransactionById);
 
 // Set scheduled transaction
-router.post('/', validate('body', bodySchema), handleCreateScheduledTransaction);
+router.post('/', sanitizeAndValidate('body', bodySchema), handleCreateScheduledTransaction);
 
 // Update scheduled transaction
-router.put('/:id', validate('body', bodySchema), updateScheduledTransactionById);
+router.put('/:id', sanitizeAndValidate('body', bodySchema), updateScheduledTransactionById);
 
 // Delete scheduled transaction
 router.delete('/:id', deleteScheduledTransactionById);

@@ -29,7 +29,7 @@
 ## Milestone 4: Transaction Handling
 - [x] Define CRUD routes for transaction adhering to RESTful design prinicples
 - [x] Create controllers to sucessfully handle basic CRUD operations
-- [x] Define transaction validation middleware
+- [x] Define transaction validation middleware and sanitization
 - [x] Define accepted query paramaters for getting transactions
 - [x] Implpement pagination
 - [x] Implement transaction service for database queries with paramaters
@@ -59,18 +59,8 @@
 - [x] Create MoneyPot transaction service to ensure income/expense both executed successfully
 - [x] Integration tests for moneyPot CRUD operations, test for moneyPot transfers, test transaction CRUD operations update moneyPot balance
 
-## Milestone 8: SavingGoals
-- [ ] Create model for user SavingsGoals
-- [ ] Define technique of handling MoneyPot/financialAccount and SavingsGoal value change
-- [ ] Define technique for tracking history of transactions to financialAccounts
-
-
-## Milestone 8: Request data validation and sanitization
-- [ ] Normalize data before inserting to database
-- [ ] Hanlde unexpected ASCII or alternative charecters
-- [ ] Ensure protection from code and sql injection
-
 ## Milestone 9: Code review, and testing
+- [ ] Review all code for cosistancy 
 - [ ] Produce API documentation with example request and response objects
 - [ ] Ensure consistant import and export usage across server
 - [ ] Ensure consistant naming conventions across server
@@ -79,7 +69,7 @@
 - [ ] Review all tests
 
 ## Milestone 10: Analytics and Monitoring
-- [ ] Develop preformance tests and identify bottlenecks
+- [ ] Develop preformance tests and identify bottlenecks - timings
 - [ ] Use packages to visualize system health, usage and preformance
 - [ ] Setup alerts for system health and security issues
 
@@ -92,8 +82,17 @@
 
 # Version 1.1.0
 
+## Preformance
+- [ ] Implement http2.0
+
 ## Authentication
 - [ ] Implement Google OAuth login Api
+- [ ] apply login limits - timeout
+
+## Secuirty
+- [ ] Apply secuirty logging
+- [ ] apply reffer header checks with logging
+- [ ] Apply more robust authorization to check user can only access there own data
 
 ## Data Display
 - [ ] Calculate transactions for frontend visualization

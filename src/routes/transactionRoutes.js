@@ -7,20 +7,20 @@ const {
   updateTransactionById,
   deleteTransactionById,
 } = require('../controllers/transactionController');
-const validate = require('../middleware/validateMiddleware');
+const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
 const { querySchema, bodySchema } = require('../api-schemas/transactionApiSchema');
 
 // Get all transactions
-router.get('/', validate('query', querySchema), getTransactions);
+router.get('/', sanitizeAndValidate('query', querySchema), getTransactions);
 
 // Get transaction by ID
 router.get('/:id', getTransactionById);
 
 // Set transaction
-router.post('/', validate('body', bodySchema), createTransaction);
+router.post('/', sanitizeAndValidate('body', bodySchema), createTransaction);
 
 // Update transaction
-router.put('/:id', validate('body', bodySchema), updateTransactionById);
+router.put('/:id', sanitizeAndValidate('body', bodySchema), updateTransactionById);
 
 // Delete transaction
 router.delete('/:id', deleteTransactionById);

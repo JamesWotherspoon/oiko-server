@@ -8,7 +8,7 @@ const {
   deleteMoneyPotById,
   transferMoneyPots,
 } = require('../controllers/moneyPotController');
-const validate = require('../middleware/validateMiddleware');
+const sanitizeAndValidate = require('../middleware/sanitizeAndValidateMiddleware');
 const { bodySchema } = require('../api-schemas/moneyPotApiSchema');
 
 // Get all money pots
@@ -18,10 +18,10 @@ router.get('/', getMoneyPots);
 router.get('/:id', getMoneyPotById);
 
 // Set money pot
-router.post('/', validate('body', bodySchema.moneyPot), createMoneyPot);
+router.post('/', sanitizeAndValidate('body', bodySchema.moneyPot), createMoneyPot);
 
 // Update money pot
-router.put('/:id', validate('body', bodySchema.moneyPot), updateMoneyPotById);
+router.put('/:id', sanitizeAndValidate('body', bodySchema.moneyPot), updateMoneyPotById);
 
 // Delete money pot
 router.delete('/:id', deleteMoneyPotById);
@@ -29,7 +29,7 @@ router.delete('/:id', deleteMoneyPotById);
 // A RPC endpoint to transfer money between money pots
 router.post(
   '/transfer',
-  validate('body', bodySchema.transfer),
+  sanitizeAndValidate('body', bodySchema.transfer),
   transferMoneyPots,
 );
 
