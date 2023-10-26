@@ -1,4 +1,4 @@
-function getNextTransactionDate(recurrenceType, dayOfWeek, dateOfMonth, monthOfYear, selectedTransactionDate) {
+function getNextTransactionDate({ recurrenceType, dayOfWeek, dateOfMonth, monthOfYear, selectedTransactionDate }) {
   const currentDate = new Date();
   const selectedDate = selectedTransactionDate ? new Date(selectedTransactionDate) : currentDate;
   const nextDate = new Date(selectedDate);

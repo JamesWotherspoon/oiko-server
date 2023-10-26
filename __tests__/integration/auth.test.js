@@ -29,6 +29,7 @@ describe('User Authentication Tests', () => {
       .post('/api/users')
       .send(JSON.stringify(testUser))
       .set('Content-Type', 'application/json');
+    expect(response.status).toBe(201);
 
     testUser.id = response.body.id;
     // Query the database to check if the user exists

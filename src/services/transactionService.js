@@ -1,5 +1,5 @@
 const Transaction = require('../models/TransactionModel');
-const moneyPotServices = require('../services/moneyPotServices');
+const moneyPotService = require('./moneyPotService');
 const { Op } = require('sequelize');
 
 const retrieve = async (userId, query) => {
@@ -79,7 +79,7 @@ const retrieveById = async (userId, id) => {
 const create = async (userId, transactionData) => {
   try {
     const transaction = await Transaction.create({ userId, ...transactionData });
-    await moneyPotServices.updateBalance(transaction, 'create');
+    await moneyPotService.updateBalance(transaction, 'create');
     return transaction;
   } catch (error) {
     const enhancedError = new Error(
@@ -90,12 +90,12 @@ const create = async (userId, transactionData) => {
   }
 };
 
-const update = async (userId, transactionId, transactionData) => {
+const updateById = async (userId, transactionId, transactionData) => {
   try {
     const whereClause = { userId, id: transactionId };
     const previousTransaction = await Transaction.findOne({ where: whereClause });
     const updated = await Transaction.update(transactionData, { where: whereClause });
-    await moneyPotServices.updateBalance(transactionData, 'update', previousTransaction);
+    await moneyPotService.updateBalance(transactionData, 'update', previousTransaction);
     return updated;
   } catch (error) {
     const enhancedError = new Error(
@@ -106,12 +106,12 @@ const update = async (userId, transactionId, transactionData) => {
   }
 };
 
-const destroy = async (userId, transactionId) => {
+const deleteById = async (userId, transactionId) => {
   try {
     const transaction = await Transaction.findOne({ where: { userId, id: transactionId } });
     const whereClause = { userId: userId, id: transactionId };
     await Transaction.destroy({ where: whereClause });
-    await moneyPotServices.updateBalance(transaction, 'destroy');
+    await moneyPotService.updateBalance(transaction, 'destroy');
     return true;
   } catch (error) {
     const enhancedError = new Error(
@@ -126,6 +126,6 @@ module.exports = {
   retrieve,
   retrieveById,
   create,
-  update,
-  destroy,
+  updateById,
+  deleteById,
 };

@@ -5,31 +5,39 @@ const authSecretKey = process.env.AUTH_SECRET_KEY;
 // const domain = process.env.DOMAIN;
 const tokensExpiry = '7d';
 
+const authCookieOptions = {
+  httpOnly: true,
+  sameSite: 'Lax',
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
+  path: '/',
+};
+
 // Auth Token for client to sever authentication
-exports.setAuthToken = (res, userId, email) => {
+const generateAuthToken = (userId, email) => {
   try {
     const authToken = jwt.sign({ id: userId, email }, authSecretKey, {
       expiresIn: tokensExpiry,
     });
 
-    res.cookie('authToken', authToken, {
-      httpOnly: true,
-      sameSite: 'Lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
-      path: '/',
-      // domain: domain,
-    });
+    return authToken;
   } catch (error) {
-    console.error('Error setting auth cookie:', error);
+    throw new Error('Failed to generate auth token');
   }
 };
 
-exports.comparePasswords = async (password, passwordHash) => {
+const verifyPassword = async (password, passwordHash) => {
   return await bcrypt.compare(password, passwordHash);
 };
 
-exports.hashPassword = async (password) => {
+const hashPassword = async (password) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   return hashedPassword;
+};
+
+module.exports = {
+  generateAuthToken,
+  verifyPassword,
+  hashPassword,
+  authCookieOptions,
 };

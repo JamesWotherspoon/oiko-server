@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getScheduledTransactions,
   getScheduledTransactionById,
-  handleCreateScheduledTransaction,
+  createScheduledTransaction,
   updateScheduledTransactionById,
   deleteScheduledTransactionById,
 } = require('../controllers/scheduledTransactionController');
@@ -17,7 +17,7 @@ router.get('/', sanitizeAndValidate('query', querySchema), getScheduledTransacti
 router.get('/:id', getScheduledTransactionById);
 
 // Set scheduled transaction
-router.post('/', sanitizeAndValidate('body', bodySchema), handleCreateScheduledTransaction);
+router.post('/', sanitizeAndValidate('body', bodySchema), createScheduledTransaction);
 
 // Update scheduled transaction
 router.put('/:id', sanitizeAndValidate('body', bodySchema), updateScheduledTransactionById);

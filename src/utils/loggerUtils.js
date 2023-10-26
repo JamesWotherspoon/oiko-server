@@ -27,8 +27,6 @@ const apiRequestErrorLogger = winston.createLogger({
 const scheduledTransactionLogger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
-  transports: [
-    new winston.transports.File({ filename: scheduledTransactionFilePath }),
-  ],
+  transports: [new winston.transports.File({ filename: scheduledTransactionFilePath })],
 });
 module.exports = { apiRequestErrorLogger, logger, scheduledTransactionLogger };

@@ -42,7 +42,7 @@ const create = async (userId, moneyPotData) => {
   }
 };
 
-const update = async (userId, id, moneyPotData) => {
+const updateById = async (userId, id, moneyPotData) => {
   try {
     const whereClause = { userId, id };
     const moneyPot = await MoneyPot.update(moneyPotData, { where: whereClause });
@@ -54,7 +54,7 @@ const update = async (userId, id, moneyPotData) => {
   }
 };
 
-const destroy = async (userId, id) => {
+const deleteById = async (userId, id) => {
   try {
     const whereClause = { userId, id };
     const moneyPot = await MoneyPot.destroy({ where: whereClause });
@@ -146,8 +146,8 @@ module.exports = {
   retrieve,
   retrieveById,
   create,
-  update,
-  destroy,
+  updateById,
+  deleteById,
   transfer,
   updateBalance,
 };

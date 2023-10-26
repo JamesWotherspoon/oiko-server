@@ -60,22 +60,11 @@
 - [x] Integration tests for moneyPot CRUD operations, test for moneyPot transfers, test transaction CRUD operations update moneyPot balance
 
 ## Milestone 8: Code review, and testing
-- [ ] Review all code for points of concern -> list concern in ROADMAP -> Refactor for clairty and effciency
 - [ ] Evaluate layers for consistant appraoches
-- [ ] Ensure consistant import and export usage across server
 - [ ] Ensure consistant naming conventions across server
 - [ ] Ensure robust and complete error handling and effective error messages
-- [ ] Produce API documentation with example request and response objects
 - [ ] Audit dependencies
 - [ ] Review all tests
-- [ ] Find a tool to assess test coverage
-### Concerns Identified
-- [ ] Session and user
-
-## Milestone 9: Analytics and Monitoring
-- [ ] Develop preformance tests and identify bottlenecks - timings
-- [ ] Use packages to visualize system health, usage and preformance
-- [ ] Setup alerts for system health and security issues
 
 ## Complete Frontend roadmap
 
@@ -88,17 +77,9 @@
 
 # Version 1.1.0
 
-## Preformance
-- [ ] Implement http2.0
-
 ## Authentication
 - [ ] Implement Google OAuth login Api
 - [ ] apply login limits - timeout
-
-## Secuirty
-- [ ] Apply secuirty logging
-- [ ] apply reffer header checks with logging
-- [ ] Apply more robust authorization to check user can only access there own data
 
 ## Data Display
 - [ ] Calculate transactions for frontend visualization
@@ -107,3 +88,18 @@
 - [ ] Apply default caetgories on user creation
 - [ ] Implement category icon images
 - [ ] Manage user category preference for improved UX
+
+## Analytics and Monitoring
+- [ ] Develop preformance tests and identify bottlenecks - timings
+- [ ] Use packages to visualize system health, usage and preformance
+- [ ] Setup alerts for system health and security issues
+- [ ] Produce API documentation with example request and response objects
+- [ ] Find a tool to assess test coverage
+
+## Preformance
+- [ ] Implement http2.0
+
+## Secuirty
+- [ ] Apply secuirty logging
+- [ ] apply reffer header checks with logging
+- [ ] Apply more robust authorization to check user can only access there own data
