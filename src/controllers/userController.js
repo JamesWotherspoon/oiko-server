@@ -1,42 +1,60 @@
-const User = require('../models/UserModel');
-const authUtils = require('../utils/authUtils');
-const sanitize = require('../utils/sanitizeUtils');
+const { authCookieOptions } = require('../utils/authUtils');
+const sessionService = require('../services/sessionService');
+const userService = require('../services/userService');
 
-async function createUser(req, res) {
+async function createUser(req, res, next) {
   try {
     const { email, password } = req.body;
-
-    const normalizedEmail = sanitize.normalizeText(email);
-
-    // Check if the user with the same email already exists
-    const existingUser = await User.findOne({ where: { email: normalizedEmail } });
-
-    if (existingUser) {
-      // If a user with the same email exists, return an error response
-      return res.status(400).json({ error: 'Email already exists' });
-    }
-
-    // Hash password
-    const passwordHash = await authUtils.hashPassword(password);
-
-    // Create user
-    const user = await User.create({ email: normalizedEmail, passwordHash });
+    const user = await userService.create({ email, password });
 
     // Create user token and attach to res
-    authUtils.setAuthToken(res, user.id, user.email);
+    const authToken = await sessionService.initiateSession({ email, password });
+
+    // Attach the authToken to the response as a cookie
+    res.cookie('authToken', authToken, authCookieOptions);
 
     res.status(201).json({ id: user.id });
   } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'Failed to create user' });
+    // res.status(500).json({ message: error.message ? error.message : 'Failed to create user' });
+    next(error);
   }
 }
 
-const getUserById = async (req, res) => { };
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.retrieveById(id);
 
-const updateUserById = async (req, res) => { };
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message ? error.message : 'Failed to retrieve user' });
+  }
+};
 
-const deleteUserById = async (req, res) => { };
+const updateUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userData = req.body;
+
+    const user = await userService.updateById(id, userData);
+
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await userService.deleteById(id);
+
+    res.status(200).json(deleted);
+  } catch (error) {
+    res.status(404).json({ message: error.message ? error.message : 'Failed to delete user' });
+  }
+};
 
 module.exports = {
   createUser,

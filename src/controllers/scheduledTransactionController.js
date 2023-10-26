@@ -1,23 +1,11 @@
-const ScheduledTransaction = require('../models/ScheduledTransactionModel');
-const {
-  retrieveScheduledTransactions,
-  executeCreateScheduledTransaction,
-} = require('../services/scheduledTransaction/scheduledTransactionService');
+const scheduledTransactionService = require('../services/scheduledTransaction/scheduledTransactionService');
 
 const getScheduledTransactions = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { categoryId, transactionType, name, minAmount, maxAmount, recurrenceType } = req.query;
+    const query = req.query;
 
-    const scheduledTransactions = await retrieveScheduledTransactions(
-      userId,
-      categoryId,
-      transactionType,
-      name,
-      minAmount,
-      maxAmount,
-      recurrenceType,
-    );
+    const scheduledTransactions = await scheduledTransactionService.retrieve(userId, query);
 
     if (scheduledTransactions.length !== 0) {
       res.status(200).json(scheduledTransactions);
@@ -35,8 +23,11 @@ const getScheduledTransactions = async (req, res, next) => {
 // Fetch a specific scheduled transaction by ID
 const getScheduledTransactionById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const scheduledTransaction = await ScheduledTransaction.findOne({ where: whereClause });
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const scheduledTransaction = await scheduledTransactionService.retrieveById(userId, id);
+
     if (scheduledTransaction) {
       res.status(200).json(scheduledTransaction);
     } else {
@@ -52,17 +43,14 @@ const getScheduledTransactionById = async (req, res, next) => {
   }
 };
 
-const handleCreateScheduledTransaction = async (req, res, next) => {
+const createScheduledTransaction = async (req, res, next) => {
   try {
-    const createObj = { ...req.body, userId: req.user.id };
-    const scheduledTransaction = await executeCreateScheduledTransaction(createObj);
-    const responseBody = {
-      id: scheduledTransaction.id,
-      name: scheduledTransaction.name,
-      active: scheduledTransaction.active,
-      nextTransactionDate: scheduledTransaction.nextTransactionDate,
-    };
-    res.status(201).json(responseBody);
+    const userId = req.user.id;
+    const scheduledTransactionData = req.body;
+
+    const scheduledTransaction = await scheduledTransactionService.create(userId, scheduledTransactionData);
+
+    res.status(201).json(scheduledTransaction);
   } catch (error) {
     // Adding a custom error message for internal logging
     const enhancedError = new Error(`Failed creating scheduled transaction. Original error: ${error.message}`);
@@ -74,11 +62,11 @@ const handleCreateScheduledTransaction = async (req, res, next) => {
 // Update a scheduled transaction by ID
 const updateScheduledTransactionById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
+    const userId = req.user.id;
+    const { id } = req.params;
+    const scheduledActionData = req.body;
 
-    const updated = await ScheduledTransaction.update(req.body, {
-      where: whereClause,
-    });
+    const updated = await scheduledTransactionService.updateById(userId, id, scheduledActionData);
 
     if (updated.length) {
       res.status(200).json({ updated: true });
@@ -98,8 +86,10 @@ const updateScheduledTransactionById = async (req, res, next) => {
 // Delete a scheduled transaction by ID
 const deleteScheduledTransactionById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const deleted = await ScheduledTransaction.destroy({ where: whereClause });
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const deleted = await scheduledTransactionService.deleteById(userId, id);
 
     if (deleted) {
       res.status(200).json({ deleted: true });
@@ -119,7 +109,7 @@ const deleteScheduledTransactionById = async (req, res, next) => {
 module.exports = {
   getScheduledTransactions,
   getScheduledTransactionById,
-  handleCreateScheduledTransaction,
+  createScheduledTransaction,
   updateScheduledTransactionById,
   deleteScheduledTransactionById,
 };

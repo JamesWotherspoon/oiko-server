@@ -1,8 +1,10 @@
-const moneyPotServices = require('../services/moneyPotServices');
+const moneyPotService = require('../services/moneyPotService');
 
 const getMoneyPots = async (req, res, next) => {
   try {
-    const moneyPots = await moneyPotServices.retrieve(req.user.id);
+    const userId = req.user.id;
+
+    const moneyPots = await moneyPotService.retrieve(userId);
 
     if (moneyPots.length !== 0) {
       res.status(200).json(moneyPots);
@@ -20,7 +22,11 @@ const getMoneyPots = async (req, res, next) => {
 // Fetch a specific money pot by ID
 const getMoneyPotById = async (req, res, next) => {
   try {
-    const moneyPot = await moneyPotServices.retrieveById(req.user.id, req.params.id);
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const moneyPot = await moneyPotService.retrieveById(userId, id);
+
     if (moneyPot) {
       res.status(200).json(moneyPot);
     } else {
@@ -38,7 +44,11 @@ const getMoneyPotById = async (req, res, next) => {
 
 const createMoneyPot = async (req, res, next) => {
   try {
-    const moneyPot = await moneyPotServices.create(req.user.id, req.body);
+    const userId = req.user.id;
+    const moneyPotData = req.body;
+
+    const moneyPot = await moneyPotService.create(userId, moneyPotData);
+
     res.status(201).json(moneyPot);
   } catch (error) {
     // Adding a custom error message for internal logging
@@ -51,7 +61,11 @@ const createMoneyPot = async (req, res, next) => {
 // Update a money pot by ID
 const updateMoneyPotById = async (req, res, next) => {
   try {
-    const moneyPot = await moneyPotServices.update(req.user.id, req.params.id, req.body);
+    const userId = req.user.id;
+    const { id } = req.params;
+    const moneyPotData = req.body;
+
+    const moneyPot = await moneyPotService.updateById(userId, id, moneyPotData);
 
     if (moneyPot.length) {
       res.status(200).json({ updated: true });
@@ -71,7 +85,10 @@ const updateMoneyPotById = async (req, res, next) => {
 // Delete a money pot by ID
 const deleteMoneyPotById = async (req, res, next) => {
   try {
-    const deleted = await moneyPotServices.destroy(req.user.id, req.params.id);
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const deleted = await moneyPotService.deleteById(userId, id);
 
     if (deleted) {
       res.status(200).json({ deleted: true });
@@ -90,7 +107,10 @@ const deleteMoneyPotById = async (req, res, next) => {
 
 const transferMoneyPots = async (req, res, next) => {
   try {
-    const transfer = await moneyPotServices.transfer(req.user.id, req.body);
+    const userId = req.user.id;
+    const transferData = req.body;
+
+    const transfer = await moneyPotService.transfer(userId, transferData);
 
     if (transfer) {
       res.status(200).json(transfer);

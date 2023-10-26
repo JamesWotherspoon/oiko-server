@@ -1,13 +1,13 @@
-const Category = require('../models/CategoryModel');
+const categoryService = require('../services/categoryService');
 
 const getCategories = async (req, res, next) => {
   try {
-    const whereClause = { userId: req.user.id };
-    const type = req.query.type;
-    if (type) whereClause.type = type;
-    const categories = await Category.findAll({ where: whereClause });
+    const userId = req.user.id;
+    const { type } = req.query;
 
-    if (categories.length !== 0) {
+    const categories = await categoryService.retrieve(userId, type);
+
+    if (categories.length) {
       res.status(200).json(categories);
     } else {
       res.status(204).send();
@@ -23,8 +23,11 @@ const getCategories = async (req, res, next) => {
 // Fetch a specific category by ID
 const getCategoryById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const category = await Category.findOne({ where: whereClause });
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const category = await categoryService.retrieveById(userId, id);
+
     if (category) {
       res.status(200).json(category);
     } else {
@@ -42,8 +45,11 @@ const getCategoryById = async (req, res, next) => {
 
 const createCategory = async (req, res, next) => {
   try {
-    const createObj = { ...req.body, userId: req.user.id };
-    const category = await Category.create(createObj);
+    const userId = req.user.id;
+    const categoryData = req.body;
+
+    const category = await categoryService.create(userId, categoryData);
+
     res.status(201).json(category);
   } catch (error) {
     // Adding a custom error message for internal logging
@@ -56,11 +62,11 @@ const createCategory = async (req, res, next) => {
 // Update a category by ID
 const updateCategoryById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
+    const userId = req.user.id;
+    const { id } = req.params;
+    const categoryData = req.body;
 
-    const updated = await Category.update(req.body, {
-      where: whereClause,
-    });
+    const updated = await categoryService.updateById(userId, id, categoryData);
 
     if (updated.length) {
       res.status(200).json({ updated: true });
@@ -80,8 +86,10 @@ const updateCategoryById = async (req, res, next) => {
 // Delete a category by ID
 const deleteCategoryById = async (req, res, next) => {
   try {
-    const whereClause = { id: req.params.id, userId: req.user.id };
-    const deleted = await Category.destroy({ where: whereClause });
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const deleted = await categoryService.deleteById(userId, id);
 
     if (deleted) {
       res.status(200).json({ deleted: true });
