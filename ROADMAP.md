@@ -9,7 +9,7 @@
 - [x] Install necessary dependencies
 - [x] Set up basic server with Express.js
 - [x] Implement middleware to handle and process req-res object for sharing cross origin api data with client
-- [ ] Implement middleware for basic api security
+- [x] Implement middleware for basic api security
 - [x] Implement middleware for info and error logging
 - [x] Implement fallback error handler
 - [x] Run integration tests for server and unit tests for middleware
@@ -60,10 +60,10 @@
 - [x] Integration tests for moneyPot CRUD operations, test for moneyPot transfers, test transaction CRUD operations update moneyPot balance
 
 ## Milestone 8: Code review, and testing
-- [ ] Evaluate layers for consistant appraoches
-- [ ] Ensure consistant naming conventions across server
-- [ ] Ensure robust and complete error handling and effective error messages
-- [ ] Audit dependencies
+- [x] Evaluate layers for consistant appraoches
+- [x] Ensure consistant naming conventions across server
+- [x] Ensure robust and complete error handling and effective error messages
+- [x] Audit dependencies
 - [ ] Review all tests
 
 ## Complete Frontend roadmap
