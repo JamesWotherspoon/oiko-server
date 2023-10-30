@@ -1,7 +1,12 @@
 const express = require('express');
 require('dotenv').config();
+const { RateLimitError } = require('../utils/customErrorUtils');
 const useragent = require('express-useragent');
-const { logger } = require('../utils/loggerUtils');
+const {
+  serverErrorLogger,
+  clientErrorLogger,
+  successResponseLogger,
+} = require('../utils/loggerUtils');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -24,10 +29,8 @@ const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 80,
   handler: (req, res, next) => {
-    // Log when the rate limit is reached
-    logger.warn(`Rate limit exceeded for IP ${req.ip}`);
     // If the rate is exceeded, respond with status code 429 and an error message
-    res.status(429).json({ error: 'Too many requests, please try again later.' });
+    throw new RateLimitError();
   },
 });
 
@@ -40,7 +43,7 @@ const log = [
     res.on('finish', () => {
       const logInfo = {
         method: req.method,
-        url: req.url,
+        path: req.originalUrl,
         ip: req.ip,
         browser: req.useragent.browser,
         os: req.useragent.os,
@@ -48,24 +51,46 @@ const log = [
         response_time: `${Date.now() - req.startTime}ms`,
       };
       // Log the information to the logger
-      logger.info(logInfo);
+      successResponseLogger.info('Response', logInfo);
     });
     next();
   },
 ];
 
 const errorHandler = (error, req, res, next) => {
-  logger.error({ msg: error.message, stack: error.stack });
-  res.status(error.status || 500);
-  const errorResponse = {
+  const statusCode = error.statusCode || 500;
+  const responseError = {
     message: error.message || 'Internal Server Error',
+    type: error.type || 'INTERNAL_SERVER_ERROR',
+    status: error.status || 'error',
   };
-  // Include stack trace in development mode
-  if (process.env.NODE_ENV === 'development') {
-    errorResponse.stack = error.stack;
+
+  // Log the error
+  if (error.status === 'fail') {
+    clientErrorLogger.error({
+      path: req.originalUrl,
+      message: responseError.message,
+      type: responseError.type,
+      status: responseError.status,
+    });
+  } else {
+    serverErrorLogger.error({
+      path: req.originalUrl,
+      message: responseError.message,
+      type: responseError.type,
+      status: responseError.status,
+      stack: responseError.stack,
+    });
   }
-  // Send error response
-  res.json({ error: errorResponse });
+
+  const isDev = process.env.NODE_ENV === 'development';
+  if (isDev) {
+    responseError.stack = error.stack;
+    responseError.requestUrl = req.originalUrl;
+    responseError.requestMethod = req.method;
+  }
+
+  res.status(statusCode).json(responseError);
 };
 
 module.exports = {

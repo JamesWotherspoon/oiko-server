@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const ScheduledTransaction = require('../../models/ScheduledTransactionModel');
 const Transaction = require('../../models/TransactionModel');
-const { scheduledTransactionLogger } = require('../../utils/loggerUtils');
+const { serverErrorLogger, scheduledActionLogger } = require('../../utils/loggerUtils');
 const getNextTransactionDate = require('./getNextTransactionDate');
 
 async function createTransactionsForToday() {
@@ -32,7 +32,7 @@ async function createTransactionsForToday() {
         description,
       });
 
-      const nextTransactionDate = await getNextTransactionDate( { scheduledTransaction } );
+      const nextTransactionDate = await getNextTransactionDate({ scheduledTransaction });
       await scheduledTransaction.update(
         { nextTransactionDate },
         {
@@ -40,13 +40,16 @@ async function createTransactionsForToday() {
         },
       );
       // Log transaction creation
-      scheduledTransactionLogger.info(
-        `Created transaction for scheduled transaction id ${scheduledTransaction.id} 
-        with transaction id ${transaction.id}`,
-      );
+      scheduledActionLogger.info({
+        scheduledTransactionId: scheduledTransaction.id,
+        transactionId: transaction.id,
+        amount: transaction.amount,
+      });
     }
   } catch (error) {
-    scheduledTransactionLogger.error(`Error in auto creating transactions for today: ${error.message}`);
+    serverErrorLogger.error({
+      message: 'Scheduled transaction creation failed.',
+    });
   }
 }
 

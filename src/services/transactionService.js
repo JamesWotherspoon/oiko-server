@@ -1,6 +1,7 @@
 const Transaction = require('../models/TransactionModel');
 const moneyPotService = require('./moneyPotService');
 const { Op } = require('sequelize');
+const { NotFoundError, DomainError } = require('../utils/customErrorUtils');
 
 const retrieve = async (userId, query) => {
   try {
@@ -53,56 +54,65 @@ const retrieve = async (userId, query) => {
     const pageSize = 100;
     const offset = (pageNum - 1) * pageSize;
 
-    return await Transaction.findAll({ where: whereClause, order: orderClause, offset: offset, limit: pageSize });
+    const transactions = await Transaction.findAll({
+      where: whereClause,
+      order: orderClause,
+      offset: offset,
+      limit: pageSize,
+    });
+
+    return transactions;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to retrieve transactions in transactionServices. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const retrieveById = async (userId, id) => {
   try {
-    const whereClause = { id: id, userId: userId };
-    return await Transaction.findOne({ where: whereClause });
+    const whereClause = { userId, id };
+
+    const transaction = await Transaction.findOne({ where: whereClause });
+
+    if (!transaction) {
+      throw new NotFoundError(`Transaction with ID: ${id} not found.`, 'NOT_FOUND');
+    }
+
+    return transaction;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to retrieve transaction in transactionServices. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const create = async (userId, transactionData) => {
   try {
+    const moneyPot = moneyPotService.retrieveById(userId, transactionData.moneyPotId);
+    const isExpense = transactionData.transactionType === 'Expense';
+    if (isExpense && moneyPot.balance < amount) {
+      throw new DomainError('Insufficient funds.', 'INSUFFICIENT_FUNDS');
+    }
     const transaction = await Transaction.create({ userId, ...transactionData });
     await moneyPotService.updateBalance(transaction, 'create');
     return transaction;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to create transaction in transactionServices. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const updateById = async (userId, transactionId, transactionData) => {
   try {
+    const moneyPot = moneyPotService.retrieveById(userId, transactionData.moneyPotId);
+    const isExpense = transactionData.transactionType === 'Expense';
+    if (isExpense && moneyPot.balance < amount) {
+      throw new DomainError('Insufficient funds.', 'INSUFFICIENT_FUNDS');
+    }
+
     const whereClause = { userId, id: transactionId };
     const previousTransaction = await Transaction.findOne({ where: whereClause });
     const updated = await Transaction.update(transactionData, { where: whereClause });
     await moneyPotService.updateBalance(transactionData, 'update', previousTransaction);
     return updated;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to update transaction in transactionServices. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
@@ -114,11 +124,7 @@ const deleteById = async (userId, transactionId) => {
     await moneyPotService.updateBalance(transaction, 'destroy');
     return true;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to delete transaction in transactionServices. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 

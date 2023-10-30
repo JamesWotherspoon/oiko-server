@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/models/UserModel');
 const Category = require('../src/models/CategoryModel');
+const MoneyPot = require('../src/models/MoneyPotModel');
 const authUtils = require('../src/utils/authUtils');
 
 const createUserAndLogin = async () => {
@@ -35,8 +36,13 @@ const createUserCategory = async (userId) => {
   return await Category.create({ userId: userId, type: 'income', name: 'Salary' });
 };
 
+const createMoneyPot = async (userId) => {
+  return await MoneyPot.create({ userId: userId, name: 'My MoneyPot', balance: 1000 });
+};
+
 module.exports = {
   createUserAndLogin,
   deleteUser,
   createUserCategory,
+  createMoneyPot,
 };

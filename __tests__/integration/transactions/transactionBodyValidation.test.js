@@ -1,13 +1,15 @@
 
-const { createUserAndLogin, deleteUser } = require('../../testHelpers');
+const { createUserAndLogin, deleteUser, createMoneyPot } = require('../../testHelpers');
 
 describe('Transaction body Validation', () => {
   let agent;
   let user;
+  let moneyPot;
 
   beforeAll(async () => {
     // Use helper to create user and login
     ({ agent, user } = await createUserAndLogin());
+    moneyPot = await createMoneyPot(user.id);
   });
 
   afterAll(async () => {
@@ -46,6 +48,7 @@ describe('Transaction body Validation', () => {
       transactionType: 'expense',
       amount: 10.99,
       transactionDate: '2022-01-01',
+      moneyPotId: moneyPot.id,
     });
     expect(res.statusCode).toEqual(201);
   });

@@ -15,7 +15,6 @@ async function createUser(req, res, next) {
 
     res.status(201).json({ id: user.id });
   } catch (error) {
-    // res.status(500).json({ message: error.message ? error.message : 'Failed to create user' });
     next(error);
   }
 }
@@ -27,7 +26,7 @@ const getUserById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    res.status(404).json({ message: error.message ? error.message : 'Failed to retrieve user' });
+    next(error);
   }
 };
 
@@ -36,9 +35,9 @@ const updateUserById = async (req, res) => {
     const { id } = req.params;
     const userData = req.body;
 
-    const user = await userService.updateById(id, userData);
+    await userService.updateById(id, userData);
 
-    res.status(200).json(user);
+    res.status(200).json({ updated: true });
   } catch (error) {
     next(error);
   }
@@ -48,11 +47,11 @@ const deleteUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await userService.deleteById(id);
+    await userService.deleteById(id);
 
-    res.status(200).json(deleted);
+    res.status(200).json({ deleted: true });
   } catch (error) {
-    res.status(404).json({ message: error.message ? error.message : 'Failed to delete user' });
+    next(error);
   }
 };
 

@@ -22,11 +22,7 @@ const retrieve = async (
 
     return await ScheduledTransaction.findAll({ where: whereClause, order: orderClause });
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to retrieve scheduled transactions in services. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
@@ -36,8 +32,7 @@ const retrieveById = async (userId, id) => {
 
     return await ScheduledTransaction.findOne({ where: whereClause });
   } catch (error) {
-    console.error('Error getting transaction:', error);
-    throw error;
+    next(error);
   }
 };
 
@@ -47,11 +42,7 @@ const create = async (userId, scheduledActionData) => {
 
     return await ScheduledTransaction.create({ userId, ...scheduledActionData });
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to create scheduled transaction in services. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
@@ -63,8 +54,7 @@ const updateById = async (userId, id, scheduledActionData) => {
       where: whereClause,
     });
   } catch (error) {
-    console.error('Error updating scheduledAction:', error);
-    throw error;
+    next(error);
   }
 };
 
@@ -76,8 +66,7 @@ const deleteById = async (userId, id) => {
 
     return deleted;
   } catch (error) {
-    console.error('Error deleting scheduledAction:', error);
-    throw error;
+    next(error);
   }
 };
 

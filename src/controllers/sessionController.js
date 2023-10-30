@@ -16,7 +16,7 @@ const createSession = async (req, res) => {
 
     res.status(200).json({ message: 'Login successful' });
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    next(error);
   }
 };
 

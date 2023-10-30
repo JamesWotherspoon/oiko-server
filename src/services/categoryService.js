@@ -1,14 +1,16 @@
 const Category = require('../models/CategoryModel');
+const { NotFoundError } = require('../utils/customErrorUtils');
 
 const retrieve = async (userId, type) => {
   try {
     const whereClause = { userId };
     if (type) whereClause.type = type;
 
-    return await Category.findAll({ where: whereClause });
+    const categories = await Category.findAll({ where: whereClause });
+
+    return categories;
   } catch (error) {
-    console.error('Error getting categories:', error);
-    throw error;
+    next(error);
   }
 };
 
@@ -16,19 +18,24 @@ const retrieveById = async (userId, id) => {
   try {
     const whereClause = { userId, id };
 
-    return await Category.findOne({ where: whereClause });
+    const category = await Category.findOne({ where: whereClause });
+
+    if (!category) {
+      throw new NotFoundError(`Category with ID: ${id} not found.`);
+    }
+
+    return category;
   } catch (error) {
-    console.error('Error getting category:', error);
-    throw error;
+    next(error);
   }
 };
 
 const create = async (userId, categoryData) => {
   try {
-    return await Category.create({ ...categoryData, userId });
+    const category = await Category.create({ ...categoryData, userId });
+    return category;
   } catch (error) {
-    console.error('Error creating category:', error);
-    throw error;
+    next(error);
   }
 };
 
@@ -36,12 +43,17 @@ const updateById = async (userId, id, categoryData) => {
   try {
     const whereClause = { userId, id };
 
-    return await Category.update(categoryData, {
+    const updated = await Category.update(categoryData, {
       where: whereClause,
     });
+
+    if (!updated || updated[0] === 0) {
+      throw new NotFoundError(`Failed to update category with ID: ${id}`, 'UPDATE_FAILED');
+    }
+
+    return updated;
   } catch (error) {
-    console.error('Error updating category:', error);
-    throw error;
+    next(error);
   }
 };
 
@@ -51,10 +63,13 @@ const deleteById = async (userId, id) => {
 
     const deleted = await Category.destroy({ where: whereClause });
 
+    if (!deleted) {
+      throw new NotFoundError(`Failed to delete category with ID: ${id}`, 'DELETE_FAILED');
+    }
+
     return deleted;
   } catch (error) {
-    console.error('Error deleting category:', error);
-    throw error;
+    next(error);
   }
 };
 

@@ -7,16 +7,9 @@ const getScheduledTransactions = async (req, res, next) => {
 
     const scheduledTransactions = await scheduledTransactionService.retrieve(userId, query);
 
-    if (scheduledTransactions.length !== 0) {
-      res.status(200).json(scheduledTransactions);
-    } else {
-      res.status(204).send();
-    }
+    res.status(200).json(scheduledTransactions);
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(`Failed fetching scheduled transactions. Original error: ${error.message}`);
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -28,18 +21,9 @@ const getScheduledTransactionById = async (req, res, next) => {
 
     const scheduledTransaction = await scheduledTransactionService.retrieveById(userId, id);
 
-    if (scheduledTransaction) {
-      res.status(200).json(scheduledTransaction);
-    } else {
-      res.status(404).send();
-    }
+    res.status(200).json(scheduledTransaction);
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(
-      `Failed fetching scheduled transaction with ID: ${req.params.id}. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -52,10 +36,7 @@ const createScheduledTransaction = async (req, res, next) => {
 
     res.status(201).json(scheduledTransaction);
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(`Failed creating scheduled transaction. Original error: ${error.message}`);
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -66,20 +47,11 @@ const updateScheduledTransactionById = async (req, res, next) => {
     const { id } = req.params;
     const scheduledActionData = req.body;
 
-    const updated = await scheduledTransactionService.updateById(userId, id, scheduledActionData);
+    await scheduledTransactionService.updateById(userId, id, scheduledActionData);
 
-    if (updated.length) {
-      res.status(200).json({ updated: true });
-    } else {
-      res.status(404).json({ updated: false });
-    }
+    res.status(200).json({ updated: true });
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(
-      `Failed updating scheduled transaction with ID: ${req.params.id}. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -89,20 +61,11 @@ const deleteScheduledTransactionById = async (req, res, next) => {
     const userId = req.user.id;
     const { id } = req.params;
 
-    const deleted = await scheduledTransactionService.deleteById(userId, id);
+    await scheduledTransactionService.deleteById(userId, id);
 
-    if (deleted) {
-      res.status(200).json({ deleted: true });
-    } else {
-      res.status(404).json({ deleted: false });
-    }
+    res.status(200).json({ deleted: true });
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(
-      `Failed deleting scheduled transaction with ID: ${req.params.id}. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 

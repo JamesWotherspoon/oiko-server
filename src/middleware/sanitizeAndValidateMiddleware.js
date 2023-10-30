@@ -1,5 +1,5 @@
 const Ajv = require('ajv');
-const { badRequest } = require('../utils/responseHandlerUtils');
+const { BadRequestError } = require('../utils/customErrorUtils');
 const { sanitizeObject } = require('../utils/sanitizeUtils');
 
 const sanitizeAndValidate = (requestDataSource, schema) => {
@@ -10,16 +10,16 @@ const sanitizeAndValidate = (requestDataSource, schema) => {
 
   return (req, res, next) => {
     try {
+      // Sanitize the request object
       req[requestDataSource] = sanitizeObject(req[requestDataSource]);
+      // Validate the request object against api schema
+      const valid = validator(req[source]);
+      if (!valid) throw new Error(validator.errors);
+      next();
     } catch (error) {
-      return badRequest(req, res, error.message);
+      const newError = new BadRequestError('Invalid request data', 'INVALID_REQUEST_DATA', error.message);
+      next(newError);
     }
-    const valid = validator(req[source]);
-    if (!valid) {
-      return badRequest(req, res, validator.errors);
-    }
-
-    next();
   };
 };
 

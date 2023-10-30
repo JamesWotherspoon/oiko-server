@@ -1,6 +1,7 @@
 const MoneyPot = require('../models/MoneyPotModel');
 const Transaction = require('../models/TransactionModel');
 const sequelize = require('../config/dbConfig');
+const { NotFoundError, InternalServerError, DomainError } = require('../utils/customErrorUtils');
 
 const retrieve = async (userId) => {
   try {
@@ -9,75 +10,80 @@ const retrieve = async (userId) => {
       ['name', 'DESC'],
       ['id', 'DESC'],
     ];
+    const moneyPots = await MoneyPot.findAll({ where: whereClause, order: orderClause });
 
-    return await MoneyPot.findAll({ where: whereClause, order: orderClause });
+    return moneyPots;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to retrieve money pots in moneyPotService. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const retrieveById = async (userId, id) => {
   try {
-    return await MoneyPot.findOne({ where: { userId, id } });
+    const moneyPot = await MoneyPot.findOne({ where: { userId, id } });
+
+    if (!moneyPot) {
+      throw new NotFoundError(`Money pot with ID: ${id} not found.`, 'NOT_FOUND');
+    }
+    return moneyPot;
   } catch (error) {
-    const enhancedError = new Error(
-      `Failed to retrieve money pot in moneyPotService. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const create = async (userId, moneyPotData) => {
   try {
-    return await MoneyPot.create({ userId, ...moneyPotData });
+    const moneyPot = await MoneyPot.create({ userId, ...moneyPotData });
+    return moneyPot;
   } catch (error) {
-    const enhancedError = new Error(`Failed to create money pot in moneyPotService. Original error: ${error.message}`);
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const updateById = async (userId, id, moneyPotData) => {
   try {
     const whereClause = { userId, id };
-    const moneyPot = await MoneyPot.update(moneyPotData, { where: whereClause });
-    return moneyPot;
+    const updated = await MoneyPot.update(moneyPotData, { where: whereClause });
+
+    if (!updated || updated[0] === 0) {
+      throw new NotFoundError(`Failed to update money pot with ID: ${id}`, 'UPDATE_FAILED');
+    }
+
+    return updated;
   } catch (error) {
-    const enhancedError = new Error(`Failed to update money pot in moneyPotService. Original error: ${error.message}`);
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const deleteById = async (userId, id) => {
   try {
     const whereClause = { userId, id };
-    const moneyPot = await MoneyPot.destroy({ where: whereClause });
-    return moneyPot;
+    const deleted = await MoneyPot.destroy({ where: whereClause });
+
+    if (!deleted) {
+      throw new NotFoundError(`Failed to delete money pot with ID: ${id}`, 'DELETE_FAILED');
+    }
+
+    return deleted;
   } catch (error) {
-    const enhancedError = new Error(`Failed to delete money pot in moneyPotService. Original error: ${error.message}`);
-    enhancedError.stack = error.stack;
-    throw enhancedError;
+    next(error);
   }
 };
 
 const transfer = async (userId, { amount, fromPotId, toPotId }) => {
-  await sequelize
-    .transaction(async (t) => {
+  try {
+    await sequelize.transaction(async (t) => {
       const sourcePot = await MoneyPot.findByPk(fromPotId, { transaction: t });
       const destPot = await MoneyPot.findByPk(toPotId, { transaction: t });
 
       if (!sourcePot || !destPot) {
-        throw new Error('Invalid source or destination pot.');
+        throw new NotFoundError('Invalid source or destination pot.', 'INVALID_POT');
       }
+
       if (sourcePot.balance < amount) {
-        throw new Error('Insufficient funds.');
+        throw new DomainError('Insufficient funds.', 'INSUFFICIENT_FUNDS');
       }
+
       const date = new Date();
 
       await Transaction.create(
@@ -90,23 +96,32 @@ const transfer = async (userId, { amount, fromPotId, toPotId }) => {
         },
         { transaction: t },
       );
+
       await Transaction.create(
         { userId, amount, transactionType: 'income', moneyPotId: toPotId, transactionDate: date },
         { transaction: t },
       );
-    })
-    .catch(() => {
-      throw new Error(`Failed to execute transfer with error ${error.message}`);
     });
-  await updateBalance({ amount, moneyPotId: toPotId, transactionType: 'income' }, 'create');
-  await updateBalance({ amount, moneyPotId: fromPotId, transactionType: 'expense' }, 'create');
-  return true;
+
+    await updateBalance({ amount, moneyPotId: toPotId, transactionType: 'income' }, 'create');
+    await updateBalance({ amount, moneyPotId: fromPotId, transactionType: 'expense' }, 'create');
+
+    return true;
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updateBalance = async (transaction, operation, previousTransaction) => {
   try {
     if (!transaction.moneyPotId) return;
+
     const pot = await MoneyPot.findByPk(transaction.moneyPotId);
+
+    if (!pot) {
+      throw new NotFoundError(`Money pot with ID: ${transaction.moneyPotId} not found.`, 'NOT_FOUND');
+    }
+
     const amount = Number(transaction.amount);
     const balance = Number(pot.balance);
 
@@ -125,7 +140,7 @@ const updateBalance = async (transaction, operation, previousTransaction) => {
     } else if (isUpdate) {
       const previousAmount = Number(previousTransaction.amount);
       let adjustment;
-      // If transaction type is changed, then we need to adjust the logic to determine adjustment
+
       if (transaction.transactionType !== previousTransaction.transactionType) {
         adjustment = isExpense ? -previousAmount - amount : amount + previousAmount;
       } else {
@@ -133,12 +148,12 @@ const updateBalance = async (transaction, operation, previousTransaction) => {
       }
       pot.balance = balance + adjustment;
     } else {
-      throw new Error(`Invalid type: ${operation} or ${transaction.transactionType}`);
+      throw new InternalServerError(`Invalid type: ${operation} or ${transaction.transactionType}`, 'UPDATE_FAILED');
     }
 
     await pot.save();
   } catch (error) {
-    throw new Error(`Failed to execute update Money pot total with error ${error.message}`);
+    next(error);
   }
 };
 

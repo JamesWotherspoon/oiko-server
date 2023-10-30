@@ -7,16 +7,9 @@ const getCategories = async (req, res, next) => {
 
     const categories = await categoryService.retrieve(userId, type);
 
-    if (categories.length) {
-      res.status(200).json(categories);
-    } else {
-      res.status(204).send();
-    }
+    res.status(200).json(categories);
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(`Failed fetching categories. Original error: ${error.message}`);
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -28,18 +21,9 @@ const getCategoryById = async (req, res, next) => {
 
     const category = await categoryService.retrieveById(userId, id);
 
-    if (category) {
-      res.status(200).json(category);
-    } else {
-      res.status(404).send();
-    }
+    res.status(200).json(category);
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(
-      `Failed fetching category with ID: ${req.params.id}. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack;
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -52,10 +36,7 @@ const createCategory = async (req, res, next) => {
 
     res.status(201).json(category);
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(`Failed creating category. Original error: ${error.message}`);
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -66,20 +47,11 @@ const updateCategoryById = async (req, res, next) => {
     const { id } = req.params;
     const categoryData = req.body;
 
-    const updated = await categoryService.updateById(userId, id, categoryData);
+    await categoryService.updateById(userId, id, categoryData);
 
-    if (updated.length) {
-      res.status(200).json({ updated: true });
-    } else {
-      res.status(404).json({ updated: false });
-    }
+    res.status(200).json({ updated: true });
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(
-      `Failed updating category with ID: ${req.params.id}. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 
@@ -89,20 +61,11 @@ const deleteCategoryById = async (req, res, next) => {
     const userId = req.user.id;
     const { id } = req.params;
 
-    const deleted = await categoryService.deleteById(userId, id);
+    await categoryService.deleteById(userId, id);
 
-    if (deleted) {
-      res.status(200).json({ deleted: true });
-    } else {
-      res.status(404).json({ deleted: false });
-    }
+    res.status(200).json({ deleted: true });
   } catch (error) {
-    // Adding a custom error message for internal logging
-    const enhancedError = new Error(
-      `Failed deleting category with ID: ${req.params.id}. Original error: ${error.message}`,
-    );
-    enhancedError.stack = error.stack; // Preserving the original stack trace
-    next(enhancedError);
+    next(error);
   }
 };
 

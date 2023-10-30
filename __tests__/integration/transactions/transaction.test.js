@@ -1,14 +1,16 @@
 const Transaction = require('../../../src/models/TransactionModel');
-const { createUserAndLogin, deleteUser } = require('../../testHelpers');
+const { createUserAndLogin, deleteUser, createMoneyPot } = require('../../testHelpers');
 
 describe('Transaction route tests', () => {
   let agent;
   let user;
+  let moneyPot;
   const date = new Date().toISOString().slice(0, 10);
 
   beforeAll(async () => {
     // Use helper to create user and login
     ({ agent, user } = await createUserAndLogin());
+    moneyPot = await createMoneyPot(user.id);
   });
 
   afterAll(async () => {
@@ -75,6 +77,7 @@ describe('Transaction route tests', () => {
           amount: transactionAmount,
           description: 'Test Description',
           transactionDate: date,
+          moneyPotId: moneyPot.id,
         }),
       )
       .set('Content-Type', 'application/json');
@@ -97,6 +100,7 @@ describe('Transaction route tests', () => {
       amount: 100,
       description: 'Test Description',
       transactionDate: date,
+      moneyPotId: moneyPot.id,
     });
 
     const updatedTransactionAmount = 147.87;
@@ -109,6 +113,7 @@ describe('Transaction route tests', () => {
           amount: updatedTransactionAmount,
           description: 'Test Description',
           transactionDate: date,
+          moneyPotId: moneyPot.id,
         }),
       )
       .set('Content-Type', 'application/json');

@@ -15,7 +15,7 @@ const create = async (userData) => {
     const user = await User.create({ email: normalizedEmail, passwordHash });
     return user;
   } catch (error) {
-    throw new Error('Failed to create user');
+    next(error);
   }
 };
 
@@ -24,7 +24,7 @@ const retrieveById = async (id) => {
     const user = await User.findByPk(id);
     return user;
   } catch (error) {
-    throw new Error('Failed to retrieve user');
+    next(error);
   }
 };
 
@@ -36,7 +36,7 @@ const updateById = async (id, userData) => {
 
     return user;
   } catch (error) {
-    throw new Error('Failed to update user');
+    next(error);
   }
 };
 
@@ -45,7 +45,7 @@ const deleteById = async (id) => {
     const user = await User.destroy({ where: { id } });
     return user;
   } catch (error) {
-    throw new Error('Failed to delete user');
+    next(error);
   }
 };
 module.exports = {

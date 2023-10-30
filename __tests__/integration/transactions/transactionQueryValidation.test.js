@@ -25,7 +25,7 @@ describe('Transaction Query Validation', () => {
       from: '2023-01-03',
       to: '2023-06-07',
     });
-    expect(response.statusCode).toEqual(204);
+    expect(response.statusCode).toEqual(200);
   });
   test('should return 400 if transactionType is not eithier income or expense', async () => {
     const response = await agent.get('/api/transactions').query({
@@ -37,7 +37,7 @@ describe('Transaction Query Validation', () => {
     const response = await agent.get('/api/transactions').query({
       transactionType: 'income',
     });
-    expect(response.statusCode).toEqual(204);
+    expect(response.statusCode).toEqual(200);
   });
   test('should return 400 if query key is not supported', async () => {
     const response = await agent.get('/api/transactions').query({
