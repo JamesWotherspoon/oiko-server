@@ -22,7 +22,7 @@ app.use(middleware.helmetMiddleware);
 
 // Routes
 app.use('/api/sessions', sessionRoutes.router);
-app.use('/api/sessions', authenticateUser, sessionRoutes.protectedRouter);
+app.use('/api/sessions', sessionRoutes.protectedRouter);
 app.use('/api/users', userRoutes.router);
 app.use('/api/users', authenticateUser, userRoutes.protectedRouter);
 app.use('/api/transactions', authenticateUser, transactionRoutes);

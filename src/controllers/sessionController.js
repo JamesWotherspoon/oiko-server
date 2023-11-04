@@ -21,7 +21,7 @@ const createSession = async (req, res) => {
 };
 
 const deleteSession = (req, res) => {
-  res.clearCookie('authToken', { domain: process.env.DOMAIN, path: '/' });
+  res.clearCookie('authToken', { domain: process.env.DOMAIN, path: '/', httpOnly: true });
   res.status(200).json({ message: 'Logout successful' });
 };
 
