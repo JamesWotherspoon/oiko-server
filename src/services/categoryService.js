@@ -50,8 +50,9 @@ const updateById = async (userId, id, categoryData) => {
     if (!updated || updated[0] === 0) {
       throw new NotFoundError(`Failed to update category with ID: ${id}`, 'UPDATE_FAILED');
     }
+    const updatedItem = await Category.findOne({ where: whereClause });
 
-    return updated;
+    return updatedItem;
   } catch (error) {
     next(error);
   }
@@ -67,7 +68,7 @@ const deleteById = async (userId, id) => {
       throw new NotFoundError(`Failed to delete category with ID: ${id}`, 'DELETE_FAILED');
     }
 
-    return deleted;
+    return id;
   } catch (error) {
     next(error);
   }

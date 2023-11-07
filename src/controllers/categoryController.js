@@ -47,9 +47,9 @@ const updateCategoryById = async (req, res, next) => {
     const { id } = req.params;
     const categoryData = req.body;
 
-    await categoryService.updateById(userId, id, categoryData);
+    const updatedItem =await categoryService.updateById(userId, id, categoryData);
 
-    res.status(200).json({ updated: true });
+    res.status(200).json(updatedItem);
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ const deleteCategoryById = async (req, res, next) => {
 
     await categoryService.deleteById(userId, id);
 
-    res.status(200).json({ deleted: true });
+    res.status(200).json(id);
   } catch (error) {
     next(error);
   }

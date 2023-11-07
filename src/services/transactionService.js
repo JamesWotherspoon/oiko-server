@@ -9,7 +9,7 @@ const retrieve = async (userId, query) => {
       from,
       to,
       categoryId,
-      scheduledTransactionId,
+      scheduledid,
       transactionType,
       name,
       minAmount,
@@ -25,7 +25,7 @@ const retrieve = async (userId, query) => {
 
     if (categoryId) whereClause.categoryId = categoryId;
     if (from && to) whereClause.transactionDate = { [Op.between]: [new Date(from), new Date(to)] };
-    if (scheduledTransactionId) whereClause.scheduledTransactionId = scheduledTransactionId;
+    if (scheduledid) whereClause.scheduledid = scheduledid;
     if (transactionType) whereClause.transactionType = transactionType;
     if (name) whereClause.name = { [Op.like]: '%' + name + '%' };
     if (description) whereClause.description = { [Op.like]: '%' + description + '%' };
@@ -98,7 +98,7 @@ const create = async (userId, transactionData) => {
   }
 };
 
-const updateById = async (userId, transactionId, transactionData) => {
+const updateById = async (userId, id, transactionData) => {
   try {
     const moneyPot = moneyPotService.retrieveById(userId, transactionData.moneyPotId);
     const isExpense = transactionData.transactionType === 'Expense';
@@ -106,23 +106,26 @@ const updateById = async (userId, transactionId, transactionData) => {
       throw new DomainError('Insufficient funds.', 'INSUFFICIENT_FUNDS');
     }
 
-    const whereClause = { userId, id: transactionId };
+    const whereClause = { userId, id };
     const previousTransaction = await Transaction.findOne({ where: whereClause });
-    const updated = await Transaction.update(transactionData, { where: whereClause });
+    await Transaction.update(transactionData, { where: whereClause });
     await moneyPotService.updateBalance(transactionData, 'update', previousTransaction);
-    return updated;
+
+    const updatedItem = await Transaction.findOne({ where: whereClause });
+
+    return updatedItem;
   } catch (error) {
     next(error);
   }
 };
 
-const deleteById = async (userId, transactionId) => {
+const deleteById = async (userId, id) => {
   try {
-    const transaction = await Transaction.findOne({ where: { userId, id: transactionId } });
-    const whereClause = { userId: userId, id: transactionId };
+    const transaction = await Transaction.findOne({ where: { userId, id } });
+    const whereClause = { userId: userId, id };
     await Transaction.destroy({ where: whereClause });
     await moneyPotService.updateBalance(transaction, 'destroy');
-    return true;
+    return id;
   } catch (error) {
     next(error);
   }

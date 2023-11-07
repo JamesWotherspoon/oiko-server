@@ -48,8 +48,9 @@ const updateById = async (userId, id, moneyPotData) => {
     if (!updated || updated[0] === 0) {
       throw new NotFoundError(`Failed to update money pot with ID: ${id}`, 'UPDATE_FAILED');
     }
+    const updatedItem = await MoneyPot.findOne({ where: whereClause });
 
-    return updated;
+    return updatedItem;
   } catch (error) {
     next(error);
   }
@@ -64,7 +65,7 @@ const deleteById = async (userId, id) => {
       throw new NotFoundError(`Failed to delete money pot with ID: ${id}`, 'DELETE_FAILED');
     }
 
-    return deleted;
+    return id;
   } catch (error) {
     next(error);
   }

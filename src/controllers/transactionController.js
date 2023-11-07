@@ -47,9 +47,9 @@ const updateTransactionById = async (req, res, next) => {
     const { id } = req.params;
     const transactionData = req.body;
 
-    await transactionService.updateById(userId, id, transactionData);
+    const updatedItem = await transactionService.updateById(userId, id, transactionData);
 
-    res.status(200).json({ updated: true });
+    res.status(200).json(updatedItem);
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ const deleteTransactionById = async (req, res, next) => {
 
     await transactionService.deleteById(userId, id);
 
-    res.status(200).json({ deleted: true });
+    res.status(200).json(id);
   } catch (error) {
     next(error);
   }

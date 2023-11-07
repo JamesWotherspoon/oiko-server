@@ -46,9 +46,9 @@ const updateMoneyPotById = async (req, res, next) => {
     const { id } = req.params;
     const moneyPotData = req.body;
 
-    await moneyPotService.updateById(userId, id, moneyPotData);
+    const updatedItem = await moneyPotService.updateById(userId, id, moneyPotData);
 
-    res.status(200).json({ updated: true });
+    res.status(200).json(updatedItem);
   } catch (error) {
     next(error);
   }
@@ -62,7 +62,7 @@ const deleteMoneyPotById = async (req, res, next) => {
 
     await moneyPotService.deleteById(userId, id);
 
-    res.status(200).json({ deleted: true });
+    res.status(200).json(id);
   } catch (error) {
     next(error);
   }

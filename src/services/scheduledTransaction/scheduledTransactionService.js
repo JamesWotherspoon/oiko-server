@@ -50,9 +50,13 @@ const updateById = async (userId, id, scheduledActionData) => {
   try {
     const whereClause = { userId, id };
 
-    return await ScheduledTransaction.update(scheduledActionData, {
+    await ScheduledTransaction.update(scheduledActionData, {
       where: whereClause,
     });
+
+    const updatedItem = await ScheduledTransaction.findOne({ where: whereClause });
+
+    return updatedItem;
   } catch (error) {
     next(error);
   }
@@ -62,9 +66,9 @@ const deleteById = async (userId, id) => {
   try {
     const whereClause = { userId, id };
 
-    const deleted = await ScheduledTransaction.destroy({ where: whereClause });
+    await ScheduledTransaction.destroy({ where: whereClause });
 
-    return deleted;
+    return id;
   } catch (error) {
     next(error);
   }

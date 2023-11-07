@@ -47,9 +47,9 @@ const updateScheduledTransactionById = async (req, res, next) => {
     const { id } = req.params;
     const scheduledActionData = req.body;
 
-    await scheduledTransactionService.updateById(userId, id, scheduledActionData);
+    const updatedItem = await scheduledTransactionService.updateById(userId, id, scheduledActionData);
 
-    res.status(200).json({ updated: true });
+    res.status(200).json(updatedItem);
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ const deleteScheduledTransactionById = async (req, res, next) => {
 
     await scheduledTransactionService.deleteById(userId, id);
 
-    res.status(200).json({ deleted: true });
+    res.status(200).json(id);
   } catch (error) {
     next(error);
   }
