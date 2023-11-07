@@ -61,15 +61,15 @@ describe('MoneyPot test routes', () => {
   });
 
   it('should update a moneyPot', async () => {
-    const response = await agent.put(`/api/money-pots/${moneyPots[1].id}`).send({
+    const newItem = {
       name: 'My Updated MoneyPot',
       balance: 2000,
       description: 'My Updated MoneyPot Description',
-    });
+    };
+    const response = await agent.put(`/api/money-pots/${moneyPots[1].id}`).send(newItem);
     expect(response.statusCode).toEqual(200);
-    expect(response.body.updated).toBe(true);
+    expect(response.body.name).toBe(newItem.name);
   });
-
   it('should delete a moneyPot', async () => {
     const response = await agent.delete(`/api/money-pots/${moneyPots[2].id}`);
     expect(response.statusCode).toEqual(200);

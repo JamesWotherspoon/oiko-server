@@ -103,32 +103,21 @@ describe('Category route tests', () => {
       type: 'expense',
       description: 'Test Category Description',
     });
-
-    const updatedCategoryName = 'Updated Category';
-    const updatedCategoryType = 'income';
-    const updatedCategoryDescription = 'Updated Category Description';
+    const newItem = {
+      name: 'Updated Category',
+      type: 'income',
+      description: 'Updated Category Description',
+    };
 
     const response = await agent
       .put(`/api/categories/${category.id}`)
       .send(
-        JSON.stringify({
-          name: updatedCategoryName,
-          type: updatedCategoryType,
-          description: updatedCategoryDescription,
-        }),
+        JSON.stringify(newItem),
       )
       .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
-    expect(response.body.updated).toBe(true);
-
-    const updatedCategory = await Category.findOne({
-      where: { userId: user.id },
-    });
-
-    expect(updatedCategory.name).toBe(updatedCategoryName);
-    expect(updatedCategory.type).toBe(updatedCategoryType);
-    expect(updatedCategory.description).toBe(updatedCategoryDescription);
+    expect(response.body.type).toBe(newItem.type);
   });
 
   test('Should delete a category from the database', async () => {

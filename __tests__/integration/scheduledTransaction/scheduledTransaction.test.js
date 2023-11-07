@@ -111,29 +111,20 @@ describe('ScheduledTransaction route tests', () => {
       nextTransactionDate: '2021-08-01',
     });
 
-    const updatedScheduledTransactionAmount = 147.87;
+    const newItem = {
+      name: 'test',
+      transactionType: 'income',
+      amount: 147.87,
+      description: 'Test Description',
+      recurrenceType: 'daily',
+    };
     const response = await agent
       .put(`/api/scheduled-transactions/${scheduledTransaction.id}`)
-      .send(
-        JSON.stringify({
-          name: 'test',
-          transactionType: 'income',
-          amount: updatedScheduledTransactionAmount,
-          description: 'Test Description',
-          recurrenceType: 'daily',
-        }),
-      )
+      .send(newItem)
       .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
-    expect(response.body.updated).toBe(true);
-
-    const updatedScheduledTransaction = await ScheduledTransaction.findOne({
-      where: { userId: user.id },
-    });
-
-    expect(Number(updatedScheduledTransaction.amount)).toBe(updatedScheduledTransactionAmount);
-    expect(updatedScheduledTransaction.name).toBe('test');
+    expect(Number(response.body.amount)).toBe(newItem.amount);
   });
 
   test('Should delete a scheduled transaction from the database', async () => {

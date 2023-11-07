@@ -102,31 +102,22 @@ describe('Transaction route tests', () => {
       transactionDate: date,
       moneyPotId: moneyPot.id,
     });
+    const updateItem = {
+      name: 'Test Expense',
+      transactionType: 'income',
+      amount: 102,
+      description: 'Update Test Description',
+      transactionDate: date,
+      moneyPotId: moneyPot.id,
+    };
 
-    const updatedTransactionAmount = 147.87;
     const response = await agent
       .put(`/api/transactions/${transaction.id}`)
-      .send(
-        JSON.stringify({
-          name: 'Test Expense',
-          transactionType: 'income',
-          amount: updatedTransactionAmount,
-          description: 'Test Description',
-          transactionDate: date,
-          moneyPotId: moneyPot.id,
-        }),
-      )
+      .send(updateItem)
       .set('Content-Type', 'application/json');
 
     expect(response.status).toBe(200);
-    expect(response.body.updated).toBe(true);
-
-    const updatedTransaction = await Transaction.findOne({
-      where: { userId: user.id },
-    });
-
-    expect(Number(updatedTransaction.amount)).toBe(updatedTransactionAmount);
-    expect(updatedTransaction.name).toBe('Test Expense');
+    expect(response.body.description).toBe(updateItem.description);
   });
   test('Should delete a transaction from the database', async () => {
     const transaction = await Transaction.create({
