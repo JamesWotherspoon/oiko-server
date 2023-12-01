@@ -1,7 +1,7 @@
 const validator = require('validator');
 
 const sanitizeString = (input) => {
-  if (!/^[a-zA-Z0-9\s-.,@!?]*$/.test(input)) {
+  if (!/^[a-zA-Z0-9\s-.,#@!?]*$/.test(input)) {
     throw new Error('Invalid characters in string');
   }
   return validator.escape(input);

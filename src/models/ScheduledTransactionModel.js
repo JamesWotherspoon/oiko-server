@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
 const User = require('./UserModel');
 const Category = require('./CategoryModel');
+const MoneyPot = require('./MoneyPotModel');
 
 const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
   id: {
@@ -26,7 +27,7 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
     },
   },
   transactionType: {
-    type: DataTypes.ENUM('income', 'expense'),
+    type: DataTypes.ENUM('positive', 'negative'),
     allowNull: false,
   },
   name: {
@@ -74,6 +75,14 @@ const ScheduledTransaction = sequelize.define('ScheduledTransaction', {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  moneyPotId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: MoneyPot,
+      key: 'id',
+    },
+  },
   active: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -93,6 +102,11 @@ ScheduledTransaction.belongsTo(User, {
 ScheduledTransaction.belongsTo(Category, {
   foreignKey: 'categoryId',
   onDelete: 'SET NULL',
+});
+
+ScheduledTransaction.belongsTo(MoneyPot, {
+  foreignKey: 'moneyPotId',
+  onDelete: 'SET NULL', // If the money pot is deleted, set the reference to NULL
 });
 
 module.exports = ScheduledTransaction;

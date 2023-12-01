@@ -6,7 +6,7 @@ const getMoneyPots = async (req, res, next) => {
 
     const moneyPots = await moneyPotService.retrieve(userId);
 
-    res.status(200).json(moneyPots);
+    res.status(200).json({ data: moneyPots, message: 'Successfully fetched money pots' });
   } catch (error) {
     next(error);
   }
@@ -20,7 +20,7 @@ const getMoneyPotById = async (req, res, next) => {
 
     const moneyPot = await moneyPotService.retrieveById(userId, id);
 
-    res.status(200).json(moneyPot);
+    res.status(200).json({ data: moneyPot, message: 'Successfully fetched money pot' });
   } catch (error) {
     next(error);
   }
@@ -33,7 +33,7 @@ const createMoneyPot = async (req, res, next) => {
 
     const moneyPot = await moneyPotService.create(userId, moneyPotData);
 
-    res.status(201).json(moneyPot);
+    res.status(201).json({ data: moneyPot, message: `Successfully created ${moneyPotData.name}` });
   } catch (error) {
     next(error);
   }
@@ -48,7 +48,7 @@ const updateMoneyPotById = async (req, res, next) => {
 
     const updatedItem = await moneyPotService.updateById(userId, id, moneyPotData);
 
-    res.status(200).json(updatedItem);
+    res.status(200).json({ data: updatedItem, message: `Successfully updated ${moneyPotData.name}` });
   } catch (error) {
     next(error);
   }
@@ -62,7 +62,7 @@ const deleteMoneyPotById = async (req, res, next) => {
 
     await moneyPotService.deleteById(userId, id);
 
-    res.status(200).json(id);
+    res.status(200).json({ id, message: 'Successfully deleted' });
   } catch (error) {
     next(error);
   }
@@ -75,7 +75,7 @@ const transferMoneyPots = async (req, res, next) => {
 
     const transfer = await moneyPotService.transfer(userId, transferData);
 
-    res.status(200).json(transfer);
+    res.status(200).json({ data: transfer, message: 'Successfully transferred money pots' });
   } catch (error) {
     next(error);
   }

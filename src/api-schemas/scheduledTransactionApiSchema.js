@@ -1,8 +1,9 @@
 const bodySchema = {
   type: 'object',
   properties: {
-    categoryId: { type: 'integer' },
-    transactionType: { type: 'string', enum: ['income', 'expense'] },
+    moneyPotId: { type: 'integer' },
+    categoryId: { type: ['integer', 'null'] },
+    transactionType: { type: 'string', enum: ['positive', 'negative'] },
     name: { type: 'string' },
     amount: { type: 'number' },
     recurrenceType: { type: 'string', enum: ['daily', 'weekly', 'monthly', 'quarterly', 'biannually', 'annually'] },

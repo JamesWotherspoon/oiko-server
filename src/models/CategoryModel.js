@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
-const User = require('./UserModel'); // Import User model
+const User = require('./UserModel');
 
 const Category = sequelize.define('Category', {
   id: {
@@ -17,22 +17,30 @@ const Category = sequelize.define('Category', {
     },
   },
   type: {
-    type: DataTypes.ENUM('income', 'expense'), // ENUM type for income/expense differentiation
-    allowNull: false,
+    type: DataTypes.ENUM('negative', 'positive'),
+    allowNull: true,
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  iconIdentifier: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   description: {
     type: DataTypes.TEXT,
+    allowNull: true,
   },
 });
 
-// Define foreign key relationship
 Category.belongsTo(User, {
   foreignKey: 'userId',
-  onDelete: 'CASCADE', // delete category if user is deleted
+  onDelete: 'CASCADE',
 });
 
 module.exports = Category;

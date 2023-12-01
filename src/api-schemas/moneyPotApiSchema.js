@@ -5,6 +5,7 @@ const bodySchema = {
       name: { type: 'string' },
       balance: { type: 'number' },
       description: { type: 'string' },
+      balanceType: { type: 'string', enum: ['positive', 'negative'] },
     },
     required: ['name'],
     additionalProperties: false,

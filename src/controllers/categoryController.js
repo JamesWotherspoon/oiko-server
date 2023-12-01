@@ -7,7 +7,7 @@ const getCategories = async (req, res, next) => {
 
     const categories = await categoryService.retrieve(userId, type);
 
-    res.status(200).json(categories);
+    res.status(200).json({ data: categories, message: `Sucessfully fetched categories` });
   } catch (error) {
     next(error);
   }
@@ -21,7 +21,7 @@ const getCategoryById = async (req, res, next) => {
 
     const category = await categoryService.retrieveById(userId, id);
 
-    res.status(200).json(category);
+    res.status(200).json({ data: category, message: `Sucessfully fetched category` });
   } catch (error) {
     next(error);
   }
@@ -34,7 +34,7 @@ const createCategory = async (req, res, next) => {
 
     const category = await categoryService.create(userId, categoryData);
 
-    res.status(201).json(category);
+    res.status(201).json({ data: category, message: `Sucessfully created ${categoryData.name}` });
   } catch (error) {
     next(error);
   }
@@ -47,9 +47,9 @@ const updateCategoryById = async (req, res, next) => {
     const { id } = req.params;
     const categoryData = req.body;
 
-    const updatedItem =await categoryService.updateById(userId, id, categoryData);
+    const updatedItem = await categoryService.updateById(userId, id, categoryData);
 
-    res.status(200).json(updatedItem);
+    res.status(200).json({ data: updatedItem, message: `Sucessfully Updated ${categoryData.name}` });
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ const deleteCategoryById = async (req, res, next) => {
 
     await categoryService.deleteById(userId, id);
 
-    res.status(200).json(id);
+    res.status(200).json({ id, message: `Sucessfully deleted` });
   } catch (error) {
     next(error);
   }

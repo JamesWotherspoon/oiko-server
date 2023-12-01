@@ -3,5 +3,6 @@ module.exports = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '__tests__/testHelpers.js',
+    '__tests__/generateValidResource',
   ],
 };

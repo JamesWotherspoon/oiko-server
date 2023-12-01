@@ -7,7 +7,7 @@ const getTransactions = async (req, res, next) => {
 
     const transactions = await transactionService.retrieve(userId, query);
 
-    res.status(200).json(transactions);
+    res.status(200).json({ data: transactions, message: 'Successfully fetched transactions' });
   } catch (error) {
     next(error);
   }
@@ -21,7 +21,7 @@ const getTransactionById = async (req, res, next) => {
 
     const transaction = await transactionService.retrieveById(userId, id);
 
-    res.status(200).json(transaction);
+    res.status(200).json({ data: transaction, message: 'Successfully fetched transaction' });
   } catch (error) {
     next(error);
   }
@@ -34,7 +34,7 @@ const createTransaction = async (req, res, next) => {
 
     const transaction = await transactionService.create(userId, transactionData);
 
-    res.status(201).json(transaction);
+    res.status(201).json({ data: transaction, message: `Successfully created` });
   } catch (error) {
     next(error);
   }
@@ -49,7 +49,7 @@ const updateTransactionById = async (req, res, next) => {
 
     const updatedItem = await transactionService.updateById(userId, id, transactionData);
 
-    res.status(200).json(updatedItem);
+    res.status(200).json({ data: updatedItem, message: `Successfully updated` });
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ const deleteTransactionById = async (req, res, next) => {
 
     await transactionService.deleteById(userId, id);
 
-    res.status(200).json(id);
+    res.status(200).json({ id, message: 'Successfully deleted' });
   } catch (error) {
     next(error);
   }

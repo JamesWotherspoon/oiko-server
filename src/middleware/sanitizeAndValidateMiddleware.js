@@ -12,13 +12,14 @@ const sanitizeAndValidate = (requestDataSource, schema) => {
     try {
       // Sanitize the request object
       req[requestDataSource] = sanitizeObject(req[requestDataSource]);
+      console.log(req.body);
       // Validate the request object against api schema
       const valid = validator(req[source]);
-      if (!valid) throw new Error(validator.errors);
+
+      if (!valid) throw new BadRequestError('Invalid request data', 'INVALID_REQUEST_DATA', validator.errors);
       next();
     } catch (error) {
-      const newError = new BadRequestError('Invalid request data', 'INVALID_REQUEST_DATA', error.message);
-      next(newError);
+      next(error);
     }
   };
 };

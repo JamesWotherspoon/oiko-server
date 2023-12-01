@@ -1,6 +1,7 @@
 // user.js (User model)
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConfig');
+const { initializeCategories, initializeMoneyPots } = require('../utils/initializeDefaultData');
 
 const User = sequelize.define('User', {
   id: {
@@ -23,3 +24,8 @@ const User = sequelize.define('User', {
 });
 
 module.exports = User;
+
+User.afterCreate(async (user) => {
+  await initializeCategories(user.id);
+  await initializeMoneyPots(user.id);
+});

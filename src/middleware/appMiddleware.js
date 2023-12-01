@@ -63,15 +63,18 @@ const errorHandler = (error, req, res, next) => {
     message: error.message || 'Internal Server Error',
     type: error.type || 'INTERNAL_SERVER_ERROR',
     status: error.status || 'error',
+    stack: error.stack,
+    originError: error.originalError,
   };
-
+  console.log(error);
   // Log the error
-  if (error.status === 'fail') {
+  if (error.status === 'fail' || (error.status > 400 && error.status < 500)) {
     clientErrorLogger.error({
       path: req.originalUrl,
       message: responseError.message,
       type: responseError.type,
       status: responseError.status,
+      originError: responseError.originError,
     });
   } else {
     serverErrorLogger.error({
@@ -84,6 +87,7 @@ const errorHandler = (error, req, res, next) => {
   }
 
   const isDev = process.env.NODE_ENV === 'development';
+  console.log(isDev);
   if (isDev) {
     responseError.stack = error.stack;
     responseError.requestUrl = req.originalUrl;

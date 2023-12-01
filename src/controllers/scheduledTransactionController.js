@@ -7,7 +7,7 @@ const getScheduledTransactions = async (req, res, next) => {
 
     const scheduledTransactions = await scheduledTransactionService.retrieve(userId, query);
 
-    res.status(200).json(scheduledTransactions);
+    res.status(200).json({ data: scheduledTransactions, message: 'Successfully fetched scheduled transactions' });
   } catch (error) {
     next(error);
   }
@@ -21,7 +21,7 @@ const getScheduledTransactionById = async (req, res, next) => {
 
     const scheduledTransaction = await scheduledTransactionService.retrieveById(userId, id);
 
-    res.status(200).json(scheduledTransaction);
+    res.status(200).json({ data: scheduledTransaction, message: 'Successfully fetched scheduled transaction' });
   } catch (error) {
     next(error);
   }
@@ -34,7 +34,7 @@ const createScheduledTransaction = async (req, res, next) => {
 
     const scheduledTransaction = await scheduledTransactionService.create(userId, scheduledTransactionData);
 
-    res.status(201).json(scheduledTransaction);
+    res.status(201).json({ data: scheduledTransaction, message: `Successfully created ${scheduledTransactionData.name}` });
   } catch (error) {
     next(error);
   }
@@ -49,7 +49,7 @@ const updateScheduledTransactionById = async (req, res, next) => {
 
     const updatedItem = await scheduledTransactionService.updateById(userId, id, scheduledActionData);
 
-    res.status(200).json(updatedItem);
+    res.status(200).json({ data: updatedItem, message: `Successfully updated ${scheduledActionData.name}` });
   } catch (error) {
     next(error);
   }
@@ -63,7 +63,7 @@ const deleteScheduledTransactionById = async (req, res, next) => {
 
     await scheduledTransactionService.deleteById(userId, id);
 
-    res.status(200).json(id);
+    res.status(200).json({ id, message: 'Successfully deleted' });
   } catch (error) {
     next(error);
   }

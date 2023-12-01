@@ -24,6 +24,10 @@ const MoneyPot = sequelize.define('MoneyPot', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  balanceType: {
+    type: DataTypes.ENUM('positive', 'negative'),
+    default: 'positive',
+  },
   balance: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,

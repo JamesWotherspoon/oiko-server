@@ -15,7 +15,8 @@ const createUserAndLogin = async () => {
   // Hash Password
   const passwordHash = await authUtils.hashPassword(userCredentials.password);
   // Create User
-  const user = await User.create({ email: userCredentials.email, passwordHash: passwordHash });
+  let user = await User.create({ email: userCredentials.email, passwordHash: passwordHash });
+  user = user.dataValues;
 
   // Login
   await agent
